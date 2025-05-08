@@ -33,7 +33,7 @@ import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
 
 export function rangeText(view: TCalendarView, date: Date) {
-  const formatString = "MMM d, yyyy";
+  const formatString = "d MMM yyyy";
   let start: Date;
   let end: Date;
 

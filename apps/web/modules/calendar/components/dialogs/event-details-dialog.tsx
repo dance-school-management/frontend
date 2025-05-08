@@ -15,10 +15,7 @@ import { ScrollArea } from "@repo/ui/scroll-area";
 
 import type { IEvent } from "@/modules/calendar/interfaces";
 import { ReactNode } from "react";
-import { useCalendar } from "../../contexts/calendar-context";
 import { formatTime } from "../../helpers";
-import { Button } from "@repo/ui/button";
-import { toast } from "sonner";
 
 interface IProps {
     event: IEvent;
@@ -28,16 +25,6 @@ interface IProps {
 export function EventDetailsDialog({ event, children }: IProps) {
     const startDate = parseISO(event.startDate);
     const endDate = parseISO(event.endDate);
-    const { removeEvent } = useCalendar();
-
-    const deleteEvent = (eventId: number) => {
-        try {
-            removeEvent(eventId);
-            toast.success("Event deleted successfully.");
-        } catch {
-            toast.error("Error deleting event.");
-        }
-    };
 
     return (
         <Dialog>
@@ -48,7 +35,7 @@ export function EventDetailsDialog({ event, children }: IProps) {
                 </DialogHeader>
 
                 <ScrollArea className="max-h-[80vh]">
-                    <div className="space-y-4 p-4">
+                    <div className="space-y-4 px-4 pt-4">
                         <div className="flex items-start gap-2">
                             <User className="mt-1 size-4 shrink-0 text-muted-foreground" />
                             <div>
@@ -98,15 +85,6 @@ export function EventDetailsDialog({ event, children }: IProps) {
                         </div>
                     </div>
                 </ScrollArea>
-                <div className="flex justify-end gap-2">
-                    <Button variant="destructive" onClick={
-                        () => {
-                            deleteEvent(event.id);
-                        }
-                    }>
-                        Delete
-                    </Button>
-                </div>
                 <DialogClose />
             </DialogContent>
         </Dialog>
