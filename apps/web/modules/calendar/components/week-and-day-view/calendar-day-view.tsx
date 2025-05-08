@@ -92,9 +92,9 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
                 {hours.map((hour, index) => (
                   <div key={hour} className="relative" style={{ height: "96px" }}>
                     {index !== 0 && <div className="pointer-events-none absolute inset-x-0 top-0 border-b"></div>}
-                    <div className="absolute inset-x-0 top-0 h-[48px] cursor-pointer transition-colors hover:bg-bg-primary-hover" />
+                    <div className="absolute inset-x-0 top-0 h-[48px] transition-colors hover:bg-bg-primary-hover" />
                     <div className="pointer-events-none absolute inset-x-0 top-1/2 border-b border-dashed border-b-tertiary"></div>
-                    <div className="absolute inset-x-0 top-[48px] h-[48px] cursor-pointer transition-colors hover:bg-bg-primary-hover" />
+                    <div className="absolute inset-x-0 top-[48px] h-[48px] transition-colors hover:bg-bg-primary-hover" />
                   </div>
                 ))}
 
@@ -143,7 +143,7 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
 
                       <div className="flex items-center gap-1.5">
                         <Calendar className="size-4 text-t-quinary" />
-                        <span className="text-sm text-t-tertiary">{format(new Date(event.startDate), "MMM d, yyyy")}</span>
+                        <span className="text-sm text-t-tertiary">{format(new Date(event.startDate), "d MMM yyyy")}</span>
                       </div>
 
                       <div className="flex items-center gap-1.5">

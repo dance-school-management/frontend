@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { formatDate } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -31,11 +30,6 @@ const MotionBadge = motion(Badge);
 
 export function DateNavigator({ view, events }: IProps) {
   const { selectedDate, setSelectedDate } = useCalendar();
-
-  const day = formatDate(selectedDate, "d");
-  const month = formatDate(selectedDate, "MMMM");
-  const year = selectedDate.getFullYear();
-
   const eventCount = useMemo(
     () => getEventsCount(events, selectedDate, view),
     [events, selectedDate, view]
@@ -49,14 +43,6 @@ export function DateNavigator({ view, events }: IProps) {
   return (
     <div className="space-y-0.5">
       <div className="flex items-center gap-2">
-        <motion.span
-          className="text-lg font-semibold"
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={transition}
-        >
-          {day} {month} {year}
-        </motion.span>
         <AnimatePresence mode="wait">
           <MotionBadge
             key={eventCount}

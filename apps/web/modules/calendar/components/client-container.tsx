@@ -14,7 +14,7 @@ import { CalendarWeekView } from "@/modules/calendar/components/week-and-day-vie
 import { CalendarYearView } from "@/modules/calendar/components/year-view/calendar-year-view";
 
 export function ClientContainer() {
-  const { selectedDate, view, isAgendaMode, selectedUserId, events } =
+  const { selectedDate, view, isAgendaMode, events } =
     useCalendar();
 
   const filteredEvents = events.filter((event) => {
@@ -34,9 +34,7 @@ export function ClientContainer() {
 
     const isInSelectedMonth =
       itemStartDate <= monthEnd && itemEndDate >= monthStart;
-    const isUserMatch =
-      selectedUserId === "all" || event.user.id === selectedUserId;
-    return isInSelectedMonth && isUserMatch;
+    return isInSelectedMonth;
   });
 
   const singleDayEvents = filteredEvents.filter((event) => {
