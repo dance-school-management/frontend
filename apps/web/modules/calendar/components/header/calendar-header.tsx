@@ -17,7 +17,7 @@ import {
 import { TodayButton } from "@/modules/calendar/components/header/today-button";
 import { DateNavigator } from "@/modules/calendar/components/header/date-navigator";
 
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 import { ButtonGroup } from "@repo/ui/button-group";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 import { Toggle } from "@repo/ui/toggle";

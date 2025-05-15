@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle } from 
 import { cn } from "@repo/ui/lib/utils";
 
 import { ReactNode } from "react";
-import { IEvent } from "@/modules/calendar/interfaces";
+import { IEvent } from "@/modules/calendar/types";
 import { dayCellVariants } from "@/modules/calendar/components/month-view/day-cell";
 import { EventBullet } from "@/modules/calendar/components/month-view/event-bullet";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
@@ -61,7 +61,7 @@ export function EventListDialog({
                         >
                             <EventBullet color={event.color} className="" />
                             <div className="flex-1">
-                                <p className="text-sm font-medium">{event.title}</p>
+                                <p className="text-sm font-medium">{event.name}</p>
                                 <p
                                     className={cn("text-xs", {
                                         "text-muted": badgeVariant === "colored",

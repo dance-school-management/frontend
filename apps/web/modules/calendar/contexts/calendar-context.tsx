@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 
-import type { IEvent, IUser } from "@/modules/calendar/interfaces";
+import type { IEvent, IUser } from "@/modules/calendar/types";
 import { TCalendarView } from "@/modules/calendar/types";
 
 interface ICalendarContext {

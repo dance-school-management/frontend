@@ -1,4 +1,4 @@
-import { IEvent } from "@/modules/calendar/interfaces";
+import { IEvent } from "@/modules/calendar/types";
 import { getEventBlockStyle } from "@/modules/calendar/helpers";
 import { areIntervalsOverlapping, parseISO } from "date-fns";
 import { EventBlock } from "@/modules/calendar/components/week-and-day-view/event-block";

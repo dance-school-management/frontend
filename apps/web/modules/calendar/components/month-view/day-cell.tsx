@@ -10,7 +10,7 @@ import { MonthEventBadge } from "@/modules/calendar/components/month-view/month-
 import { getMonthCellEvents } from "@/modules/calendar/helpers";
 import { staggerContainer, transition } from "@/modules/calendar/animations";
 
-import type { ICalendarCell, IEvent } from "@/modules/calendar/interfaces";
+import type { ICalendarCell, IEvent } from "@/modules/calendar/types";
 import { cn } from "@repo/ui/lib/utils";
 import { cva } from "class-variance-authority";
 import { EventListDialog } from "@/modules/calendar/components/dialogs/events-list-dialog";

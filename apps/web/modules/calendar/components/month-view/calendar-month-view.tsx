@@ -9,7 +9,7 @@ import {
     calculateMonthEventPositions,
 } from "@/modules/calendar/helpers";
 
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
     singleDayEvents: IEvent[];

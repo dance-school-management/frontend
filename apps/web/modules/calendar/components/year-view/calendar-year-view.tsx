@@ -4,7 +4,7 @@ import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 import { staggerContainer, transition } from "@/modules/calendar/animations";
 import { getCalendarCells } from "@/modules/calendar/helpers";
 import { cn } from "@repo/ui/lib/utils";
-import { IEvent } from "@/modules/calendar/interfaces";
+import { IEvent } from "@/modules/calendar/types";
 import { EventBullet } from "@/modules/calendar/components/month-view/event-bullet";
 import { EventListDialog } from "@/modules/calendar/components/dialogs/events-list-dialog";
 

@@ -11,7 +11,7 @@ import { DayViewMultiDayEventsRow } from "@/modules/calendar/components/week-and
 
 import { groupEvents } from "@/modules/calendar/helpers";
 
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 import { RenderGroupedEvents } from "@/modules/calendar/components/week-and-day-view/render-grouped-events";
 
 interface IProps {
@@ -132,7 +132,7 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
 
                   return (
                     <div key={event.id} className="space-y-1.5">
-                      <p className="line-clamp-2 text-sm font-semibold">{event.title}</p>
+                      <p className="line-clamp-2 text-sm font-semibold">{event.name}</p>
 
                       {user && (
                         <div className="flex items-center gap-1.5">
