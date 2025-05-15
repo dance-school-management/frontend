@@ -3,7 +3,7 @@ import { parseISO, startOfDay, startOfWeek, endOfWeek, addDays, differenceInDays
 
 import { MonthEventBadge } from "@/modules/calendar/components/month-view/month-event-badge";
 
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
   selectedDate: Date;

@@ -3,7 +3,7 @@ import { endOfDay, isSameDay, parseISO, startOfDay } from "date-fns";
 
 import type { VariantProps } from "class-variance-authority";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-import { IEvent } from "@/modules/calendar/interfaces";
+import { IEvent } from "@/modules/calendar/types";
 import { cn } from "@repo/ui/lib/utils";
 import { EventDetailsDialog } from "@/modules/calendar/components/dialogs/event-details-dialog";
 import { formatTime } from "@/modules/calendar/helpers";
@@ -105,7 +105,7 @@ export function MonthEventBadge({
                                     Day {eventCurrentDay} of {eventTotalDays} •{" "}
                                 </span>
                             )}
-                            {event.title}
+                            {event.name}
                         </p>
                     )}
                 </div>

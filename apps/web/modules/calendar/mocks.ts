@@ -1,4 +1,4 @@
-import type { IEvent, IUser } from "@/modules/calendar/interfaces";
+import type { IEvent, IUser } from "@/modules/calendar/types";
 import { COLORS } from "@/modules/calendar/constants";
 
 export const USERS_MOCK: IUser[] = [
@@ -133,10 +133,15 @@ const mockGenerator = (numberOfEvents: number): IEvent[] => {
     id: currentId++,
     startDate: new Date(now.getTime() - 30 * 60000).toISOString(),
     endDate: new Date(now.getTime() + 30 * 60000).toISOString(),
-    title: events[Math.floor(Math.random() * events.length)]!,
+    name: events[Math.floor(Math.random() * events.length)]!,
     color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     user: randomUser!,
+    danceCategory: "Salsa",
+    advancementLevel: "Beginner",
+    classroom: "Room 101",
+    price: 19.99,
+    currency: "PLN",
   };
 
   result.push(currentEvent);
@@ -167,10 +172,15 @@ const mockGenerator = (numberOfEvents: number): IEvent[] => {
       id: currentId++,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      title: events[Math.floor(Math.random() * events.length)]!,
+      name: events[Math.floor(Math.random() * events.length)]!,
       color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       user: USERS_MOCK[Math.floor(Math.random() * USERS_MOCK.length)]!,
+      danceCategory: "Salsa",
+      advancementLevel: "Beginner",
+      classroom: "Room 101",
+      price: 19.99,
+      currency: "PLN",
     });
   }
 

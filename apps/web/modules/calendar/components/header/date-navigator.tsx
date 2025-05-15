@@ -17,8 +17,7 @@ import {
   rangeText,
 } from "@/modules/calendar/helpers";
 
-import type { IEvent } from "@/modules/calendar/interfaces";
-import type { TCalendarView } from "@/modules/calendar/types";
+import type { TCalendarView, IEvent } from "@/modules/calendar/types";
 
 interface IProps {
   view: TCalendarView;

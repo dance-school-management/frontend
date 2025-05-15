@@ -7,7 +7,7 @@ import { EventDetailsDialog } from "@/modules/calendar/components/dialogs/event-
 import { cn } from "@repo/ui/lib/utils";
 
 import type { HTMLAttributes } from "react";
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 import type { VariantProps } from "class-variance-authority";
 import { formatTime } from "@/modules/calendar/helpers";
 
@@ -88,7 +88,7 @@ export function EventBlock({ event, className }: IProps) {
             </svg>
           )}
 
-          <p className="truncate font-semibold">{event.title}</p>
+          <p className="truncate font-semibold">{event.name}</p>
         </div>
 
         {durationInMinutes > 25 && (

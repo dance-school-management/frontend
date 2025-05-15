@@ -13,7 +13,7 @@ import { ScrollArea } from "@repo/ui/scroll-area";
 import { CalendarTimeline } from "@/modules/calendar/components/week-and-day-view/calendar-time-line";
 import { WeekViewMultiDayEventsRow } from "@/modules/calendar/components/week-and-day-view/week-view-multi-day-events-row";
 import { groupEvents } from "@/modules/calendar/helpers";
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 import { RenderGroupedEvents } from "@/modules/calendar/components/week-and-day-view/render-grouped-events";
 
 interface IProps {

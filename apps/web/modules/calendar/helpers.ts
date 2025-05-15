@@ -27,7 +27,7 @@ import {
 } from "date-fns";
 
 import { TCalendarView, TEventColor } from "@/modules/calendar/types";
-import type { ICalendarCell, IEvent } from "@/modules/calendar/interfaces";
+import type { ICalendarCell, IEvent } from "@/modules/calendar/types";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
 

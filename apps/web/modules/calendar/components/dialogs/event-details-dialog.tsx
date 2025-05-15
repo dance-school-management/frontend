@@ -13,7 +13,7 @@ import {
 } from "@repo/ui/dialog";
 import { ScrollArea } from "@repo/ui/scroll-area";
 
-import type { IEvent } from "@/modules/calendar/interfaces";
+import type { IEvent } from "@/modules/calendar/types";
 import { ReactNode } from "react";
 import { formatTime } from "../../helpers";
 
@@ -31,7 +31,7 @@ export function EventDetailsDialog({ event, children }: IProps) {
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{event.title}</DialogTitle>
+                    <DialogTitle>{event.name}</DialogTitle>
                 </DialogHeader>
 
                 <ScrollArea className="max-h-[80vh]">

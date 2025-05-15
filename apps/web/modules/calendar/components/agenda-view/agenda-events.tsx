@@ -41,10 +41,10 @@ export const AgendaEvents = () => {
                                                 <Avatar>
                                                     <AvatarImage src="" alt="@shadcn" />
                                                     <AvatarFallback className={getBgColor(event.color)}>
-                                                        {getFirstLetters(event.title)}
+                                                        {getFirstLetters(event.name)}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <p>{event.title}</p>
+                                                <p>{event.name}</p>
                                             </div>
                                             <div className="w-40 sm:w-auto flex items-center gap-4">
                                                 <p className="flex flex-wrap">
