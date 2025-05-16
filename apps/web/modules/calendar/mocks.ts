@@ -1,26 +1,22 @@
-import type { IEvent, IUser } from "@/modules/calendar/types";
+import type { IEvent, IInstructor } from "@/modules/calendar/types";
 import { COLORS } from "@/modules/calendar/constants";
 
-export const USERS_MOCK: IUser[] = [
+export const USERS_MOCK: IInstructor[] = [
   {
-    id: "f3b035ac-49f7-4e92-a715-35680bf63175",
+    url: "f3b035ac-49f7-4e92-a715-35680bf63175",
     name: "Michael Doe",
-    picturePath: null,
   },
   {
-    id: "3e36ea6e-78f3-40dd-ab8c-a6c737c3c422",
+    url: "3e36ea6e-78f3-40dd-ab8c-a6c737c3c422",
     name: "Alice Johnson",
-    picturePath: null,
   },
   {
-    id: "a7aff6bd-a50a-4d6a-ab57-76f76bb27cf5",
+    url: "a7aff6bd-a50a-4d6a-ab57-76f76bb27cf5",
     name: "Robert Smith",
-    picturePath: null,
   },
   {
-    id: "dd503cf9-6c38-43cf-94cc-0d4032e2f77a",
+    url: "dd503cf9-6c38-43cf-94cc-0d4032e2f77a",
     name: "Emily Davis",
-    picturePath: null,
   },
 ];
 
@@ -120,6 +116,7 @@ const mockGenerator = (numberOfEvents: number): IEvent[] => {
   let currentId = 1;
 
   const randomUser = USERS_MOCK[Math.floor(Math.random() * USERS_MOCK.length)];
+  const randomUser2 = USERS_MOCK[Math.floor(Math.random() * USERS_MOCK.length)];
 
   // Date range: 30 days before and after now
   const now = new Date();
@@ -136,7 +133,7 @@ const mockGenerator = (numberOfEvents: number): IEvent[] => {
     name: events[Math.floor(Math.random() * events.length)]!,
     color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    user: randomUser!,
+    instructors: [randomUser!, randomUser2!],
     danceCategory: "Salsa",
     advancementLevel: "Beginner",
     classroom: "Room 101",
@@ -175,7 +172,7 @@ const mockGenerator = (numberOfEvents: number): IEvent[] => {
       name: events[Math.floor(Math.random() * events.length)]!,
       color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      user: USERS_MOCK[Math.floor(Math.random() * USERS_MOCK.length)]!,
+      instructors: [USERS_MOCK[Math.floor(Math.random() * USERS_MOCK.length)]!],
       danceCategory: "Salsa",
       advancementLevel: "Beginner",
       classroom: "Room 101",
