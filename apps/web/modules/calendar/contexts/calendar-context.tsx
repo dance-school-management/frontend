@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 
-import type { IEvent, IUser } from "@/modules/calendar/types";
+import type { IEvent } from "@/modules/calendar/types";
 import { TCalendarView } from "@/modules/calendar/types";
 
 interface ICalendarContext {
@@ -13,7 +13,6 @@ interface ICalendarContext {
     toggleAgendaMode: (isAgenda?: boolean) => void;
     setSelectedDate: (date: Date | undefined) => void;
     badgeVariant: "dot" | "colored";
-    users: IUser[];
     events: IEvent[];
 }
 
@@ -21,13 +20,11 @@ const CalendarContext = createContext({} as ICalendarContext);
 
 export function CalendarProvider({
     children,
-    users,
     events,
     badge = "colored",
     view = "day",
 }: {
     children: React.ReactNode;
-    users: IUser[];
     events: IEvent[];
     view?: TCalendarView;
     badge?: "dot" | "colored";
@@ -57,7 +54,6 @@ export function CalendarProvider({
         selectedDate,
         setSelectedDate: handleSelectDate,
         badgeVariant: badge,
-        users,
         events,
         view: currentView,
         setView,

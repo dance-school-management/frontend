@@ -1,10 +1,9 @@
 export type TCalendarView = "day" | "week" | "month" | "year";
 export type TEventColor = "blue" | "green" | "red" | "yellow" | "purple" | "orange";
 
-export interface IUser {
-  id: string;
+export interface IInstructor {
+  url: string;
   name: string;
-  picturePath: string | null;
 }
 
 export interface IEvent {
@@ -20,7 +19,7 @@ export interface IEvent {
   price: number;
   currency: string;
   courseId?: number;
-  user: IUser;
+  instructors: IInstructor[];
 }
 
 export interface ICalendarCell {

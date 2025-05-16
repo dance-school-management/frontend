@@ -92,9 +92,14 @@ export function EventBlock({ event, className }: IProps) {
         </div>
 
         {durationInMinutes > 25 && (
-          <p>
-            {formatTime(start)} - {formatTime(end)}
-          </p>
+          <>
+            <p>
+              {event.classroom}
+            </p>
+            <p>
+              {formatTime(start)} - {formatTime(end)}
+            </p>
+          </>
         )}
       </div>
     </EventDetailsDialog>

@@ -1,19 +1,20 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { Calendar, Clock, Text, User } from "lucide-react";
+import { Building, Calendar, ChevronsUp, SquareChartGantt, Text, User } from "lucide-react";
 
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogClose,
 } from "@repo/ui/dialog";
 import { ScrollArea } from "@repo/ui/scroll-area";
 
 import type { IEvent } from "@/modules/calendar/types";
+import { Button } from "@repo/ui/components/button";
 import { ReactNode } from "react";
 import { formatTime } from "../../helpers";
 
@@ -24,7 +25,8 @@ interface IProps {
 
 export function EventDetailsDialog({ event, children }: IProps) {
     const startDate = parseISO(event.startDate);
-    const endDate = parseISO(event.endDate);
+    const names = event.instructors.map((instructor) => instructor.name).join(", ");
+    const formattedDate = `${format(startDate, "EEEE dd MMMM")}, ${formatTime(parseISO(event.startDate))} - ${formatTime(parseISO(event.endDate))}`;
 
     return (
         <Dialog>
@@ -35,58 +37,61 @@ export function EventDetailsDialog({ event, children }: IProps) {
                 </DialogHeader>
 
                 <ScrollArea className="max-h-[80vh]">
-                    <div className="space-y-4 px-4 pt-4">
+                    <div className="space-y-3 px-4">
                         <div className="flex items-start gap-2">
                             <User className="mt-1 size-4 shrink-0 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm font-medium">Responsible</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {event.user.name}
-                                </p>
-                            </div>
+                            <Section title="Instructor(s)" text={names} />
                         </div>
 
                         <div className="flex items-start gap-2">
                             <Calendar className="mt-1 size-4 shrink-0 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm font-medium">Start Date</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {format(startDate, "EEEE dd MMMM")}
-                                    <span className="mx-1">
-                                        at
-                                    </span>
-                                    {formatTime(parseISO(event.startDate))}
-                                </p>
-                            </div>
+                            <Section title="Date & Time" text={formattedDate} />
                         </div>
 
                         <div className="flex items-start gap-2">
-                            <Clock className="mt-1 size-4 shrink-0 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm font-medium">End Date</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {format(endDate, "EEEE dd MMMM")}
-                                    <span className="mx-1">
-                                        at
-                                    </span>
-                                    {formatTime(parseISO(event.endDate))}
-                                </p>
-                            </div>
+                            <Building className="mt-1 size-4 shrink-0 text-muted-foreground" />
+                            <Section title="Location" text={event.classroom} />
+                        </div>
+
+                        <div className="flex items-start gap-2">
+                            <SquareChartGantt className="mt-1 size-4 shrink-0 text-muted-foreground" />
+                            <Section title="Dance Category" text={event.danceCategory} />
+                        </div>
+
+                        <div className="flex items-start gap-2">
+                            <ChevronsUp className="mt-1 size-4 shrink-0 text-muted-foreground" />
+                            <Section title="Advancement Level" text={event.advancementLevel} />
                         </div>
 
                         <div className="flex items-start gap-2">
                             <Text className="mt-1 size-4 shrink-0 text-muted-foreground" />
-                            <div>
-                                <p className="text-sm font-medium">Description</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {event.description}
-                                </p>
-                            </div>
+                            <Section title="Description" text={event.description} />
+                        </div>
+
+                        <div className="w-full flex md:justify-end">
+                            <Button className="w-full md:w-50 mt-4 bg-green-500 hover:bg-green-600">
+                                Buy ({event.price} {event.currency})
+                            </Button>
                         </div>
                     </div>
                 </ScrollArea>
                 <DialogClose />
             </DialogContent>
         </Dialog>
+    );
+}
+
+function Section({
+    title,
+    text,
+}: {
+    title: string;
+    text: string;
+}) {
+    return (
+        <div>
+            <p className="text-sm font-medium">{title}</p>
+            <p className="text-sm text-muted-foreground">{text}</p>
+        </div>
     );
 }
