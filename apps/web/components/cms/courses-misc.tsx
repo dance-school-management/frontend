@@ -1,9 +1,10 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, TrashIcon, CloudUploadIcon, SquarePenIcon } from "lucide-react";
 import Link from "next/link";
 
 import { createCourse } from "@/lib/api/course";
+import { Course } from "@/lib/model/product";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
@@ -19,11 +20,34 @@ import {
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
 
+export function CourseActions(course: Course) {
+  return (
+    <div className="flex items-center space-x-2">
+      {/* TODO: Think how to handle this. Sheet? */}
+      <Button variant="outline" className="w-fit cursor-pointer">
+        <SquarePenIcon />
+        Edit details
+      </Button>
+      <Button variant="destructive" className="w-fit cursor-pointer">
+        <TrashIcon />
+        Delete
+      </Button>
+      {course.courseStatus === "HIDDEN" && (
+        <Button variant="default" className="w-fit cursor-pointer">
+          <CloudUploadIcon />
+          Publish
+        </Button>
+      )}
+
+    </div>
+  );
+}
+
 export function NewCourseDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="text-foreground w-fit text-left cursor-pointer">
+        <Button variant="outline" className="text-foreground w-fit cursor-pointer">
           <PlusIcon /> New Course
         </Button>
       </DialogTrigger>
