@@ -1,45 +1,22 @@
 import { CoursePreview, NewCourseDialog } from "@/components/cms/courses-misc";
-
-async function getCourses() {
-  // TODO: replace with actual API call
-  return [
-    {
-      id: 1,
-      name: "Course name",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      status: "hidden",
-    },
-    {
-      id: 2,
-      name: "Course name",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      status: "published",
-    },
-    {
-      id: 3,
-      name: "Course name",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      status: "published",
-    },
-    {
-      id: 4,
-      name: "Course name",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      status: "published",
-    },
-  ];
-}
+// import { fetchCourses } from "@/lib/api/course";
+import { fetchCourses } from "./mocks";
 
 export default async function Page() {
-  const courses = await getCourses();
+  const courses = await fetchCourses();
 
-  const hiddenCourses = courses.filter((course) => course.status === "hidden");
-  const publishedCourses = courses.filter(
-    (course) => course.status === "published"
+  if (courses.error) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <h1 className="text-4xl font-bold">Error: {courses.error.message}</h1>
+      </div>
+    );
+  }
+  const { data } = courses;
+
+  const hiddenCourses = data.filter((course) => course.courseStatus === "HIDDEN");
+  const publishedCourses = data.filter(
+    (course) => course.courseStatus !== "HIDDEN"
   );
 
   return (
