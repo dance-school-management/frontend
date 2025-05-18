@@ -1,5 +1,9 @@
 "use client";
 
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
+
+import { createCourse } from "@/lib/api/course";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
@@ -14,52 +18,6 @@ import {
 } from "@repo/ui/dialog";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
-import { api } from "@/lib/api/axios";
-import { PlusIcon } from "lucide-react";
-import { toast } from "sonner";
-import axios from "axios";
-import Link from "next/link";
-import { FormEvent } from "react";
-import { set } from "date-fns";
-
-async function createCourse(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const data = Object.fromEntries(formData);
-
-  const reqData = {
-    name: data.name,
-    isConfirmation: data.confirmation === "on",
-  };
-
-  // TODO: uncomment and test this code 
-  toast.info(JSON.stringify(reqData));
-  // try {
-  //   const res = await api.post("/cms/course/new", reqData);
-  //   if (res.status !== 201) {
-  //     toast.error("Failed to create course");
-  //   }
-
-  //   const { id } = res.data;
-  //   toast.success("Course created successfully! Redirecting...");
-  //   setTimeout(() => {
-  //     window.location.href = `/admin/courses/${id}`;
-  //   }, 2000);
-  // } catch (error) {
-  //   if (axios.isAxiosError(error)) {
-  //     if (error.response && error.response.data) {
-  //       const { status, data } = error.response.data;
-  //       if (status === 400 || status === 409) {
-  //         toast.error(data.message);
-  //       } else {
-  //         toast.error("An unexpected error occurred");
-  //       }
-  //     } else {
-  //       toast.error("An unexpected error occurred");
-  //     }
-  //   }
-  // }
-}
 
 export function NewCourseDialog() {
   return (
@@ -109,7 +67,6 @@ export function NewCourseDialog() {
     </Dialog>
   );
 }
-
 
 type CoursePreviewProps = {
   id: number;
