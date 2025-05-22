@@ -58,9 +58,6 @@ export function NavProfile({ user }: { user: User | null; }) {
     </SidebarMenu>
   );
 
-  const name = user.name + " " + user.surname;
-  const fallback = user.name.charAt(0) + user.surname.charAt(0);
-
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -71,11 +68,11 @@ export function NavProfile({ user }: { user: User | null; }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.image || ""} alt={name} />
-                <AvatarFallback className="rounded-lg">{fallback}</AvatarFallback>
+                <AvatarImage src={user.image || ""} alt={user.name} />
+                <AvatarFallback className="rounded-lg">{fallbackAvatar(user.name)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{name}</span>
+                <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -110,4 +107,9 @@ export function NavProfile({ user }: { user: User | null; }) {
       </SidebarMenuItem>
     </SidebarMenu>
   );
+}
+
+function fallbackAvatar(name: string) {
+  const firstLetters = name.split(" ").map((n) => n[0]);
+  return firstLetters.join("").substring(0, 2).toUpperCase();
 }
