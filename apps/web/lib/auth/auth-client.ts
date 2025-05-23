@@ -15,6 +15,12 @@ export const authClient = createAuthClient({
         input: true,
         required: true,
       },
+      role: {
+        type: "string",
+        required: true,
+        defaultValue: "STUDENT",
+        input: false,
+      },
     }
   })],
 });
