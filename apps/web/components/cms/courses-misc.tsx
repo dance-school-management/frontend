@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusIcon, TrashIcon, CloudUploadIcon, SquarePenIcon } from "lucide-react";
+import { PlusIcon, TrashIcon, CloudUploadIcon } from "lucide-react";
 import Link from "next/link";
 
 import { createCourse } from "@/lib/api/course";
@@ -17,29 +17,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
+import { Card, CardContent, CardHeader } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
 
 export function CourseActions(course: Course) {
   return (
-    <div className="flex items-center space-x-2">
-      {/* TODO: Think how to handle this. Sheet? */}
-      <Button variant="outline" className="w-fit cursor-pointer">
-        <SquarePenIcon />
-        Edit details
-      </Button>
-      <Button variant="destructive" className="w-fit cursor-pointer">
-        <TrashIcon />
-        Delete
-      </Button>
-      {course.courseStatus === "HIDDEN" && (
-        <Button variant="default" className="w-fit cursor-pointer">
-          <CloudUploadIcon />
-          Publish
-        </Button>
-      )}
-
-    </div>
+    <Card className="gap-2">
+      <CardHeader>
+        <h3 className="text-lg font-semibold">Actions</h3>
+        <p className="text-sm text-muted-foreground">
+          You can perform additional actions here.
+        </p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-x-2">
+          <Button variant="destructive" className="w-fit cursor-pointer">
+            <TrashIcon />
+            Delete
+          </Button>
+          {course.courseStatus === "HIDDEN" && (
+            <Button variant="default" className="w-fit cursor-pointer">
+              <CloudUploadIcon />
+              Publish
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

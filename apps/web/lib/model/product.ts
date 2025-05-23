@@ -27,15 +27,12 @@ export type AdvancementLevel = {
 export type Class = {
   id: number;
   classTemplateId: number;
-  classTemplate: ClassTemplate;
   groupNumber: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   peopleLimit: number;
   classRoomId: number;
-  classRoom: ClassRoom;
   classStatus: ClassStatus;
-  // instructor: InstructorsOnClasses[];
 };
 
 export type ClassRoom = {

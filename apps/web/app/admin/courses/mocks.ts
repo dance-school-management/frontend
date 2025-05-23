@@ -51,7 +51,18 @@ export const mockCourses: Course[] = [
         advancementLevelId: 1,
         classType: "GROUP_CLASS",
         scheduleTileColor: "#FF5733",
-        class: [],
+        class: [
+          {
+            id: 1,
+            classTemplateId: 3,
+            groupNumber: 3,
+            startDate: "2025-05-10T14:00:00.000Z",
+            endDate: "2025-05-10T16:00:00.000Z",
+            peopleLimit: 25,
+            classRoomId: 1,
+            classStatus: "HIDDEN"
+          }
+        ],
       }
     ],
   },
