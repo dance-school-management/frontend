@@ -1,7 +1,9 @@
 import { use } from "react";
-// import { fetchCourse } from "@/lib/api/course";
 import { fetchCourse } from "../mocks";
 import { CourseActions } from "@/components/cms/courses-misc";
+import { CourseDetailsForm } from "@/components/cms/course-details-form";
+import { ClassTemplateForm } from "@/components/cms/class-template-form";
+import { ClassesList } from "@/components/cms/classes-list";
 
 export default function Page({ params }: { params: Promise<{ id: string; }>; }) {
   const { id } = use(params);
@@ -26,30 +28,26 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
     );
   }
 
-  const {
-    name,
-    courseStatus,
-    customPrice,
-    classTemplate,
-    description,
-    danceCategory,
-    advancementLevel,
-  } = result.data;
+  const { name, classTemplate } = result.data;
 
   return (
     <div className="flex h-full p-4 flex-col space-y-4">
       <h1 className="text-4xl font-bold">{name} details</h1>
-      <div>
-        <h2 className="text-2xl font-semibold">Classes:</h2>
-        {/* TODO: Show classes (probably using Collapsible?) */}
-        <p>TBA</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <CourseDetailsForm course={result.data} />
+        {classTemplate[0] && (
+          <ClassTemplateForm
+            template={classTemplate[0]}
+            courseId={courseId}
+          />
+        )}
+        {classTemplate[0]?.class && (
+          <ClassesList
+            classes={classTemplate[0].class}
+          />
+        )}
+        <CourseActions {...result.data} />
       </div>
-      <p>Status: {courseStatus}</p>
-      <p>Price: {customPrice || "Empty"} {classTemplate[0]?.currency}</p>
-      <p>Description: {description}</p>
-      <p>Dance category: {danceCategory?.name || "Empty"}</p>
-      <p>Advancement level: {advancementLevel?.name || "Empty"}</p>
-      <CourseActions {...result.data} />
-    </div >
+    </div>
   );
 }
