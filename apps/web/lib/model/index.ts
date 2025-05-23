@@ -4,17 +4,11 @@ type Class = {
   date: string;
   start_time: string;
   end_time: string;
-  class_type: string;
   trainer: string;
   dance_category: string;
-  vacancies: number;
   advancement_level: string;
-  participants_limit: number;
-  price: number;
   description: string;
   classroom: string;
-  class_status: string;
-  group_number: number;
 };
 
 type Ticket = {
