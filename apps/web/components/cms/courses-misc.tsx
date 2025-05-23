@@ -65,7 +65,7 @@ export function NewCourseDialog() {
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <div className="tems-center space-y-8">
+            <div className="space-y-8">
               <div>
                 <Label htmlFor="name">
                   Name*

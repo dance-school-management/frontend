@@ -90,5 +90,5 @@ function EmptyState() {
 }
 
 function formatDates(startDate: string, endDate: string) {
-  return format(startDate, "yyyy-MM-dd, HH:mm") + " - " + format(endDate, "HH:mm");
+  return format(new Date(startDate), "yyyy-MM-dd, HH:mm") + " - " + format(new Date(endDate), "HH:mm");
 }
