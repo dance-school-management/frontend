@@ -1,5 +1,8 @@
 import { use } from "react";
-import { fetchCourse } from "../mocks";
+
+import { fetchCourse, fetchAdditionalProductData } from "@/mocks/product";
+// import { fetchCourse, fetchAdditionalProductData } from "@/lib/api/product";
+
 import { CourseActions } from "@/components/cms/courses-misc";
 import { CourseDetailsForm } from "@/components/cms/course-details-form";
 import { ClassTemplateForm } from "@/components/cms/class-template-form";
@@ -18,6 +21,16 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
   }
 
   const result = use(fetchCourse(courseId));
+  const additionalData = use(fetchAdditionalProductData());
+
+  if (additionalData.error) {
+    return (
+      <div className="flex items-center justify-center h-full flex-col">
+        <h1 className="text-4xl font-bold">Problem occurred while fetching additional product data</h1>
+        <p className="text-xl">{additionalData.error.message}</p>
+      </div>
+    );
+  }
 
   if (result.error) {
     return (
@@ -28,6 +41,7 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
     );
   }
 
+  const { danceCategories, advancementLevels } = additionalData.data;
   const { name, classTemplate } = result.data;
 
   return (
@@ -39,6 +53,8 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
           <ClassTemplateForm
             template={classTemplate[0]}
             courseId={courseId}
+            danceCategories={danceCategories}
+            advancementLevels={advancementLevels}
           />
         )}
         {classTemplate[0]?.class && (

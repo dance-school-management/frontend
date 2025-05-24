@@ -1,6 +1,6 @@
 import { CoursePreview, NewCourseDialog } from "@/components/cms/courses-misc";
-// import { fetchCourses } from "@/lib/api/course";
-import { fetchCourses } from "./mocks";
+// import { fetchCourses } from "@/lib/api/product";
+import { fetchCourses } from "@/mocks/product";
 
 export default async function Page() {
   const courses = await fetchCourses();
