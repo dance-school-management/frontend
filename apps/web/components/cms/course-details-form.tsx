@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@repo/ui/select";
 import { MoneyInput } from "@/components/forms/money-input";
+import { CurrencySelect } from "@/components/forms/currency-select";
 import { Course } from "@/lib/model/product";
 
 const courseFormSchema = z.object({
@@ -40,6 +41,7 @@ const courseFormSchema = z.object({
   description: z.string(),
   courseStatus: z.enum(["HIDDEN", "SALE", "ONGOING", "FINISHED"]),
   customPrice: z.number().optional(),
+  currency: z.string().min(1, "Currency is required"),
 });
 
 type CourseFormValues = z.infer<typeof courseFormSchema>;
@@ -57,6 +59,7 @@ export function CourseDetailsForm({ course, onSuccess }: CourseDetailsFormProps)
       description: course.description,
       courseStatus: course.courseStatus,
       customPrice: course.customPrice ? Number(course.customPrice) : undefined,
+      currency: course.currency,
     },
   });
 
@@ -65,12 +68,14 @@ export function CourseDetailsForm({ course, onSuccess }: CourseDetailsFormProps)
       await axios.put(`/api/courses/${course.id}`, data);
     } catch {
       toast.error("Failed to update course");
+      return;
     }
     toast.success("Course updated successfully");
     onSuccess?.();
   };
 
   return (
+    // TODO: Add a way to choose dance category and advancement level
     <Card className="gap-2">
       <CardHeader>
         <CardTitle>Course Details</CardTitle>
@@ -128,16 +133,16 @@ export function CourseDetailsForm({ course, onSuccess }: CourseDetailsFormProps)
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
+            <CurrencySelect
+              form={form}
+              name="currency"
+              label="Currency"
+            />
+            <MoneyInput
+              form={form}
               name="customPrice"
-              render={() => (
-                <MoneyInput
-                  form={form}
-                  name="customPrice"
-                  label="Course Price"
-                />
-              )}
+              label="Course Price"
+              currency={form.watch("currency")}
             />
             <div className="w-full">
               <Button type="submit" className="cursor-pointer">

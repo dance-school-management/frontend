@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 
 import {
   FormControl,
@@ -10,8 +10,8 @@ import {
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 
-const moneyFormatter = new Intl.NumberFormat("en-US", {
-  currency: "PLN",
+const moneyFormatter = (currency: string) => new Intl.NumberFormat("en-US", {
+  currency: currency,
   currencyDisplay: "symbol",
   currencySign: "standard",
   style: "currency",
@@ -19,8 +19,8 @@ const moneyFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
-function formatValue(value: number): string {
-  return moneyFormatter.format(value);
+function formatValue(value: number, currency: string): string {
+  return moneyFormatter(currency).format(value);
 }
 
 function parseInput(input: string): number {
@@ -28,24 +28,25 @@ function parseInput(input: string): number {
   return Number(digits) / 100;
 }
 
-type TextInputProps = {
-  form: UseFormReturn<any>;
-  name: string;
+type TextInputProps<T extends FieldValues> = {
+  form: UseFormReturn<T>;
+  name: Path<T>;
   label: string;
   className?: string;
+  currency?: string;
 };
 
-export function MoneyInput({ form, name, label, className }: TextInputProps) {
+export function MoneyInput<T extends FieldValues>({ form, name, label, className, currency = "PLN" }: TextInputProps<T>) {
   const initialNumber = form.getValues()[name] || 0;
-  const [formattedValue, setFormattedValue] = useState(formatValue(initialNumber));
+  const [formattedValue, setFormattedValue] = useState(formatValue(initialNumber, currency));
 
   useEffect(() => {
     const newValue = form.getValues()[name] || 0;
-    setFormattedValue(formatValue(newValue));
-  }, [form, name]);
+    setFormattedValue(formatValue(newValue, currency));
+  }, [form, name, currency]);
 
   const handleChange = (realChangeFn: (value: number) => void, input: string) => {
-    setFormattedValue(formatValue(parseInput(input)));
+    setFormattedValue(formatValue(parseInput(input), currency));
     realChangeFn(parseInput(input));
   };
 

@@ -3,7 +3,7 @@
 import { PlusIcon, TrashIcon, CloudUploadIcon } from "lucide-react";
 import Link from "next/link";
 
-import { createCourse } from "@/lib/api/course";
+import { createCourse } from "@/lib/api/product";
 import { Course } from "@/lib/model/product";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";

@@ -33,7 +33,8 @@ import {
   SelectValue,
 } from "@repo/ui/select";
 import { MoneyInput } from "@/components/forms/money-input";
-import { ClassTemplate } from "@/lib/model/product";
+import { CurrencySelect } from "@/components/forms/currency-select";
+import { AdvancementLevel, ClassTemplate, DanceCategory } from "@/lib/model/product";
 
 const classTemplateFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -42,6 +43,8 @@ const classTemplateFormSchema = z.object({
   currency: z.string().min(1, "Currency is required"),
   classType: z.enum(["GROUP_CLASS", "PRIVATE_CLASS", "THEME_PARTY"]),
   scheduleTileColor: z.string().optional(),
+  danceCategoryId: z.number().min(1, "Dance category is required"),
+  advancementLevelId: z.number().min(1, "Advancement level is required"),
 });
 
 type ClassTemplateFormValues = z.infer<typeof classTemplateFormSchema>;
@@ -50,9 +53,11 @@ interface ClassTemplateFormProps {
   template: ClassTemplate;
   courseId: number;
   onSuccess?: () => void;
+  danceCategories: DanceCategory[];
+  advancementLevels: AdvancementLevel[];
 }
 
-export function ClassTemplateForm({ template, courseId, onSuccess }: ClassTemplateFormProps) {
+export function ClassTemplateForm({ template, courseId, onSuccess, danceCategories, advancementLevels }: ClassTemplateFormProps) {
   const form = useForm<ClassTemplateFormValues>({
     resolver: zodResolver(classTemplateFormSchema),
     defaultValues: {
@@ -61,11 +66,14 @@ export function ClassTemplateForm({ template, courseId, onSuccess }: ClassTempla
       price: Number(template.price),
       currency: template.currency,
       classType: template.classType,
-      scheduleTileColor: template.scheduleTileColor,
+      scheduleTileColor: "blue", //template.scheduleTileColor,
+      danceCategoryId: template.danceCategoryId,
+      advancementLevelId: template.advancementLevelId,
     },
   });
 
   const onSubmit = async (data: ClassTemplateFormValues) => {
+    console.log(data);
     try {
       await axios.put(`/api/courses/${courseId}/template`, data);
     } catch {
@@ -133,53 +141,66 @@ export function ClassTemplateForm({ template, courseId, onSuccess }: ClassTempla
                 </FormItem>
               )}
             />
+            <CurrencySelect
+              form={form}
+              name="currency"
+              label="Currency"
+            />
+            <MoneyInput
+              form={form}
+              name="price"
+              label="Price"
+              currency={form.watch("currency")}
+            />
+
             <FormField
               control={form.control}
-              name="price"
-              render={() => (
-                <MoneyInput
-                  form={form}
-                  name="price"
-                  label="Price"
-                />
-              )}
-            />
-            {/* TODO: Decide what to do with inputs below */}
-            {/* <FormField
-              control={form.control}
-              name="currency"
+              name="danceCategoryId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormLabel>Dance Category</FormLabel>
+                  <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={String(field.value)}>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select currency" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select dance category" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="USD">USD</SelectItem>
-                      <SelectItem value="EUR">EUR</SelectItem>
-                      <SelectItem value="PLN">PLN</SelectItem>
+                      {danceCategories.map((category) => (
+                        <SelectItem key={category.id} value={String(category.id)}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
-            {/* <FormField
+            />
+            <FormField
               control={form.control}
-              name="scheduleTileColor"
+              name="advancementLevelId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Schedule Tile Color</FormLabel>
-                  <FormControl>
-                    <Input type="color" {...field} />
-                  </FormControl>
+                  <FormLabel>Advancement Level</FormLabel>
+                  <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={String(field.value)}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select advancement level" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {advancementLevels.map((level) => (
+                        <SelectItem key={level.id} value={String(level.id)}>
+                          {level.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
             <div className="w-full">
               <Button type="submit" className="cursor-pointer">
                 <SaveIcon />
