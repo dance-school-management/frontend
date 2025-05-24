@@ -2,7 +2,7 @@ import axios from "axios";
 import { FormEvent } from "react";
 import { toast } from "sonner";
 
-import { Course } from "@/lib/model/product";
+import { Course, AdditionalProductData } from "@/lib/model/product";
 import { api, ApiResult, fetcher } from "./axios";
 
 export async function createCourse(event: FormEvent<HTMLFormElement>) {
@@ -52,4 +52,8 @@ export async function fetchCourse(
 
 export async function fetchCourses(): Promise<ApiResult<Course[]>> {
   return await fetcher<Course[]>("/product/cms/course");
+}
+
+export async function fetchAdditionalProductData(): Promise<ApiResult<AdditionalProductData>> {
+  return await fetcher<AdditionalProductData>("/product/cms/aggregations/class-template-creation-data");
 }

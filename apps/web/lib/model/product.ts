@@ -7,6 +7,7 @@ export type Course = {
   advancementLevelId?: number;
   advancementLevel?: AdvancementLevel;
   courseStatus: CourseStatus;
+  currency: string;
   customPrice?: number;
   classTemplate: ClassTemplate[];
 };
@@ -33,6 +34,7 @@ export type Class = {
   peopleLimit: number;
   classRoomId: number;
   classStatus: ClassStatus;
+  instructorIds: string[];
 };
 
 export type ClassRoom = {
@@ -40,7 +42,6 @@ export type ClassRoom = {
   name: string;
   peopleLimit: number;
   description: string;
-  class: Class[];
 };
 
 export type ClassTemplate = {
@@ -77,3 +78,9 @@ export type CourseStatus =
   | 'SALE'
   | 'ONGOING'
   | 'FINISHED';
+
+export interface AdditionalProductData {
+  danceCategories: DanceCategory[];
+  advancementLevels: AdvancementLevel[];
+  classRooms: ClassRoom[];
+}

@@ -7,7 +7,8 @@
       "@/lib/*": ["./lib/*"],
       "@/*": ["./app/*"],
       "@repo/ui/*": ["../../packages/ui/src/*"],
-      "@/modules/*": ["./modules/*"]
+      "@/modules/*": ["./modules/*"],
+      "@/mocks/*": ["./mocks/*"]
     },
     "plugins": [
       {
