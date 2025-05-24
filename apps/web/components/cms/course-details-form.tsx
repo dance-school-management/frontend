@@ -32,8 +32,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
-import { MoneyInput } from "@/components/forms/money-input";
-import { CurrencySelect } from "@/components/forms/currency-select";
+import { MoneyInput } from "@/components/forms/input";
+import { CurrencySelect } from "@/components/forms/select";
 import { Course } from "@/lib/model/product";
 
 const courseFormSchema = z.object({

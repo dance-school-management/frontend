@@ -1,4 +1,4 @@
-import { CoursePreview, NewCourseDialog } from "@/components/cms/courses-misc";
+import { CoursePreview, NewCourseDialog } from "@/components/cms/misc";
 // import { fetchCourses } from "@/lib/api/product";
 import { fetchCourses } from "@/mocks/product";
 

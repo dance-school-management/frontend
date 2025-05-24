@@ -29,7 +29,22 @@ export async function fetchCourses(): Promise<ApiResult<Course[]>> {
   return { data: mockCourses };
 }
 
+export async function fetchClassTemplates(): Promise<ApiResult<ClassTemplate[]>> {
+  return { data: mockClassTemplates };
+}
 
+export async function fetchClassTemplate(id: number): Promise<ApiResult<ClassTemplate>> {
+  const classTemplate = mockClassTemplates.find(c => c.id === id);
+  if (!classTemplate) {
+    return {
+      error: {
+        status: 404,
+        message: `Class template not found`
+      }
+    };
+  }
+  return { data: classTemplate };
+}
 
 export async function fetchAdditionalProductData(): Promise<ApiResult<AdditionalProductData>> {
   return {
