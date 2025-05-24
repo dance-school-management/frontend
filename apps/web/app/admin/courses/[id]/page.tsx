@@ -2,10 +2,11 @@ import { use } from "react";
 
 import { fetchCourse, fetchAdditionalProductData } from "@/mocks/product";
 // import { fetchCourse, fetchAdditionalProductData } from "@/lib/api/product";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@repo/ui/card";
 
-import { CourseActions } from "@/components/cms/courses-misc";
+import { CourseActions } from "@/components/cms/misc";
 import { CourseDetailsForm } from "@/components/cms/course-details-form";
-import { ClassTemplateForm } from "@/components/cms/class-template-form";
+import { CourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
 
 export default function Page({ params }: { params: Promise<{ id: string; }>; }) {
@@ -50,12 +51,20 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CourseDetailsForm course={result.data} />
         {classTemplate[0] && (
-          <ClassTemplateForm
-            template={classTemplate[0]}
-            courseId={courseId}
-            danceCategories={danceCategories}
-            advancementLevels={advancementLevels}
-          />
+          <Card className="gap-2">
+            <CardHeader>
+              <CardTitle>Class Template</CardTitle>
+              <CardDescription>Edit the class template information</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CourseClassTemplateForm
+                template={classTemplate[0]}
+                courseId={courseId}
+                danceCategories={danceCategories}
+                advancementLevels={advancementLevels}
+              />
+            </CardContent>
+          </Card>
         )}
         {classTemplate[0]?.class && (
           <ClassesList
@@ -66,4 +75,4 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
       </div>
     </div>
   );
-}
+};
