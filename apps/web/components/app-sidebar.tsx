@@ -8,11 +8,12 @@ import {
   Info,
   LifeBuoy,
   Newspaper,
+  Notebook,
   NotebookText,
   PieChart,
   ScanQrCode,
   Tickets,
-  User
+  User,
 } from "lucide-react";
 
 import { useUserStore } from "@/lib/store";
@@ -44,8 +45,8 @@ const data = {
         {
           title: "Dance Styles",
           url: "/about/styles",
-        }
-      ]
+        },
+      ],
     },
     {
       title: "News",
@@ -61,20 +62,30 @@ const data = {
       title: "Schedule",
       url: "/schedule",
       icon: Calendar,
-    }
+    },
   ],
   bottom: [
     {
       title: "Contact Us",
       url: "/contact",
       icon: LifeBuoy,
-    }
+    },
   ],
   admin: [
     {
       title: "Manage Employees",
       url: "/admin/employees",
       icon: User,
+    },
+    {
+      title: "Manage Classes",
+      url: "/admin/classes",
+      icon: NotebookText,
+    },
+    {
+      title: "Manage Courses",
+      url: "/admin/courses",
+      icon: Notebook,
     },
     {
       title: "Dashboard",
@@ -87,7 +98,7 @@ const data = {
       title: "Scan Ticket",
       url: "/employee/scan",
       icon: ScanQrCode,
-    }
+    },
   ],
   user: [
     {
@@ -99,16 +110,15 @@ const data = {
       title: "My Tickets",
       url: "/user/tickets",
       icon: Tickets,
-    }
+    },
   ],
   trainer: [
     {
       title: "My Classes",
       url: "/trainer/classes",
       icon: NotebookText,
-    }
+    },
   ],
-
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -141,4 +151,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
     </Sidebar>
   );
-};
+}
