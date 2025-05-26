@@ -1,7 +1,7 @@
 import { use } from "react";
 
-import { fetchCourse, fetchAdditionalProductData } from "@/mocks/product";
-// import { fetchCourse, fetchAdditionalProductData } from "@/lib/api/product";
+import { fetchCourse } from "@/mocks/product";
+// import { fetchCourse } from "@/lib/api/product";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@repo/ui/card";
 
 import { CourseActions } from "@/components/cms/misc";
@@ -22,16 +22,6 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
   }
 
   const result = use(fetchCourse(courseId));
-  const additionalData = use(fetchAdditionalProductData());
-
-  if (additionalData.error) {
-    return (
-      <div className="flex items-center justify-center h-full flex-col">
-        <h1 className="text-4xl font-bold">Problem occurred while fetching additional product data</h1>
-        <p className="text-xl">{additionalData.error.message}</p>
-      </div>
-    );
-  }
 
   if (result.error) {
     return (
@@ -42,7 +32,6 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
     );
   }
 
-  const { danceCategories, advancementLevels } = additionalData.data;
   const { name, classTemplate } = result.data;
 
   return (
@@ -60,16 +49,12 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
               <CourseClassTemplateForm
                 template={classTemplate[0]}
                 courseId={courseId}
-                danceCategories={danceCategories}
-                advancementLevels={advancementLevels}
               />
             </CardContent>
           </Card>
         )}
         {classTemplate[0]?.class && (
-          <ClassesList
-            classes={classTemplate[0].class}
-          />
+          <ClassesList classTemplate={classTemplate[0]} />
         )}
         <CourseActions {...result.data} />
       </div>
