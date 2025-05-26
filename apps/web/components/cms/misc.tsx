@@ -4,7 +4,7 @@ import { PlusIcon, TrashIcon, CloudUploadIcon } from "lucide-react";
 import Link from "next/link";
 
 import { createCourse } from "@/lib/api/product";
-import { Course, DanceCategory, AdvancementLevel } from "@/lib/model/product";
+import { Course } from "@/lib/model/product";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
@@ -98,13 +98,7 @@ export function NewCourseDialog() {
   );
 }
 
-interface NewClassTemplateDialogProps {
-  danceCategories: DanceCategory[];
-  advancementLevels: AdvancementLevel[];
-}
-
-export function NewClassTemplateDialog({ danceCategories, advancementLevels }: NewClassTemplateDialogProps) {
-
+export function NewClassTemplateDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -121,8 +115,6 @@ export function NewClassTemplateDialog({ danceCategories, advancementLevels }: N
         </DialogHeader>
         <NonCourseClassTemplateForm
           template={null}
-          danceCategories={danceCategories}
-          advancementLevels={advancementLevels}
           onSuccess={() => {
           }}
         />

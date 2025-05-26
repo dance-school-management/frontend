@@ -1,12 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import axios from "axios";
-import { toast } from "sonner";
 import { SaveIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
+import { MoneyInput } from "@/components/forms/input";
+import { CurrencySelect } from "@/components/forms/select";
+import { useAdditionalProductData } from "@/lib/api/tanstack";
+import { ClassTemplate } from "@/lib/model/product";
 import { Button } from "@repo/ui/button";
 import {
   Form,
@@ -17,7 +20,6 @@ import {
   FormMessage,
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
-import { Textarea } from "@repo/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -25,9 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
-import { MoneyInput } from "@/components/forms/input";
-import { CurrencySelect } from "@/components/forms/select";
-import { AdvancementLevel, ClassTemplate, DanceCategory } from "@/lib/model/product";
+import { Textarea } from "@repo/ui/textarea";
 
 const classTemplateFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -51,11 +51,11 @@ interface ClassTemplateFormProps {
   template: ClassTemplate | null;
   courseId: number;
   onSuccess?: () => void;
-  danceCategories: DanceCategory[];
-  advancementLevels: AdvancementLevel[];
 }
 
-export function CourseClassTemplateForm({ template, onSuccess, danceCategories, advancementLevels, courseId }: ClassTemplateFormProps) {
+export function CourseClassTemplateForm({ template, onSuccess, courseId }: ClassTemplateFormProps) {
+  const { data: additionalProductData, isLoading, error } = useAdditionalProductData();
+
   const form = useForm<ClassTemplateFormValues>({
     resolver: zodResolver(classTemplateFormSchema),
     defaultValues: {
@@ -65,19 +65,22 @@ export function CourseClassTemplateForm({ template, onSuccess, danceCategories, 
       currency: template?.currency ?? "USD",
       classType: template?.classType ?? "GROUP_CLASS",
       scheduleTileColor: "blue",
-      danceCategoryId: template?.danceCategoryId ?? 0,
-      advancementLevelId: template?.advancementLevelId ?? 0,
+      danceCategoryId: undefined,
+      advancementLevelId: undefined,
     },
   });
 
+  if (isLoading || !additionalProductData) {
+    return;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   const onSubmit = async (data: ClassTemplateFormValues) => {
-    console.log(data);
-    try {
-      await axios.put(`/api/courses/${courseId}/template`, data);
-    } catch {
-      toast.error("Failed to update class template");
-      return;
-    }
+    // TODO: Implement proper API call
+    console.log(data, courseId);
     toast.success("Class template updated successfully");
     onSuccess?.();
   };
@@ -117,7 +120,7 @@ export function CourseClassTemplateForm({ template, onSuccess, danceCategories, 
           render={({ field }) => (
             <FormItem>
               <FormLabel>Class Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select class type" />
@@ -150,14 +153,14 @@ export function CourseClassTemplateForm({ template, onSuccess, danceCategories, 
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dance Category</FormLabel>
-              <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={String(field.value)}>
+              <Select onValueChange={(value) => field.onChange(Number(value))}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select dance category" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {danceCategories.map((category) => (
+                  {additionalProductData.danceCategories.map((category) => (
                     <SelectItem key={category.id} value={String(category.id)}>
                       {category.name}
                     </SelectItem>
@@ -174,14 +177,14 @@ export function CourseClassTemplateForm({ template, onSuccess, danceCategories, 
           render={({ field }) => (
             <FormItem>
               <FormLabel>Advancement Level</FormLabel>
-              <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={String(field.value)}>
+              <Select onValueChange={(value) => field.onChange(Number(value))}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select advancement level" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {advancementLevels.map((level) => (
+                  {additionalProductData.advancementLevels.map((level) => (
                     <SelectItem key={level.id} value={String(level.id)}>
                       {level.name}
                     </SelectItem>
@@ -203,7 +206,9 @@ export function CourseClassTemplateForm({ template, onSuccess, danceCategories, 
   );
 }
 
-export function NonCourseClassTemplateForm({ template, onSuccess, danceCategories, advancementLevels }: Omit<ClassTemplateFormProps, "courseId">) {
+export function NonCourseClassTemplateForm({ template, onSuccess }: Omit<ClassTemplateFormProps, "courseId">) {
+  const { data: additionalProductData, isLoading, error } = useAdditionalProductData();
+
   const form = useForm<NonCourseClassTemplateFormValues>({
     resolver: zodResolver(nonCourseClassTemplateFormSchema),
     defaultValues: {
@@ -220,7 +225,16 @@ export function NonCourseClassTemplateForm({ template, onSuccess, danceCategorie
     },
   });
 
+  if (isLoading || !additionalProductData) {
+    return;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   const onSubmit = async (data: NonCourseClassTemplateFormValues) => {
+    // TODO: Implement proper API call
     console.log(data);
     onSuccess?.();
   };
@@ -260,7 +274,7 @@ export function NonCourseClassTemplateForm({ template, onSuccess, danceCategorie
           render={({ field }) => (
             <FormItem>
               <FormLabel>Class Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select class type" />
@@ -292,14 +306,14 @@ export function NonCourseClassTemplateForm({ template, onSuccess, danceCategorie
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dance Category</FormLabel>
-              <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={String(field.value)}>
+              <Select onValueChange={(value) => field.onChange(Number(value))}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select dance category" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {danceCategories.map((category) => (
+                  {additionalProductData.danceCategories.map((category) => (
                     <SelectItem key={category.id} value={String(category.id)}>
                       {category.name}
                     </SelectItem>
@@ -316,14 +330,14 @@ export function NonCourseClassTemplateForm({ template, onSuccess, danceCategorie
           render={({ field }) => (
             <FormItem>
               <FormLabel>Advancement Level</FormLabel>
-              <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={String(field.value)}>
+              <Select onValueChange={(value) => field.onChange(Number(value))}>
                 <FormControl>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select advancement level" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {advancementLevels.map((level) => (
+                  {additionalProductData.advancementLevels.map((level) => (
                     <SelectItem key={level.id} value={String(level.id)}>
                       {level.name}
                     </SelectItem>
@@ -337,7 +351,7 @@ export function NonCourseClassTemplateForm({ template, onSuccess, danceCategorie
         <div className="w-full">
           <Button type="submit" className="cursor-pointer">
             <SaveIcon />
-            Save Class Template
+            Save
           </Button>
         </div>
       </form>
