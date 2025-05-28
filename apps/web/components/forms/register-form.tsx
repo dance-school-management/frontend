@@ -52,13 +52,6 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (values: FormValues) => {
-    toast(
-      <pre className="w-full rounded-md bg-slate-950">
-        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-        <code className="text-white">{JSON.stringify((({ confirm_password, ...rest }) => rest)(values), null, 2)}</code>
-      </pre>
-    );
-
     const { email, password, name, surname } = values;
     signUp.email({
       email,
