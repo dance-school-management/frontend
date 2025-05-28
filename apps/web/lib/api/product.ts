@@ -44,6 +44,21 @@ export async function createCourse(event: FormEvent<HTMLFormElement>) {
   }
 }
 
+type UpdateCoursePayload = {
+  id: number;
+  name: string;
+  description: string | null;
+  courseStatus: string;
+  customPrice: number | null;
+  currency: string | null;
+  danceCategoryId: number | null;
+  advancementLevelId: number | null;
+};
+
+export async function updateCourse(payload: UpdateCoursePayload) {
+  return await fetcher<Course>("/product/cms/course/edit", "PUT", payload);
+}
+
 export async function fetchCourse(
   id: number,
 ): Promise<ApiResult<Course>> {
@@ -51,7 +66,10 @@ export async function fetchCourse(
 }
 
 export async function fetchCourses(): Promise<ApiResult<Course[]>> {
-  return await fetcher<Course[]>("/product/cms/course");
+  return await fetcher<Course[]>("/product/cms/course", "POST", {
+    filter: {},
+    search_query: ""
+  });
 }
 
 export async function fetchClassTemplates(): Promise<ApiResult<ClassTemplate[]>> {
