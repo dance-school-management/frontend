@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
 import { toast } from "sonner";
 import { SaveIcon } from "lucide-react";
 
@@ -25,23 +24,19 @@ import {
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/select";
 import { MoneyInput } from "@/components/forms/input";
-import { CurrencySelect } from "@/components/forms/select";
+import { AdvancementLevelSelect, /*CurrencySelect,*/ DanceCategorySelect } from "@/components/forms/select";
 import { Course } from "@/lib/model/product";
+
+import { updateCourse } from "@/lib/api/product";
 
 const courseFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  description: z.string(),
-  courseStatus: z.enum(["HIDDEN", "SALE", "ONGOING", "FINISHED"]),
+  description: z.string().optional(),
   customPrice: z.number().optional(),
-  currency: z.string().min(1, "Currency is required"),
+  currency: z.string().optional(),
+  danceCategoryId: z.number().optional(),
+  advancementLevelId: z.number().optional(),
 });
 
 type CourseFormValues = z.infer<typeof courseFormSchema>;
@@ -51,31 +46,41 @@ interface CourseDetailsFormProps {
   onSuccess?: () => void;
 }
 
-export function CourseDetailsForm({ course, onSuccess }: CourseDetailsFormProps) {
+export function CourseDetailsForm({ course }: CourseDetailsFormProps) {
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(courseFormSchema),
     defaultValues: {
       name: course.name,
       description: course.description,
-      courseStatus: course.courseStatus,
       customPrice: course.customPrice ? Number(course.customPrice) : undefined,
       currency: course.currency,
+      danceCategoryId: course.danceCategoryId,
+      advancementLevelId: course.advancementLevelId,
     },
   });
 
-  const onSubmit = async (data: CourseFormValues) => {
-    try {
-      await axios.put(`/api/courses/${course.id}`, data);
-    } catch {
-      toast.error("Failed to update course");
+  const onSubmit = async (values: CourseFormValues) => {
+    const payload = {
+      ...values,
+      id: course.id,
+      courseStatus: "HIDDEN",
+      description: values.description ?? null,
+      customPrice: values.customPrice ?? null,
+      currency: values.currency ?? null,
+      danceCategoryId: values.danceCategoryId ?? null,
+      advancementLevelId: values.advancementLevelId ?? null,
+    };
+
+    const { error } = await updateCourse(payload);
+    if (error) {
+      toast.error(error.message ?? "Failed to update course");
       return;
     }
+    form.reset(values);
     toast.success("Course updated successfully");
-    onSuccess?.();
   };
 
   return (
-    // TODO: Add a way to choose dance category and advancement level
     <Card className="gap-2">
       <CardHeader>
         <CardTitle>Course Details</CardTitle>
@@ -110,44 +115,33 @@ export function CourseDetailsForm({ course, onSuccess }: CourseDetailsFormProps)
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="courseStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Status</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="HIDDEN">Hidden</SelectItem>
-                      <SelectItem value="SALE">Sale</SelectItem>
-                      <SelectItem value="ONGOING">Ongoing</SelectItem>
-                      <SelectItem value="FINISHED">Finished</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <CurrencySelect
+            {/* <CurrencySelect
               form={form}
               name="currency"
               label="Currency"
-            />
+            /> */}
             <MoneyInput
               form={form}
               name="customPrice"
               label="Course Price"
               currency={form.watch("currency")}
             />
+            <DanceCategorySelect
+              form={form}
+              name="danceCategoryId"
+              label="Dance Category"
+              placeholder="Select dance category"
+            />
+            <AdvancementLevelSelect
+              form={form}
+              name="advancementLevelId"
+              label="Advancement Level"
+              placeholder="Select advancement level"
+            />
             <div className="w-full">
-              <Button type="submit" className="cursor-pointer">
+              <Button type="submit" className="cursor-pointer" disabled={!form.formState.isDirty}>
                 <SaveIcon />
-                Save Course Details
+                Save Details
               </Button>
             </div>
           </form>

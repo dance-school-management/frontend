@@ -51,7 +51,7 @@ export function ClassesList({ classTemplate, onEditClass }: ClassesListProps) {
               New Class
             </Button>
           </DrawerTrigger>
-          <DrawerContent className="h-[calc(100vh-4rem)]">
+          <DrawerContent>
             <div className="h-full flex flex-col">
               <DrawerHeader>
                 <DrawerTitle>Create New Class</DrawerTitle>
@@ -90,7 +90,7 @@ interface ClassListingProps {
   onEditClass?: (classId: number) => void;
 }
 
-function ClassListing({ classItem, onEditClass }: ClassListingProps) {
+function ClassListing({ classItem }: ClassListingProps) {
   return (
     <div className="flex items-center justify-between p-4 border rounded-lg">
       <div>
@@ -102,19 +102,14 @@ function ClassListing({ classItem, onEditClass }: ClassListingProps) {
         <p className="text-sm">Status: {classItem.classStatus}</p>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Button
+        {/* TODO: Add ability to edit class */}
+        {/* <Button
           variant="outline"
           className="w-fit cursor-pointer"
           onClick={() => onEditClass?.(classItem.id)}
         >
-          Edit Class
-        </Button>
-        <Button
-          variant="outline"
-          className="w-fit cursor-pointer"
-        >
-          Publish
-        </Button>
+          Edit
+        </Button> */}
       </div>
     </div>
   );

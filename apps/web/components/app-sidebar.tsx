@@ -93,7 +93,7 @@ const data = {
       icon: PieChart,
     },
   ],
-  receptionist: [
+  coordinator: [
     {
       title: "Scan Ticket",
       url: "/employee/scan",
@@ -137,8 +137,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {user?.role === "trainer" && (
           <NavSection title="Trainer" items={data.trainer} />
         )}
-        {(user?.role === "receptionist" || user?.role === "admin") && (
-          <NavSection title="Receptionist" items={data.receptionist} />
+        {(user?.role === "coordinator" || user?.role === "admin") && (
+          <NavSection title="Coordinator" items={data.coordinator} />
         )}
         {user?.role === "admin" && (
           <NavSection title="Admin" items={data.admin} />
