@@ -37,8 +37,8 @@ export interface TimeRangePickerProps {
 }
 
 export const TimeRangePicker: React.FC<TimeRangePickerProps> = ({
-  initialStartTime = "00:00",
-  initialEndTime = "23:30",
+  initialStartTime = "16:00",
+  initialEndTime = "18:00",
   onTimeRangeChange,
   sort = false,
   startTimeLabel = "Start Time",
