@@ -32,7 +32,7 @@ interface ClassesListProps {
 export function ClassesList({ classTemplate, onEditClass }: ClassesListProps) {
   const [isNewClassSheetOpen, setIsNewClassSheetOpen] = useState(false);
 
-  const classes = classTemplate.class;
+  const classes = classTemplate.class.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
   return (
     <Card className="gap-2">
