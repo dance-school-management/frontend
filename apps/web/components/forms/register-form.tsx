@@ -51,20 +51,14 @@ export function RegisterForm() {
     },
   });
 
-  const onSubmit = (values: FormValues) => {
-    toast(
-      <pre className="w-full rounded-md bg-slate-950">
-        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-        <code className="text-white">{JSON.stringify((({ confirm_password, ...rest }) => rest)(values), null, 2)}</code>
-      </pre>
-    );
-
+  const onSubmit = async (values: FormValues) => {
     const { email, password, name, surname } = values;
     signUp.email({
       email,
       password,
-      name,
+      name: `${name} ${surname}`,
       surname,
+      first_name: name,
       fetchOptions: {
         onError: (ctx) => {
           toast.error(ctx.error.message);

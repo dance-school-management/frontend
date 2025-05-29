@@ -8,11 +8,12 @@ import {
   Info,
   LifeBuoy,
   Newspaper,
+  Notebook,
   NotebookText,
   PieChart,
   ScanQrCode,
   Tickets,
-  User
+  User,
 } from "lucide-react";
 
 import { useUserStore } from "@/lib/store";
@@ -44,8 +45,8 @@ const data = {
         {
           title: "Dance Styles",
           url: "/about/styles",
-        }
-      ]
+        },
+      ],
     },
     {
       title: "News",
@@ -61,14 +62,14 @@ const data = {
       title: "Schedule",
       url: "/schedule",
       icon: Calendar,
-    }
+    },
   ],
   bottom: [
     {
       title: "Contact Us",
       url: "/contact",
       icon: LifeBuoy,
-    }
+    },
   ],
   admin: [
     {
@@ -77,17 +78,27 @@ const data = {
       icon: User,
     },
     {
+      title: "Manage Classes",
+      url: "/admin/classes",
+      icon: NotebookText,
+    },
+    {
+      title: "Manage Courses",
+      url: "/admin/courses",
+      icon: Notebook,
+    },
+    {
       title: "Dashboard",
       url: "/admin/dashboard",
       icon: PieChart,
     },
   ],
-  receptionist: [
+  coordinator: [
     {
       title: "Scan Ticket",
       url: "/employee/scan",
       icon: ScanQrCode,
-    }
+    },
   ],
   user: [
     {
@@ -99,16 +110,15 @@ const data = {
       title: "My Tickets",
       url: "/user/tickets",
       icon: Tickets,
-    }
+    },
   ],
   trainer: [
     {
       title: "My Classes",
       url: "/trainer/classes",
       icon: NotebookText,
-    }
+    },
   ],
-
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -127,8 +137,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {user?.role === "trainer" && (
           <NavSection title="Trainer" items={data.trainer} />
         )}
-        {(user?.role === "receptionist" || user?.role === "admin") && (
-          <NavSection title="Receptionist" items={data.receptionist} />
+        {(user?.role === "coordinator" || user?.role === "admin") && (
+          <NavSection title="Coordinator" items={data.coordinator} />
         )}
         {user?.role === "admin" && (
           <NavSection title="Admin" items={data.admin} />
@@ -141,4 +151,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
     </Sidebar>
   );
-};
+}

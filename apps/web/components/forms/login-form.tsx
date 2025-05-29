@@ -46,12 +46,6 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: FormValues) => {
-    toast(
-      <pre className="w-full rounded-md bg-slate-950">
-        <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-      </pre>
-    );
-
     await authClient.signIn.email({
       email: values.email,
       password: values.password,
