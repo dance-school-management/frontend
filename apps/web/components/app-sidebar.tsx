@@ -78,16 +78,6 @@ const data = {
       icon: User,
     },
     {
-      title: "Manage Classes",
-      url: "/admin/classes",
-      icon: NotebookText,
-    },
-    {
-      title: "Manage Courses",
-      url: "/admin/courses",
-      icon: Notebook,
-    },
-    {
       title: "Dashboard",
       url: "/admin/dashboard",
       icon: PieChart,
@@ -96,8 +86,18 @@ const data = {
   coordinator: [
     {
       title: "Scan Ticket",
-      url: "/employee/scan",
+      url: "/coordinator/scan",
       icon: ScanQrCode,
+    },
+    {
+      title: "Manage Classes",
+      url: "/coordinator/classes",
+      icon: NotebookText,
+    },
+    {
+      title: "Manage Courses",
+      url: "/coordinator/courses",
+      icon: Notebook,
     },
   ],
   user: [
@@ -131,16 +131,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     >
       <SidebarContent>
         <NavSection title="General" items={data.general} />
-        {user && (
+        {user?.role === "STUDENT" && (
           <NavSection title="User" items={data.user} />
         )}
-        {user?.role === "trainer" && (
+        {user?.role === "TRAINER" && (
           <NavSection title="Trainer" items={data.trainer} />
         )}
-        {(user?.role === "coordinator" || user?.role === "admin") && (
+        {(user?.role === "COORDINATOR") && (
           <NavSection title="Coordinator" items={data.coordinator} />
         )}
-        {user?.role === "admin" && (
+        {(user?.role === "ADMINISTRATOR") && (
           <NavSection title="Admin" items={data.admin} />
         )}
 

@@ -1,7 +1,8 @@
-import { use } from "react";
+import { headers } from 'next/headers';
 
-import { fetchCourse } from "@/mocks/product";
-// import { fetchCourse } from "@/lib/api/product";
+// import { fetchCourse } from "@/mocks/product";
+import { fetchCourse } from "@/lib/api/product";
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@repo/ui/card";
 
 import { CourseActions } from "@/components/cms/misc";
@@ -9,8 +10,9 @@ import { CourseDetailsForm } from "@/components/cms/course-details-form";
 import { CourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
 
-export default function Page({ params }: { params: Promise<{ id: string; }>; }) {
-  const { id } = use(params);
+export default async function Page({ params }: { params: Promise<{ id: string; }>; }) {
+  const { id } = await params;
+  const cookie = (await headers()).get('cookie') ?? "";
 
   const courseId = parseInt(id, 10);
   if (isNaN(courseId)) {
@@ -21,7 +23,7 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
     );
   }
 
-  const result = use(fetchCourse(courseId));
+  const result = await fetchCourse(courseId, cookie);
 
   if (result.error) {
     return (
