@@ -1,14 +1,15 @@
-import { use } from "react";
+import { headers } from 'next/headers';
 
-import { fetchClassTemplate } from "@/mocks/product";
-// import { fetchClassTemplate } from "@/lib/api/product";
+// import { fetchClassTemplate } from "@/mocks/product";
+import { fetchClassTemplate } from "@/lib/api/product";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/card";
 import { NonCourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
 
-export default function Page({ params }: { params: Promise<{ id: string; }>; }) {
-  const { id } = use(params);
+export default async function Page({ params }: { params: Promise<{ id: string; }>; }) {
+  const { id } = await params;
+  const cookie = (await headers()).get('cookie') ?? "";
 
   const courseId = parseInt(id, 10);
   if (isNaN(courseId)) {
@@ -19,7 +20,7 @@ export default function Page({ params }: { params: Promise<{ id: string; }>; }) 
     );
   }
 
-  const result = use(fetchClassTemplate(courseId));
+  const result = await fetchClassTemplate(courseId, cookie);
 
   if (result.error) {
     return (

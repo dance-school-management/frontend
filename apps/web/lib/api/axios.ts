@@ -1,24 +1,9 @@
 import axios from "axios";
-import { useUserStore } from "@/lib/store";
-import { redirect, RedirectType } from "next/navigation";
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+  withCredentials: true,
 });
-
-api.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response) {
-      const { status } = error.response;
-      if (status === 401) {
-        useUserStore.getState().setUser(null);
-        redirect('/login', RedirectType.replace);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
 
 export type ApiError = {
   status: number;
@@ -29,12 +14,19 @@ export type ApiResult<T> =
   | { data: T; error?: undefined; }
   | { data?: undefined; error: ApiError; };
 
+type FetcherOpts = { cookie?: string; };
+
 export async function fetcher<T>(
   url: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-  body?: unknown
+  body?: unknown,
+  opts?: FetcherOpts
 ): Promise<ApiResult<T>> {
   try {
+    if (opts?.cookie && typeof window === 'undefined') {
+      api.defaults.headers.Cookie = opts.cookie;
+    }
+
     const response = await api.request<T>({ url, method, data: body });
     return { data: response.data };
   } catch (err) {

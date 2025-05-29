@@ -65,23 +65,23 @@ export async function createClassTemplate(payload: CreateClassTemplatePayload) {
   return await fetcher<ClassTemplate>("/product/cms/class_template", "POST", payload);
 }
 
-export async function fetchCourse(id: number): Promise<ApiResult<Course>> {
-  return await fetcher<Course>(`/product/cms/course/${id}`);
+export async function fetchCourse(id: number, cookie?: string): Promise<ApiResult<Course>> {
+  return await fetcher<Course>(`/product/cms/course/${id}`, undefined, undefined, { cookie });
 }
 
-export async function fetchCourses(): Promise<ApiResult<Course[]>> {
+export async function fetchCourses(cookie?: string): Promise<ApiResult<Course[]>> {
   return await fetcher<Course[]>("/product/cms/course", "POST", {
     filter: {},
-    search_query: ""
-  });
+    search_query: "",
+  }, { cookie });
 }
 
-export async function fetchClassTemplates(): Promise<ApiResult<ClassTemplate[]>> {
-  return await fetcher<ClassTemplate[]>("/product/cms/class_template");
+export async function fetchClassTemplates(cookie?: string): Promise<ApiResult<ClassTemplate[]>> {
+  return await fetcher<ClassTemplate[]>("/product/cms/class_template", undefined, undefined, { cookie });
 }
 
-export async function fetchClassTemplate(id: number): Promise<ApiResult<ClassTemplate>> {
-  return await fetcher<ClassTemplate>(`/product/cms/class_template/${id}`);
+export async function fetchClassTemplate(id: number, cookie?: string): Promise<ApiResult<ClassTemplate>> {
+  return await fetcher<ClassTemplate>(`/product/cms/class_template/${id}`, undefined, undefined, { cookie });
 }
 
 export async function fetchAdditionalProductData(): Promise<ApiResult<AdditionalProductData>> {

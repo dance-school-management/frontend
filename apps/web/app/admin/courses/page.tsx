@@ -1,9 +1,12 @@
+import { headers } from 'next/headers';
 import { CoursePreview, NewCourseDialog } from "@/components/cms/misc";
-// import { fetchCourses } from "@/lib/api/product";
-import { fetchCourses } from "@/mocks/product";
+
+import { fetchCourses } from "@/lib/api/product";
+// import { fetchCourses } from "@/mocks/product";
 
 export default async function Page() {
-  const courses = await fetchCourses();
+  const cookie = (await headers()).get('cookie') ?? "";
+  const courses = await fetchCourses(cookie);
 
   if (courses.error) {
     return (

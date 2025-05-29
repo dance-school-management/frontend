@@ -1,10 +1,12 @@
+import { headers } from 'next/headers';
 import { ClassTemplatePreview, NewClassTemplateDialog } from "@/components/cms/misc";
 
-// import { fetchClassTemplates } from "@/lib/api/product";
-import { fetchClassTemplates } from "@/mocks/product";
+import { fetchClassTemplates } from "@/lib/api/product";
+// import { fetchClassTemplates } from "@/mocks/product";
 
 export default async function Page() {
-  const classes = await fetchClassTemplates();
+  const cookie = (await headers()).get('cookie') ?? "";
+  const classes = await fetchClassTemplates(cookie);
 
   if (classes.error) {
     return (

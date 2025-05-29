@@ -137,10 +137,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {user?.role === "TRAINER" && (
           <NavSection title="Trainer" items={data.trainer} />
         )}
-        {(user?.role === "COORDINATOR" || user?.role === "ADMINISTRATOR") && (
+        {(user?.role === "COORDINATOR") && (
           <NavSection title="Coordinator" items={data.coordinator} />
         )}
-        {user?.role === "ADMINISTRATOR" || user?.role === "COORDINATOR" && (
+        {(user?.role === "ADMINISTRATOR") && (
           <NavSection title="Admin" items={data.admin} />
         )}
 
