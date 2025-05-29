@@ -1,48 +1,10 @@
-import axios from "axios";
-import { FormEvent } from "react";
-import { toast } from "sonner";
-
 import { Course, AdditionalProductData, ClassTemplate, Class } from "@/lib/model/product";
-import { api, ApiResult, fetcher } from "./axios";
+import { ApiResult, fetcher } from "@/lib/api/axios";
 
-export async function createCourse(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const data = Object.fromEntries(formData);
-
-  const reqData = {
-    name: data.name,
-    isConfirmation: data.confirmation === "on",
-  };
-
-  try {
-    const res = await api.post("/product/cms/course/new", reqData);
-    if (res.status !== 201) {
-      toast.error("Failed to create course");
-      return;
-    }
-
-    const { id } = res.data;
-    toast.success("Course created successfully! Redirecting...");
-    setTimeout(() => {
-      window.location.href = `/admin/courses/${id}`;
-    }, 2000);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response && error.response.data) {
-        const status = error.response.status;
-        const { message } = error.response.data;
-        if (status === 400 || status === 409) {
-          toast.error(message);
-        } else {
-          toast.error("An unexpected error occurred");
-        }
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-    }
-  }
-}
+type CreateCoursePayload = {
+  name: string;
+  isConfirmation: boolean;
+};
 
 type UpdateCoursePayload = {
   id: number;
@@ -83,6 +45,10 @@ interface CreateClassTemplatePayload extends UpdateClassTemplatePayload {
   isConfirmation: boolean;
 }
 
+export async function createCourse(payload: CreateCoursePayload) {
+  return await fetcher<{ id: number; }>("/product/cms/course/new", "POST", payload);
+}
+
 export async function createClass(payload: CreateClassPayload) {
   return await fetcher<Class>("/product/cms/class", "POST", payload);
 }
@@ -99,9 +65,7 @@ export async function createClassTemplate(payload: CreateClassTemplatePayload) {
   return await fetcher<ClassTemplate>("/product/cms/class_template", "POST", payload);
 }
 
-export async function fetchCourse(
-  id: number,
-): Promise<ApiResult<Course>> {
+export async function fetchCourse(id: number): Promise<ApiResult<Course>> {
   return await fetcher<Course>(`/product/cms/course/${id}`);
 }
 
