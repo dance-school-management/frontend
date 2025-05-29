@@ -78,16 +78,6 @@ const data = {
       icon: User,
     },
     {
-      title: "Manage Classes",
-      url: "/admin/classes",
-      icon: NotebookText,
-    },
-    {
-      title: "Manage Courses",
-      url: "/admin/courses",
-      icon: Notebook,
-    },
-    {
       title: "Dashboard",
       url: "/admin/dashboard",
       icon: PieChart,
@@ -96,8 +86,18 @@ const data = {
   coordinator: [
     {
       title: "Scan Ticket",
-      url: "/employee/scan",
+      url: "/coordinator/scan",
       icon: ScanQrCode,
+    },
+    {
+      title: "Manage Classes",
+      url: "/coordinator/classes",
+      icon: NotebookText,
+    },
+    {
+      title: "Manage Courses",
+      url: "/coordinator/courses",
+      icon: Notebook,
     },
   ],
   user: [
