@@ -1,10 +1,15 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { addDays, format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { z } from "zod";
 
+import { ClassRoomSelect, InstructorsSelect } from "@/components/forms/select";
+import { ClassTemplate } from "@/lib/model/product";
 import { Button } from "@repo/ui/button";
+import { Calendar } from "@repo/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
 import {
   Form,
   FormControl,
@@ -14,6 +19,7 @@ import {
   FormMessage,
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
+import { cn } from "@repo/ui/lib/utils";
 import {
   Select,
   SelectContent,
@@ -21,22 +27,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/select";
-import { ClassTemplate } from "@/lib/model/product";
-import { useAdditionalProductData, useInstructors } from "@/lib/api/tanstack";
-import { MultiSelect } from "@repo/ui/multi-select";
 import { TimeRangePicker } from "@repo/ui/time-range";
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
-import { cn } from "@repo/ui/lib/utils";
-import { Calendar } from "@repo/ui/calendar";
+
+import { createClass } from "@/lib/api/product";
+import { PeopleLimitConfirmation } from "../forms/checkbox";
+
 
 const newClassFormSchema = z.object({
-  groupNumber: z.number().min(1, "Group number is required"),
-  date: z.string().min(1, "Start date is required"),
-  startTime: z.string().min(1, "Start time is required"),
-  endTime: z.string().min(1, "End time is required"),
-  peopleLimit: z.number().min(1, "People limit is required"),
+  groupNumber: z.coerce.number().min(1, "Group number is required"),
+  date: z.date({ required_error: "Start date is required" }),
+  timeRange: z.string().min(1, "Time range is required"),
+  peopleLimit: z.coerce.number().min(1, "People limit is required"),
   classRoomId: z.number().min(1, "Class room is required"),
   instructorIds: z.array(z.string()).min(1, "At least one instructor is required"),
+  isConfirmation: z.boolean().optional(),
 });
 
 type NewClassFormValues = z.infer<typeof newClassFormSchema>;
@@ -46,39 +50,56 @@ interface NewClassFormProps {
   onSuccess?: () => void;
 }
 
-export function NewClassForm({ classTemplate, onSuccess }: NewClassFormProps) {
-  const { data: instructorsData, isLoading, error } = useInstructors();
-  const { data, isLoading: isClassRoomsLoading, error: classRoomsError } = useAdditionalProductData();
+function getTime(time: string) {
+  const [hours, minutes] = time.split(":");
+  return {
+    hours: parseInt(hours!),
+    minutes: parseInt(minutes!),
+  };
+}
 
+export function NewClassForm({ classTemplate }: NewClassFormProps) {
   const form = useForm<NewClassFormValues>({
     resolver: zodResolver(newClassFormSchema),
     defaultValues: {
-      groupNumber: undefined,
-      peopleLimit: undefined,
+      groupNumber: 1,
+      peopleLimit: 1,
       classRoomId: undefined,
       instructorIds: [],
-      date: "",
-      startTime: "",
-      endTime: "",
+      date: new Date(),
+      timeRange: "16:00-17:00",
     },
   });
 
-  if (isLoading || !instructorsData || isClassRoomsLoading || !data) {
-    return;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (classRoomsError) {
-    return <div>Error: {classRoomsError.message}</div>;
-  }
-
   const onSubmit = async (data: NewClassFormValues) => {
-    console.log(data, classTemplate.id);
-    // TODO: Implement API call to create new class
-    onSuccess?.();
+    const [startTime, endTime] = data.timeRange.split("-")!;
+    const startDate = new Date(data.date);
+    const { hours: startHours, minutes: startMinutes } = getTime(startTime!);
+    startDate.setHours(startHours, startMinutes, 0, 0);
+    const endDate = new Date(data.date);
+    const { hours: endHours, minutes: endMinutes } = getTime(endTime!);
+    endDate.setHours(endHours, endMinutes, 0, 0);
+
+    const payload = {
+      classTemplateId: classTemplate.id,
+      groupNumber: data.groupNumber,
+      peopleLimit: data.peopleLimit,
+      classRoomId: data.classRoomId,
+      instructorIds: data.instructorIds,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      isConfirmation: data.isConfirmation ?? false,
+      classStatus: "HIDDEN",
+    };
+
+    const { error } = await createClass(payload);
+    if (error) {
+      toast.error(error.message || "Failed to create class");
+      return;
+    }
+    toast.success("Class created successfully");
+    // TODO: Trigger a refetch instead of reloading the page
+    window.location.reload();
   };
 
   return (
@@ -95,6 +116,7 @@ export function NewClassForm({ classTemplate, onSuccess }: NewClassFormProps) {
                   <Input
                     type="number"
                     {...field}
+                    min={1}
                     onChange={e => field.onChange(Number(e.target.value))}
                     placeholder="Enter group number"
                   />
@@ -157,15 +179,35 @@ export function NewClassForm({ classTemplate, onSuccess }: NewClassFormProps) {
               </FormItem>
             )}
           />
-          <TimeRangePicker
-            initialStartTime={form.getValues("startTime")}
-            initialEndTime={form.getValues("endTime")}
-            onTimeRangeChange={(timeRange) => {
-              form.setValue("startTime", timeRange.split("-")[0]!);
-              form.setValue("endTime", timeRange.split("-")[1]!);
+          <FormField
+            control={form.control}
+            name="timeRange"
+            render={({ field }) => {
+              const [startTime, endTime] = field.value.split("-");
+              return (
+                <FormItem>
+                  <FormControl>
+                    <TimeRangePicker
+                      initialStartTime={startTime}
+                      initialEndTime={endTime}
+                      onTimeRangeChange={(timeRange) => {
+                        form.setValue("timeRange", timeRange);
+                      }}
+                      step={15}
+                      layout="column"
+                      sort={true}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
             }}
-            step={15}
-            layout="column"
+          />
+          <ClassRoomSelect
+            form={form}
+            name="classRoomId"
+            label="Classroom"
+            placeholder="Select classroom"
           />
           <FormField
             control={form.control}
@@ -179,51 +221,27 @@ export function NewClassForm({ classTemplate, onSuccess }: NewClassFormProps) {
                     {...field}
                     onChange={e => field.onChange(Number(e.target.value))}
                     placeholder="Enter people limit"
+                    min={1}
+                    value={field.value ?? undefined}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="classRoomId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Class Room</FormLabel>
-                <Select onValueChange={(value) => field.onChange(Number(value))}>
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a class room" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {data.classRooms.map((room) => (
-                      <SelectItem key={room.id} value={String(room.id)}>
-                        {room.name} (Limit: {room.peopleLimit})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+          <PeopleLimitConfirmation
+            classRoomId={form.watch("classRoomId")}
+            peopleLimit={form.watch("peopleLimit")}
+            form={form}
+            name="isConfirmation"
+            label="Confirmation needed"
+            message="People limit is greater than the classroom capacity"
           />
-          <FormField
-            control={form.control}
+          <InstructorsSelect
+            form={form}
             name="instructorIds"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Instructors</FormLabel>
-                <MultiSelect onValueChange={field.onChange} value={field.value} options={instructorsData.instructors.map((instructor) => ({
-                  label: instructor.name + " " + instructor.surname,
-                  value: instructor.id,
-                }))}
-                  placeholder="Select instructors"
-                />
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Instructors"
+            placeholder="Select instructors"
           />
           <div className="w-full">
             <Button type="submit" className="cursor-pointer">
