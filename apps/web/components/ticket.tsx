@@ -1,5 +1,5 @@
-
-import { Ticket } from "@/lib/model";
+"use client";
+import { Ticket } from "@/lib/model/enroll";
 import { QRCodeSVG } from "qrcode.react";
 
 import { AspectRatio } from "@repo/ui/aspect-ratio";
@@ -21,18 +21,26 @@ import {
   DialogTrigger,
 } from "@repo/ui/dialog";
 import { Separator } from "@repo/ui/separator";
+import { useUserStore } from "@/lib/store";
 
 export function TicketPreview({ ticket }: { ticket: Ticket; }) {
+
+  const startTime = ticket.startDate.split("T")[1]!.split(".")[0];
+  const endTime = ticket.endDate.split("T")[1]!.split(".")[0];
+  const startDate = ticket.startDate.split("T")[0]!;
+
+  const date = `${startDate} (${startTime} - ${endTime})`;
+
   return (
     <Card className="max-w-xl w-full gap-0">
       <CardHeader>
-        <CardTitle className="text-2xl">{ticket.class.name}</CardTitle>
+        <CardTitle className="text-2xl">{ticket.name}</CardTitle>
       </CardHeader>
       <CardContent>
         <CardDescription >
-          <p className="text-lg">Date: {ticket.class.date} ({ticket.class.start_time} - {ticket.class.end_time})</p>
-          <p className="text-base">Trainer: {ticket.class.trainer}</p>
-          <p className="text-base">Room: {ticket.class.classroom}</p>
+          <p className="text-lg">Date: {date}</p>
+          {/* <p className="text-base">Trainer: {ticket.trainer}</p> */}
+          <p className="text-base">Room: {ticket.classRoomName}</p>
         </CardDescription>
       </CardContent>
       <CardFooter className="mt-2">
@@ -43,13 +51,19 @@ export function TicketPreview({ ticket }: { ticket: Ticket; }) {
 }
 
 function TicketDialog({ ticket }: { ticket: Ticket; }) {
+  const { user } = useUserStore();
+
   const meta = {
-    ticket_id: ticket.id,
-    user_id: ticket.user_id,
-    class_id: ticket.class.id,
+    // ticket_id: ticket.id,
+    user_id: user?.id,
+    class_id: ticket.classid,
   };
 
-  const date = `${ticket.class.date} (${ticket.class.start_time} - ${ticket.class.end_time})`;
+  const startTime = ticket.startDate.split("T")[1]!.split(".")[0];
+  const endTime = ticket.endDate.split("T")[1]!.split(".")[0];
+  const startDate = ticket.startDate.split("T")[0]!;
+
+  const date = `${startDate} (${startTime} - ${endTime})`;
 
   return (
     <Dialog>
@@ -58,17 +72,17 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
       </DialogTrigger>
       <DialogContent className="w-full max-h-[90%] overflow-auto">
         <DialogHeader>
-          <DialogTitle>{ticket.class.name}</DialogTitle>
+          <DialogTitle>{ticket.name}</DialogTitle>
           <DialogDescription>
-            {ticket.class.description}
+            {ticket.description}
           </DialogDescription>
         </DialogHeader>
         <div className="text-foreground font-semibold text-base">
           <Info caption="Date:" value={date} />
-          <Info caption="Trainer:" value={ticket.class.trainer} />
-          <Info caption="Room:" value={ticket.class.classroom} />
-          <Info caption="Category:" value={ticket.class.dance_category} />
-          <Info caption="Level:" value={ticket.class.advancement_level} />
+          {/* <Info caption="Trainer:" value={ticket.class.trainer} /> */}
+          <Info caption="Room:" value={ticket.classRoomName} />
+          <Info caption="Category:" value={ticket.danceCategoryName} />
+          <Info caption="Level:" value={ticket.advancementLevelName} />
           <Separator className="mt-2" />
         </div>
         <p className="font-normal text-xs md:text-sm text-muted-foreground">This is your ticket for the class. Scan it, please.</p>
@@ -82,9 +96,9 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
             />
           </div>
         </AspectRatio>
-        <p className="text-xs text-right">
+        {/* <p className="text-xs text-right">
           <span className="font-semibold">Ticket ID:</span> {ticket.id}
-        </p>
+        </p> */}
       </DialogContent>
     </Dialog>
   );
