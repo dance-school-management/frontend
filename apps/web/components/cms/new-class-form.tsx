@@ -68,6 +68,7 @@ export function NewClassForm({ classTemplate }: NewClassFormProps) {
       instructorIds: [],
       date: new Date(),
       timeRange: "16:00-17:00",
+      isConfirmation: false,
     },
   });
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { FormEvent } from "react";
 import { toast } from "sonner";
 
-import { Course, AdditionalProductData, ClassTemplate } from "@/lib/model/product";
+import { Course, AdditionalProductData, ClassTemplate, Class } from "@/lib/model/product";
 import { api, ApiResult, fetcher } from "./axios";
 
 export async function createCourse(event: FormEvent<HTMLFormElement>) {
@@ -55,8 +55,48 @@ type UpdateCoursePayload = {
   advancementLevelId: number | null;
 };
 
+type CreateClassPayload = {
+  classTemplateId: number;
+  groupNumber: number;
+  peopleLimit: number;
+  classRoomId: number;
+  instructorIds: string[];
+  startDate: string;
+  endDate: string;
+  isConfirmation: boolean;
+  classStatus: string;
+};
+
+interface UpdateClassTemplatePayload {
+  courseId: number | null;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  classType: string;
+  scheduleTileColor: string;
+  danceCategoryId: number | null;
+  advancementLevelId: number | null;
+};
+
+interface CreateClassTemplatePayload extends UpdateClassTemplatePayload {
+  isConfirmation: boolean;
+}
+
+export async function createClass(payload: CreateClassPayload) {
+  return await fetcher<Class>("/product/cms/class", "POST", payload);
+}
+
 export async function updateCourse(payload: UpdateCoursePayload) {
   return await fetcher<Course>("/product/cms/course/edit", "PUT", payload);
+}
+
+export async function updateClassTemplate(id: number, payload: UpdateClassTemplatePayload) {
+  return await fetcher<ClassTemplate>(`/product/cms/class_template/${id}`, "PUT", payload);
+}
+
+export async function createClassTemplate(payload: CreateClassTemplatePayload) {
+  return await fetcher<ClassTemplate>("/product/cms/class_template", "POST", payload);
 }
 
 export async function fetchCourse(

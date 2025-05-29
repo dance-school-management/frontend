@@ -1,12 +1,14 @@
 "use client";
 
-import { PlusIcon, TrashIcon, CloudUploadIcon } from "lucide-react";
+import { CloudUploadIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 
+import { NewClassTemplateForm } from "@/components/cms/class-template-form";
 import { createCourse } from "@/lib/api/product";
 import { Course } from "@/lib/model/product";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
+import { Card, CardContent, CardHeader } from "@repo/ui/card";
 import { Checkbox } from "@repo/ui/checkbox";
 import {
   Dialog,
@@ -17,10 +19,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-import { Card, CardContent, CardHeader } from "@repo/ui/card";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
-import { NonCourseClassTemplateForm } from "./class-template-form";
 
 export function CourseActions(course: Course) {
   return (
@@ -113,11 +113,7 @@ export function NewClassTemplateDialog() {
             A class template will be created. After it&apos;s successfully created, you&apos;ll be redirected to its details page, so you can add classes to it.
           </DialogDescription>
         </DialogHeader>
-        <NonCourseClassTemplateForm
-          template={null}
-          onSuccess={() => {
-          }}
-        />
+        <NewClassTemplateForm />
       </DialogContent>
     </Dialog>
   );
@@ -154,4 +150,3 @@ export function ClassTemplatePreview({ id, name, description }: PreviewProps) {
     </Link>
   );
 }
-
