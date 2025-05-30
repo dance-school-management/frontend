@@ -315,7 +315,7 @@ export function NewClassTemplateForm() {
     const { id } = data;
     toast.success("Class template created successfully! Redirecting...");
     setTimeout(() => {
-      router.push(`/admin/classes/${id}`);
+      router.push(`/coordinator/classes/${id}`);
     }, 2000);
   };
 

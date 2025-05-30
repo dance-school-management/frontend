@@ -33,7 +33,7 @@ export function NewCourseForm() {
     const { id } = data;
     toast.success("Course created successfully! Redirecting...");
     setTimeout(() => {
-      router.push(`/admin/courses/${id}`);
+      router.push(`/coordinator/courses/${id}`);
     }, 2000);
   };
 

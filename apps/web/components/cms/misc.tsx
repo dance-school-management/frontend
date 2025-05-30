@@ -89,7 +89,7 @@ type PreviewProps = {
 
 export function CoursePreview({ id, name, description }: PreviewProps) {
   return (
-    <Link href={`/admin/courses/${id}`}>
+    <Link href={`/coordinator/courses/${id}`}>
       <Alert variant="default" className="w-full">
         <AlertTitle className="text-lg font-semibold">{name}</AlertTitle>
         <AlertDescription className="text-sm text-muted-foreground">
@@ -102,7 +102,7 @@ export function CoursePreview({ id, name, description }: PreviewProps) {
 
 export function ClassTemplatePreview({ id, name, description }: PreviewProps) {
   return (
-    <Link href={`/admin/classes/${id}`}>
+    <Link href={`/coordinator/classes/${id}`}>
       <Alert variant="default" className="w-full">
         <AlertTitle className="text-lg font-semibold">{name}</AlertTitle>
         <AlertDescription className="text-sm text-muted-foreground">
