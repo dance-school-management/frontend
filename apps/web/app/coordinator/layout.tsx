@@ -36,5 +36,18 @@ export default function ProtectedLayout({
     );
   }
 
+  if (hydrated && user && user.role !== "COORDINATOR") {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <p className="text-2xl">
+          You do not have permission to access this page.
+        </p>
+        <p>
+          Please contact an administrator if you believe this is an error.
+        </p>
+      </div>
+    );
+  }
+
   return <>{children}</>;
 }

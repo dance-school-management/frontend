@@ -67,7 +67,21 @@ export function LoginForm() {
     if (data) {
       toast.success("Logged in successfully");
       setUser(data.user);
-      redirect("/user/progress", RedirectType.replace);
+
+      switch (data.user.role) {
+        case "COORDINATOR":
+          redirect("/coordinator/classes", RedirectType.replace);
+          break;
+        case "ADMINISTRATOR":
+          redirect("/admin/dashboard", RedirectType.replace);
+          break;
+        case "INSTRUCTOR":
+          redirect("/trainer/classes", RedirectType.replace);
+          break;
+        default:
+          redirect("/user/tickets", RedirectType.replace);
+          break;
+      }
     }
   };
 
