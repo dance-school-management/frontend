@@ -4,12 +4,12 @@ import {
   BadgeCheck,
   Bell,
   ChevronsUpDown,
+  LogIn,
   LogOut,
-  UserPlus,
-  LogIn
+  UserPlus
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, RedirectType, usePathname } from "next/navigation";
 
 import {
   Avatar,
@@ -98,6 +98,7 @@ export function NavProfile({ user }: { user: User | null; }) {
             <DropdownMenuItem onClick={() => {
               signOut();
               setUser(null);
+              redirect("/login", RedirectType.replace);
             }}>
               <LogOut />
               Log out
