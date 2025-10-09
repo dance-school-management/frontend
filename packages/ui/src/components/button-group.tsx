@@ -3,7 +3,7 @@ import { Children, ReactElement, cloneElement } from 'react';
 import { cn } from '@repo/ui/lib/utils';
 import * as React from "react";
 import type { VariantProps } from "class-variance-authority";
-import { buttonVariants } from "@repo/ui/button";
+import { buttonVariants } from "@repo/ui/components/button";
 
 interface ButtonGroupProps {
   className?: string;
