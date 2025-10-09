@@ -10,7 +10,12 @@ import {
     transformMasteredCategoriesToProgressItems,
     calculateTotalHours
 } from "@/lib/utils/progress-transformers";
-import { fetchCourseAttendanceRate, fetchDanceCategoryStats, fetchInstructorStats, fetchMasteredDanceCategories } from "@/lib/api/enroll";
+import {
+    fetchCourseAttendanceRate,
+    fetchDanceCategoryStats,
+    fetchInstructorStats,
+    fetchMasteredDanceCategories
+} from "@/lib/api/enroll";
 
 // const categoryChartData = [
 //     { name: "BALLET", value: 15.2 },
