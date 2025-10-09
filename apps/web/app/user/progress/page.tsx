@@ -38,7 +38,15 @@ import { fetchCourseAttendanceRate, fetchDanceCategoryStats, fetchInstructorStat
 //     { primaryText: "Jazz, Intermediate", secondaryText: "Mastered 16.06.2025", tertiaryText: "Instructor: Jane Smith" },
 // ];
 
+const ongoingCoursesEmptyState = {
+    title: "No ongoing courses",
+    description: "You don't participate in any course yet. Feel free to join one!"
+};
 
+const masteredEmptyState = {
+    title: "No mastered dance categories",
+    description: "You haven't mastered any dance category yet."
+};
 
 export default async function Page() {
     const danceCategoryStats = await fetchDanceCategoryStats();
@@ -65,7 +73,7 @@ export default async function Page() {
                             <CardTitle>Ongoing courses</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <ProgressItemGroup data={ongoingCourses} />
+                            <ProgressItemGroup data={ongoingCourses} emptyStateTitle={ongoingCoursesEmptyState.title} emptyStateDescription={ongoingCoursesEmptyState.description} />
                         </CardContent>
                     </Card>
                 </div>
@@ -75,7 +83,7 @@ export default async function Page() {
                             <CardTitle>Mastered dance categories</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <ProgressItemGroup data={mastered} />
+                            <ProgressItemGroup data={mastered} emptyStateTitle={masteredEmptyState.title} emptyStateDescription={masteredEmptyState.description} />
                         </CardContent>
                     </Card>
                 </div>

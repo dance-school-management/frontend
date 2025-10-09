@@ -7,11 +7,18 @@ import {
   ItemGroup,
   ItemTitle,
 } from "@repo/ui/item";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/components/empty";
 
-export function ProgressItemGroup({ data }: { data: ProgressItemProps[]; }) {
+interface ProgressItemGroupProps {
+  data: ProgressItemProps[];
+  emptyStateTitle: string;
+  emptyStateDescription: string;
+}
+
+export function ProgressItemGroup({ data, emptyStateTitle, emptyStateDescription }: ProgressItemGroupProps) {
   return (
     <ItemGroup>
-      {data.map((item, index) => (
+      {data.length > 0 && data.map((item, index) => (
         <ProgressItem
           key={index}
           primaryText={item.primaryText}
@@ -19,6 +26,16 @@ export function ProgressItemGroup({ data }: { data: ProgressItemProps[]; }) {
           tertiaryText={item.tertiaryText}
         />
       ))}
+      {data.length === 0 && (
+        <Empty className="p-2 md:p-2">
+          <EmptyHeader>
+            <EmptyTitle>{emptyStateTitle}</EmptyTitle>
+            <EmptyDescription>
+              {emptyStateDescription}
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      )}
     </ItemGroup>
   );
 }
