@@ -8,7 +8,7 @@ import { DanceCategoryStats, InstructorStats, CourseAttendanceRate, MasteredDanc
 export function transformDanceCategoryStatsToChartData(stats: DanceCategoryStats[]) {
   return stats.map(stat => ({
     name: stat.danceCategoryName,
-    value: stat.hoursSpent
+    value: stat.spentHours
   }));
 }
 
@@ -20,7 +20,7 @@ export function transformDanceCategoryStatsToChartData(stats: DanceCategoryStats
 export function transformInstructorStatsToChartData(stats: InstructorStats[]) {
   return stats.map(stat => ({
     name: `${stat.instructorFirstname} ${stat.instructorSurname}`,
-    value: stat.hoursSpent
+    value: stat.spentHours
   }));
 }
 
@@ -58,7 +58,7 @@ export function transformMasteredCategoriesToProgressItems(mastered: MasteredDan
  * @returns Total number of hours spent across all categories
  */
 export function calculateTotalHours(stats: DanceCategoryStats[]): number {
-  return stats.reduce((total, stat) => total + stat.hoursSpent, 0);
+  return stats.reduce((total, stat) => total + stat.spentHours, 0);
 }
 
 /**

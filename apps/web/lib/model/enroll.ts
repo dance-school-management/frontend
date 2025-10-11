@@ -28,7 +28,7 @@ export type MasteredDanceCategoriesResponse = MasteredDanceCategory[];
 
 export type DanceCategoryStats = {
   danceCategoryName: string;
-  hoursSpent: number;
+  spentHours: number;
 };
 
 export type DanceCategoryStatsResponse = {
@@ -38,7 +38,7 @@ export type DanceCategoryStatsResponse = {
 export type InstructorStats = {
   instructorFirstname: string;
   instructorSurname: string;
-  hoursSpent: number;
+  spentHours: number;
 };
 
 export type InstructorStatsResponse = {
