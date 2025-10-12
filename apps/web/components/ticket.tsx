@@ -1,6 +1,9 @@
 "use client";
-import { Ticket } from "@/lib/model/enroll";
 import { QRCodeSVG } from "qrcode.react";
+
+import { Ticket } from "@/lib/model/enroll";
+import { fmtTime } from "@/lib/utils/time";
+import { useUserStore } from "@/lib/store";
 
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
@@ -21,12 +24,11 @@ import {
   DialogTrigger,
 } from "@repo/ui/dialog";
 import { Separator } from "@repo/ui/separator";
-import { useUserStore } from "@/lib/store";
 
 export function TicketPreview({ ticket }: { ticket: Ticket; }) {
 
-  const startTime = ticket.startDate.split("T")[1]!.split(".")[0];
-  const endTime = ticket.endDate.split("T")[1]!.split(".")[0];
+  const startTime = fmtTime(ticket.startDate);
+  const endTime = fmtTime(ticket.endDate);
   const startDate = ticket.startDate.split("T")[0]!;
 
   const date = `${startDate} (${startTime} - ${endTime})`;
@@ -58,8 +60,8 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
     class_id: ticket.classid,
   };
 
-  const startTime = ticket.startDate.split("T")[1]!.split(".")[0]!.split(":").slice(0, 2).join(":");
-  const endTime = ticket.endDate.split("T")[1]!.split(".")[0]!.split(":").slice(0, 2).join(":");
+  const startTime = fmtTime(ticket.startDate);
+  const endTime = fmtTime(ticket.endDate);
   const startDate = ticket.startDate.split("T")[0]!;
 
   const date = `${startDate} (${startTime} - ${endTime})`;
