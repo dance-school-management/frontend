@@ -8,7 +8,7 @@ import {
 } from "@/lib/model/enroll";
 
 export async function fetchTickets(cookie?: string): Promise<ApiResult<TicketResponse>> {
-  return await fetcher("/enroll/ticket/student", "GET", undefined, { cookie });
+  return await fetcher("/enroll/ticket/retrieve", "GET", undefined, { cookie });
 }
 
 export async function fetchMasteredDanceCategories(cookie?: string): Promise<ApiResult<MasteredDanceCategoriesResponse>> {

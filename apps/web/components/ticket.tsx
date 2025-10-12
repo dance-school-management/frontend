@@ -39,7 +39,6 @@ export function TicketPreview({ ticket }: { ticket: Ticket; }) {
       <CardContent>
         <CardDescription >
           <p className="text-lg">Date: {date}</p>
-          {/* <p className="text-base">Trainer: {ticket.trainer}</p> */}
           <p className="text-base">Room: {ticket.classRoomName}</p>
         </CardDescription>
       </CardContent>
@@ -54,13 +53,13 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
   const { user } = useUserStore();
 
   const meta = {
-    // ticket_id: ticket.id,
+    qrCodeUUID: ticket.qrCodeUUID,
     user_id: user?.id,
     class_id: ticket.classid,
   };
 
-  const startTime = ticket.startDate.split("T")[1]!.split(".")[0];
-  const endTime = ticket.endDate.split("T")[1]!.split(".")[0];
+  const startTime = ticket.startDate.split("T")[1]!.split(".")[0]!.split(":").slice(0, 2).join(":");
+  const endTime = ticket.endDate.split("T")[1]!.split(".")[0]!.split(":").slice(0, 2).join(":");
   const startDate = ticket.startDate.split("T")[0]!;
 
   const date = `${startDate} (${startTime} - ${endTime})`;
@@ -79,7 +78,6 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
         </DialogHeader>
         <div className="text-foreground font-semibold text-base">
           <Info caption="Date:" value={date} />
-          {/* <Info caption="Trainer:" value={ticket.class.trainer} /> */}
           <Info caption="Room:" value={ticket.classRoomName} />
           <Info caption="Category:" value={ticket.danceCategoryName} />
           <Info caption="Level:" value={ticket.advancementLevelName} />
@@ -96,9 +94,9 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
             />
           </div>
         </AspectRatio>
-        {/* <p className="text-xs text-right">
-          <span className="font-semibold">Ticket ID:</span> {ticket.id}
-        </p> */}
+        <p className="text-xs text-right">
+          <span className="font-semibold">Ticket ID:</span> {ticket.qrCodeUUID}
+        </p>
       </DialogContent>
     </Dialog>
   );

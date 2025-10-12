@@ -1,5 +1,5 @@
 export type Ticket = {
-  // id: string | number;
+  qrCodeUUID: string;
   advancementLevelName: string;
   classid: number;
   classRoomName: string;
