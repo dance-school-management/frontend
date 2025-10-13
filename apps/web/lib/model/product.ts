@@ -1,3 +1,15 @@
+export type CourseSummary = {
+  id: number;
+  name: string;
+  description: string;
+  danceCategoryId: number;
+  advancementLevelId: number;
+  coursePrice: number;
+  danceCategory: DanceCategory;
+  advancementLevel: AdvancementLevel;
+  courseStatus: CourseStatus;
+};
+
 export type Course = {
   id: number;
   name: string;
@@ -79,8 +91,15 @@ export type CourseStatus =
   | 'ONGOING'
   | 'FINISHED';
 
-export interface AdditionalProductData {
+export type AdditionalProductData = {
   danceCategories: DanceCategory[];
   advancementLevels: AdvancementLevel[];
   classRooms: ClassRoom[];
-}
+};
+
+export type ClassWithTemplate = Omit<Class, 'instructorIds'> & { classTemplate: Omit<ClassTemplate, 'class'>; };
+
+export type CoursesClassesResponse = {
+  courseData: CourseSummary;
+  classes: ClassWithTemplate[];
+}[];
