@@ -1,4 +1,4 @@
-import { Course, AdditionalProductData, ClassTemplate, Class } from "@/lib/model/product";
+import { Course, AdditionalProductData, ClassTemplate, Class, CourseSummary, CoursesClassesResponse } from "@/lib/model/product";
 import { ApiResult, fetcher } from "@/lib/api/axios";
 
 type CreateCoursePayload = {
@@ -86,4 +86,20 @@ export async function fetchClassTemplate(id: number, cookie?: string): Promise<A
 
 export async function fetchAdditionalProductData(): Promise<ApiResult<AdditionalProductData>> {
   return await fetcher<AdditionalProductData>("/product/cms/aggregations/class-template-creation-data");
+}
+
+export async function fetchScheduleCourses(cookie?: string): Promise<ApiResult<CourseSummary[]>> {
+  const searchParams = new URLSearchParams();
+  searchParams.set("danceCategoryIds", JSON.stringify([]));
+  searchParams.set("advancementLevelIds", JSON.stringify([]));
+  searchParams.set("priceMin", "0");
+  searchParams.set("priceMax", "1000000");
+  return await fetcher<CourseSummary[]>(`/product/schedule/search/courses?${searchParams.toString()}`, undefined, undefined, { cookie });
+}
+
+export async function fetchCoursesClasses(courseIds: number[], cookie?: string): Promise<ApiResult<CoursesClassesResponse>> {
+  // const searchParams = new URLSearchParams(courseIds.map((courseId) => ["coursesIds", courseId.toString()]));
+  const searchParams = new URLSearchParams();
+  searchParams.set("coursesIds", JSON.stringify(courseIds));
+  return await fetcher<CoursesClassesResponse>(`/product/schedule/courses/classes?${searchParams.toString()}`, undefined, undefined, { cookie });
 }
