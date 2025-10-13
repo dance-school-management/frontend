@@ -3,7 +3,6 @@ import { QRCodeSVG } from "qrcode.react";
 
 import { Ticket } from "@/lib/model/enroll";
 import { fmtTime } from "@/lib/utils/time";
-import { useUserStore } from "@/lib/store";
 
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
@@ -52,12 +51,8 @@ export function TicketPreview({ ticket }: { ticket: Ticket; }) {
 }
 
 function TicketDialog({ ticket }: { ticket: Ticket; }) {
-  const { user } = useUserStore();
-
   const meta = {
     qrCodeUUID: ticket.qrCodeUUID,
-    user_id: user?.id,
-    class_id: ticket.classid,
   };
 
   const startTime = fmtTime(ticket.startDate);
