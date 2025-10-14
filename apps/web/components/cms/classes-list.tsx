@@ -35,12 +35,12 @@ export function ClassesList({ classTemplate, onEditClass }: ClassesListProps) {
   const classes = classTemplate.class.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
   return (
-    <Card className="gap-2">
-      <CardHeader>
+    <Card className="gap-2 border-none p-0">
+      <CardHeader className="px-0">
         <CardTitle>Classes</CardTitle>
         <CardDescription>List of all classes in this course</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0">
         <Drawer open={isNewClassSheetOpen} onOpenChange={setIsNewClassSheetOpen} direction="right">
           <DrawerTrigger asChild>
             <Button
