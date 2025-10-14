@@ -16,9 +16,11 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col items-center gap-4 grid-flow-row h-full p-4">
-      {tickets.map((ticket, id) => (
-        <TicketPreview key={id} ticket={ticket} />
-      ))}
+      {tickets
+        .filter((ticket) => new Date(ticket.endDate).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0))
+        .map((ticket) => (
+          <TicketPreview key={ticket.qrCodeUUID} ticket={ticket} />
+        ))}
     </div>
   );
 }
