@@ -18,6 +18,8 @@ import {
   DialogTrigger,
 } from "@repo/ui/dialog";
 
+import { truncateAtWordBoundary } from "@/lib/utils/text";
+
 export function CourseActions(course: Course) {
   return (
     <Card className="gap-2">
@@ -93,7 +95,7 @@ export function CoursePreview({ id, name, description }: PreviewProps) {
       <Alert variant="default" className="w-full">
         <AlertTitle className="text-lg font-semibold">{name}</AlertTitle>
         <AlertDescription className="text-sm text-muted-foreground">
-          {description}
+          {truncateAtWordBoundary(description, 200)}
         </AlertDescription>
       </Alert>
     </Link>
@@ -106,7 +108,7 @@ export function ClassTemplatePreview({ id, name, description }: PreviewProps) {
       <Alert variant="default" className="w-full">
         <AlertTitle className="text-lg font-semibold">{name}</AlertTitle>
         <AlertDescription className="text-sm text-muted-foreground">
-          {description}
+          {truncateAtWordBoundary(description, 200)}
         </AlertDescription>
       </Alert>
     </Link>
