@@ -49,7 +49,7 @@ export function CourseScheduleCard({ course, classes }: CourseScheduleCardProps)
             </div>
             <Separator className="mx-auto" orientation="vertical" />
             {/* TODO: Discuss if currency should be returned from the API*/}
-            <h2 className="text-xl font-bold">{course.coursePrice} PLN</h2>
+            <h2 className="text-xl font-bold">{course.coursePrice.toFixed(2)} PLN</h2>
           </CardFooter>
         </Card>
       </DialogTrigger>

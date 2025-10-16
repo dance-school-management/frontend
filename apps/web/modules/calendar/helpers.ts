@@ -13,10 +13,8 @@ import {
   isSameYear,
   startOfWeek,
   startOfMonth,
-  startOfYear,
   endOfMonth,
   endOfWeek,
-  endOfYear,
   format,
   parseISO,
   differenceInMinutes,
@@ -27,7 +25,7 @@ import {
 } from "date-fns";
 
 import { TCalendarView, TEventColor } from "@/modules/calendar/types";
-import type { ICalendarCell, IEvent } from "@/modules/calendar/types";
+import type { ICalendarCell, IEvent, IApiScheduleResponse, IApiScheduleItem } from "@/modules/calendar/types";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
 
@@ -38,20 +36,12 @@ export function rangeText(view: TCalendarView, date: Date) {
   let end: Date;
 
   switch (view) {
-    case "month":
-      start = startOfMonth(date);
-      end = endOfMonth(date);
-      break;
     case "week":
       start = startOfWeek(date);
       end = endOfWeek(date);
       break;
     case "day":
       return format(date, formatString);
-    case "year":
-      start = startOfYear(date);
-      end = endOfYear(date);
-      break;
     default:
       return "Error while formatting ";
   }
@@ -306,35 +296,6 @@ export const getEventsForWeek = (events: IEvent[], date: Date): IEvent[] => {
   });
 };
 
-export const getEventsForMonth = (events: IEvent[], date: Date): IEvent[] => {
-  const startOfMonthDate = startOfMonth(date);
-  const endOfMonthDate = endOfMonth(date);
-
-  return events.filter((event) => {
-    return new Date(event.startDate) < endOfMonthDate && new Date(event.endDate) > startOfMonthDate;
-  });
-};
-
-export const getEventsForYear = (events: IEvent[], date: Date): IEvent[] => {
-  if (!events || !Array.isArray(events) || !isValid(date)) {
-    return [];
-  }
-
-  const year = date.getFullYear();
-  const startOfYearDate = startOfYear(new Date(year, 0, 1));
-  const endOfYearDate = endOfYear(new Date(year, 0, 1));
-
-  return events.filter((event) => {
-    const eventStart = parseISO(event.startDate);
-    const eventEnd = parseISO(event.endDate);
-
-    if (!isValid(eventStart) || !isValid(eventEnd)) {
-      return false;
-    }
-
-    return eventStart <= endOfYearDate && eventEnd >= startOfYearDate;
-  });
-};
 
 export const getColorClass = (color: string): string => {
   const colorClasses: Record<TEventColor, string> = {
@@ -370,14 +331,81 @@ export const useGetEventsByMode = (events: IEvent[]) => {
     case 'week': {
       return getEventsForWeek(events, selectedDate);
     }
-    case 'month': {
-      return getEventsForMonth(events, selectedDate);
-    }
-    case 'year': {
-      return getEventsForYear(events, selectedDate);
-    }
     default: {
       return [];
     }
   }
 };
+
+// ================ API Data Transformation ================ //
+
+/**
+ * Converts hex color to TEventColor
+ */
+function hexToEventColor(hexColor: string): TEventColor {
+  // Remove # if present
+  const hex = hexColor.replace('#', '');
+
+  // Convert to RGB
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  // Determine color based on dominant RGB values
+  if (r > g && r > b) {
+    // Red dominant
+    if (g > 100 && b < 100) return 'orange';
+    return 'red';
+  } else if (g > r && g > b) {
+    // Green dominant
+    if (r > 100 && b < 100) return 'yellow';
+    return 'green';
+  } else if (b > r && b > g) {
+    // Blue dominant
+    if (r > 100 && g > 100) return 'purple';
+    return 'blue';
+  } else if (r > 150 && g > 150 && b < 100) {
+    return 'yellow';
+  } else if (r > 150 && g > 100 && b < 100) {
+    return 'orange';
+  } else if (r > 100 && g < 100 && b > 100) {
+    return 'purple';
+  }
+
+  // Default fallback
+  return 'blue';
+}
+
+/**
+ * Transforms API schedule data to calendar event format
+ */
+export function transformScheduleToEvents(apiData: IApiScheduleResponse): IEvent[] {
+  return apiData.map((item: IApiScheduleItem): IEvent | null => {
+    try {
+      return ({
+        id: item.id,
+        startDate: item.startDate,
+        endDate: item.endDate,
+        name: item.classTemplate.name,
+        color: hexToEventColor(item.classTemplate.scheduleTileColor),
+        description: item.classTemplate.description,
+        danceCategory: item.classTemplate.danceCategory.name,
+        advancementLevel: item.classTemplate.advancementLevel.name,
+        // TODO: Replace with actual classroom name when available from backend
+        classroom: `Room ${item.classRoomId}`,
+        price: parseFloat(item.classTemplate.price),
+        currency: item.classTemplate.currency,
+        courseId: item.classTemplate.courseId,
+        instructors: item.instructors.map(instructor => ({
+          url: instructor.id,
+          name: `${instructor.name} ${instructor.surname}`
+        })),
+        owned: item.owned,
+        paymentStatus: item.paymentStatus,
+      });
+    } catch {
+      return null;
+    }
+  })
+    .filter((event) => event !== null);
+}

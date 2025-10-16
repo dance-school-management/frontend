@@ -8,10 +8,8 @@ import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
 import { AgendaEvents } from "@/modules/calendar/components/agenda-view/agenda-events";
 import { CalendarHeader } from "@/modules/calendar/components/header/calendar-header";
-import { CalendarMonthView } from "@/modules/calendar/components/month-view/calendar-month-view";
 import { CalendarDayView } from "@/modules/calendar/components/week-and-day-view/calendar-day-view";
 import { CalendarWeekView } from "@/modules/calendar/components/week-and-day-view/calendar-week-view";
-import { CalendarYearView } from "@/modules/calendar/components/year-view/calendar-year-view";
 
 export function ClientContainer() {
   const { selectedDate, view, isAgendaMode, events } =
@@ -80,12 +78,6 @@ export function ClientContainer() {
             variants={fadeIn}
             transition={transition}
           >
-            {view === "month" && (
-              <CalendarMonthView
-                singleDayEvents={singleDayEvents}
-                multiDayEvents={multiDayEvents}
-              />
-            )}
             {view === "week" && (
               <CalendarWeekView
                 singleDayEvents={singleDayEvents}
@@ -94,12 +86,6 @@ export function ClientContainer() {
             )}
             {view === "day" && (
               <CalendarDayView
-                singleDayEvents={singleDayEvents}
-                multiDayEvents={multiDayEvents}
-              />
-            )}
-            {view === "year" && (
-              <CalendarYearView
                 singleDayEvents={singleDayEvents}
                 multiDayEvents={multiDayEvents}
               />

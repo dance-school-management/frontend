@@ -70,7 +70,7 @@ export function EventDetailsDialog({ event, children }: IProps) {
 
                         <div className="w-full flex md:justify-end">
                             <Button className="w-full md:w-50 mt-4 bg-green-500 hover:bg-green-600">
-                                Buy ({event.price} {event.currency})
+                                Buy ({event.price.toFixed(2)} {event.currency})
                             </Button>
                         </div>
                     </div>
