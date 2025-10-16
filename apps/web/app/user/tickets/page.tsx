@@ -1,6 +1,5 @@
-import { TicketPreview } from "@/components/ticket";
+import { TicketList } from "@/components/tickets/ticket-list";
 
-// import { tickets } from "./mocks";
 import { fetchTickets } from "@/lib/api/enroll";
 import { headers } from "next/headers";
 
@@ -14,13 +13,7 @@ export default async function Page() {
 
   const { tickets } = data;
 
-  return (
-    <div className="flex flex-col items-center gap-4 grid-flow-row h-full p-4">
-      {tickets
-        .filter((ticket) => new Date(ticket.endDate).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0))
-        .map((ticket) => (
-          <TicketPreview key={ticket.qrCodeUUID} ticket={ticket} />
-        ))}
-    </div>
-  );
+  const futureTickets = tickets.filter((ticket) => new Date(ticket.endDate).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0));
+
+  return <TicketList tickets={futureTickets} />;
 }
