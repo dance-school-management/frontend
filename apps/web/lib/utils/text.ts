@@ -15,3 +15,26 @@ export function truncateAtWordBoundary(text: string, maxLength: number): string 
 
   return result + '...';
 }
+
+export function calculateNameSimilarity(name: string, searchQuery: string): number {
+  if (!searchQuery.trim()) return 0;
+
+  const searchWords = searchQuery.toLowerCase().trim().split(/\s+/);
+  const nameWords = name.toLowerCase().split(/[\s\-–—,&]+/).filter(w => w.length > 0);
+
+  let totalScore = 0;
+  for (const searchWord of searchWords) {
+    let bestMatch = 0;
+    for (const nameWord of nameWords) {
+      if (nameWord === searchWord) {
+        bestMatch = 1.0; // Exact match
+        break;
+      } else if (nameWord.includes(searchWord) || searchWord.includes(nameWord)) {
+        bestMatch = Math.max(bestMatch, 0.5); // Partial match
+      }
+    }
+    totalScore += bestMatch;
+  }
+
+  return totalScore;
+}
