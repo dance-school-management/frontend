@@ -1,5 +1,6 @@
 import { Course, AdditionalProductData, ClassTemplate, Class, CourseSummary, CoursesClassesResponse } from "@/lib/model/product";
 import { ApiResult, fetcher } from "@/lib/api/axios";
+import { IApiScheduleResponse } from "@/modules/calendar/types";
 
 type CreateCoursePayload = {
   name: string;
@@ -95,4 +96,8 @@ export async function fetchScheduleCourses(cookie?: string): Promise<ApiResult<C
 export async function fetchCoursesClasses(courseIds: number[], cookie?: string): Promise<ApiResult<CoursesClassesResponse>> {
   const searchParams = new URLSearchParams(courseIds.map((courseId) => ["coursesIds", courseId.toString()]));
   return await fetcher<CoursesClassesResponse>(`/product/schedule/courses/classes?${searchParams.toString()}`, undefined, undefined, { cookie });
+}
+
+export async function fetchSchedule(dateFrom: string, dateTo: string, cookie?: string): Promise<ApiResult<IApiScheduleResponse>> {
+  return await fetcher<IApiScheduleResponse>(`/product/schedule?dateFrom=${dateFrom}&dateTo=${dateTo}`, undefined, undefined, { cookie });
 }
