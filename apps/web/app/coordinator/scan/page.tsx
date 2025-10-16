@@ -27,11 +27,23 @@ export default function Page() {
                     formats={['qr_code']}
                     onScan={onScan}
                     onError={onError}
-                    components={{ finder: true }}
+                    components={{ finder: false }}
                     allowMultiple
-                    scanDelay={2000}
+                    scanDelay={5000}
+                    styles={{ container: containerStyles }}
                 />
             </div>
         </div>
     );
+};
+
+const containerStyles = {
+    '--s': 'min(10rem, 20vw)',
+    padding: '0.25rem',
+    border: '0.5rem solid var(--foreground)',
+    WebkitMask: `
+        conic-gradient(at var(--s) var(--s),#0000 75%,#000 0)
+        0 0/calc(100% - var(--s)) calc(100% - var(--s)),
+        linear-gradient(#000 0 0) content-box
+    `
 };

@@ -1,6 +1,8 @@
 "use client";
-import { Ticket } from "@/lib/model/enroll";
 import { QRCodeSVG } from "qrcode.react";
+
+import { Ticket } from "@/lib/model/enroll";
+import { fmtTime } from "@/lib/utils/time";
 
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
@@ -21,12 +23,11 @@ import {
   DialogTrigger,
 } from "@repo/ui/dialog";
 import { Separator } from "@repo/ui/separator";
-import { useUserStore } from "@/lib/store";
 
 export function TicketPreview({ ticket }: { ticket: Ticket; }) {
 
-  const startTime = ticket.startDate.split("T")[1]!.split(".")[0];
-  const endTime = ticket.endDate.split("T")[1]!.split(".")[0];
+  const startTime = fmtTime(ticket.startDate);
+  const endTime = fmtTime(ticket.endDate);
   const startDate = ticket.startDate.split("T")[0]!;
 
   const date = `${startDate} (${startTime} - ${endTime})`;
@@ -39,7 +40,6 @@ export function TicketPreview({ ticket }: { ticket: Ticket; }) {
       <CardContent>
         <CardDescription >
           <p className="text-lg">Date: {date}</p>
-          {/* <p className="text-base">Trainer: {ticket.trainer}</p> */}
           <p className="text-base">Room: {ticket.classRoomName}</p>
         </CardDescription>
       </CardContent>
@@ -51,16 +51,12 @@ export function TicketPreview({ ticket }: { ticket: Ticket; }) {
 }
 
 function TicketDialog({ ticket }: { ticket: Ticket; }) {
-  const { user } = useUserStore();
-
   const meta = {
-    // ticket_id: ticket.id,
-    user_id: user?.id,
-    class_id: ticket.classid,
+    qrCodeUUID: ticket.qrCodeUUID,
   };
 
-  const startTime = ticket.startDate.split("T")[1]!.split(".")[0];
-  const endTime = ticket.endDate.split("T")[1]!.split(".")[0];
+  const startTime = fmtTime(ticket.startDate);
+  const endTime = fmtTime(ticket.endDate);
   const startDate = ticket.startDate.split("T")[0]!;
 
   const date = `${startDate} (${startTime} - ${endTime})`;
@@ -79,7 +75,6 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
         </DialogHeader>
         <div className="text-foreground font-semibold text-base">
           <Info caption="Date:" value={date} />
-          {/* <Info caption="Trainer:" value={ticket.class.trainer} /> */}
           <Info caption="Room:" value={ticket.classRoomName} />
           <Info caption="Category:" value={ticket.danceCategoryName} />
           <Info caption="Level:" value={ticket.advancementLevelName} />
@@ -96,9 +91,9 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
             />
           </div>
         </AspectRatio>
-        {/* <p className="text-xs text-right">
-          <span className="font-semibold">Ticket ID:</span> {ticket.id}
-        </p> */}
+        <p className="text-xs text-right">
+          <span className="font-semibold">Ticket ID:</span> {ticket.qrCodeUUID}
+        </p>
       </DialogContent>
     </Dialog>
   );

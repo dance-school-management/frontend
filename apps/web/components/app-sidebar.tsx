@@ -2,6 +2,7 @@
 
 import {
   Banknote,
+  BookOpen,
   Calendar,
   ChartColumn,
   Home,
@@ -35,7 +36,7 @@ const data = {
       icon: Info,
       items: [
         {
-          title: "Our instructors",
+          title: "Our Instructors",
           url: "/about/instructors",
         },
         {
@@ -63,6 +64,11 @@ const data = {
       url: "/schedule",
       icon: Calendar,
     },
+    {
+      title: "Courses",
+      url: "/courses",
+      icon: BookOpen,
+    }
   ],
   bottom: [
     {
