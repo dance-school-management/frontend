@@ -26,3 +26,7 @@ export async function fetchInstructorStats(cookie?: string): Promise<ApiResult<I
 export async function fetchCourseAttendanceRate(cookie?: string): Promise<ApiResult<CourseAttendanceRateResponse>> {
   return await fetcher("/enroll/progress/courses-attendance-rates", "GET", undefined, { cookie });
 }
+
+export async function checkTicketValidity(qrCodeUUID: string, cookie?: string): Promise<ApiResult<unknown>> {
+  return await fetcher(`/enroll/ticket/scan?qrCodeUUID=${qrCodeUUID}`, "GET", undefined, { cookie });
+}
