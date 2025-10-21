@@ -4,6 +4,7 @@ import {
   DanceCategoryStatsResponse,
   InstructorStatsResponse,
   MasteredDanceCategoriesResponse,
+  PaymentLinkResponse,
   TicketResponse
 } from "@/lib/model/enroll";
 
@@ -29,4 +30,16 @@ export async function fetchCourseAttendanceRate(cookie?: string): Promise<ApiRes
 
 export async function checkTicketValidity(qrCodeUUID: string, cookie?: string): Promise<ApiResult<unknown>> {
   return await fetcher(`/enroll/ticket/scan?qrCodeUUID=${qrCodeUUID}`, "GET", undefined, { cookie });
+}
+
+export async function getPaymentLink(classId?: number, courseId?: number, cookie?: string): Promise<ApiResult<PaymentLinkResponse>> {
+  const params = new URLSearchParams();
+  if (classId) {
+    params.append("classId", classId.toString());
+  }
+  if (courseId) {
+    params.append("courseId", courseId.toString());
+  }
+
+  return await fetcher(`/enroll/order/payment-link?${params.toString()}`, "GET", undefined, { cookie });
 }

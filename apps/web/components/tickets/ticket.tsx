@@ -2,7 +2,7 @@
 import { QRCodeSVG } from "qrcode.react";
 
 import { Ticket } from "@/lib/model/enroll";
-import { fmtTime } from "@/lib/utils/time";
+import { fmtTime, isToday } from "@/lib/utils/time";
 
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
@@ -24,8 +24,12 @@ import {
 } from "@repo/ui/dialog";
 import { Separator } from "@repo/ui/separator";
 
-export function TicketPreview({ ticket }: { ticket: Ticket; }) {
+interface TicketPreviewProps {
+  ticket: Ticket;
+  variant?: "current" | "past";
+}
 
+export function TicketPreview({ ticket, variant = "current" }: TicketPreviewProps) {
   const startTime = fmtTime(ticket.startDate);
   const endTime = fmtTime(ticket.endDate);
   const startDate = ticket.startDate.split("T")[0]!;
@@ -44,13 +48,18 @@ export function TicketPreview({ ticket }: { ticket: Ticket; }) {
         </CardDescription>
       </CardContent>
       <CardFooter className="mt-2">
-        <TicketDialog ticket={ticket} />
+        <TicketDialog ticket={ticket} withCode={variant === "current"} />
       </CardFooter>
     </Card>
   );
 }
 
-function TicketDialog({ ticket }: { ticket: Ticket; }) {
+interface TicketDialogProps {
+  ticket: Ticket;
+  withCode?: boolean;
+}
+
+function TicketDialog({ ticket, withCode = true }: TicketDialogProps) {
   const meta = {
     qrCodeUUID: ticket.qrCodeUUID,
   };
@@ -64,7 +73,7 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer ml-auto w-full sm:w-48">Show Code</Button>
+        <Button className="cursor-pointer ml-auto w-full sm:w-48">Show More</Button>
       </DialogTrigger>
       <DialogContent className="w-full max-h-[90%] overflow-auto">
         <DialogHeader>
@@ -78,22 +87,26 @@ function TicketDialog({ ticket }: { ticket: Ticket; }) {
           <Info caption="Room:" value={ticket.classRoomName} />
           <Info caption="Category:" value={ticket.danceCategoryName} />
           <Info caption="Level:" value={ticket.advancementLevelName} />
-          <Separator className="mt-2" />
         </div>
-        <p className="font-normal text-xs md:text-sm text-muted-foreground">This is your ticket for the class. Scan it, please.</p>
-        <AspectRatio ratio={1 / 1} className="w-full">
-          <div className="bg-white rounded-xl w-full h-full flex justify-center items-center">
-            <QRCodeSVG
-              className="p-3 w-full h-full"
-              value={JSON.stringify(meta)}
-              bgColor="transparent"
-              level="H"
-            />
-          </div>
-        </AspectRatio>
-        <p className="text-xs text-right">
-          <span className="font-semibold">Ticket ID:</span> {ticket.qrCodeUUID}
-        </p>
+        {withCode && isToday(ticket.startDate) && (
+          <>
+            <Separator />
+            <p className="font-normal text-xs md:text-sm text-muted-foreground">This is your ticket for the class. Scan it, please.</p>
+            <AspectRatio ratio={1 / 1} className="w-full">
+              <div className="bg-white rounded-xl w-full h-full flex justify-center items-center">
+                <QRCodeSVG
+                  className="p-3 w-full h-full"
+                  value={JSON.stringify(meta)}
+                  bgColor="transparent"
+                  level="H"
+                />
+              </div>
+            </AspectRatio>
+            <p className="text-xs text-right">
+              <span className="font-semibold">Ticket ID:</span> {ticket.qrCodeUUID}
+            </p>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
