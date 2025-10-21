@@ -6,6 +6,10 @@ export type Instructor = {
   id: string;
   name: string;
   surname: string;
+  email: string;
+  phone: string;
+  startDate: string;
   description: string;
-  photo_url?: string;
+  photoPath?: string;
+  favouriteDanceCategories: string[];
 };
