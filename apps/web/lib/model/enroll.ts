@@ -1,13 +1,21 @@
+export type AttendanceStatus = "PRESENT" | "ABSENT";
+
+export type PaymentStatus = "PENDING" | "PAID" | "REFUNDED" | "PART_OF_COURSE";
+
 export type Ticket = {
-  qrCodeUUID: string;
   advancementLevelName: string;
-  classid: number;
+  attendanceLastUpdated: string;
+  attendanceStatus: AttendanceStatus;
+  classId: number;
   classRoomName: string;
   danceCategoryName: string;
   description: string;
   endDate: string;
-  startDate: string;
   name: string;
+  paymentStatus: PaymentStatus;
+  price: number;
+  qrCodeUUID: string;
+  startDate: string;
 };
 
 export type TicketResponse = {
@@ -56,4 +64,8 @@ export type CourseAttendanceRate = {
 
 export type CourseAttendanceRateResponse = {
   courseAttendancesRates: CourseAttendanceRate[];
+};
+
+export type PaymentLinkResponse = {
+  url: string;
 };
