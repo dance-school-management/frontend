@@ -9,12 +9,18 @@ import { Input } from "@repo/ui/input";
 
 interface TicketListProps {
   tickets: Ticket[];
+  variant?: "current" | "past";
 }
 
-export function TicketList({ tickets }: TicketListProps) {
+export function TicketList({ tickets, variant = "current" }: TicketListProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredAndSortedTickets = searchAndSortTickets(tickets, searchQuery);
+
+
+  if (filteredAndSortedTickets.length === 0) {
+    return <EmptyState />;
+  }
 
   return (
     <div className="flex flex-col items-center gap-4 grid-flow-row h-full p-4">
@@ -28,8 +34,16 @@ export function TicketList({ tickets }: TicketListProps) {
         />
       </div>
       {filteredAndSortedTickets.map((ticket) => (
-        <TicketPreview key={ticket.qrCodeUUID} ticket={ticket} />
+        <TicketPreview key={ticket.qrCodeUUID} ticket={ticket} variant={variant} />
       ))}
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className="flex flex-col items-center gap-4 grid-flow-row h-full p-4">
+      <p className="text-muted-foreground">No tickets found</p>
     </div>
   );
 }
