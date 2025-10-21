@@ -78,7 +78,6 @@ export default async function Page() {
                   {tab.tickets.length} {tab.tickets.length === 1 ? 'ticket' : 'tickets'}
                 </span>
               </div>
-              {/* TODO: Change logic */}
               {tab.value === "payment" ? (
                 <PaymentList tickets={tab.tickets} />
               ) : (
