@@ -38,3 +38,7 @@ export function calculateNameSimilarity(name: string, searchQuery: string): numb
 
   return totalScore;
 }
+
+export function getInitials(name: string, surname: string): string {
+  return name.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase();
+}
