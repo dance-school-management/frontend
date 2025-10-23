@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ApiError } from './axios';
 import { AdditionalProductData } from '@/lib/model/product';
-import { InstructorResponse } from '@/lib/model/profile';
+import { InstructorsResponse } from '@/lib/model/profile';
 import { IEvent, IApiScheduleResponse } from '@/modules/calendar/types';
 
 import { fetchAdditionalProductData, fetchSchedule } from '@/lib/api/product';
@@ -9,7 +9,6 @@ import { fetchInstructors } from '@/lib/api/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
 
 import { fetchAdditionalProductData as fetchAdditionalProductDataMock } from '@/mocks/product';
-import { fetchInstructors as fetchInstructorsMock } from '@/mocks/profile';
 
 export function useAdditionalProductData() {
   return useQuery<AdditionalProductData, ApiError>({
@@ -24,10 +23,10 @@ export function useAdditionalProductData() {
 }
 
 export function useInstructors() {
-  return useQuery<InstructorResponse, ApiError>({
+  return useQuery<InstructorsResponse, ApiError>({
     queryKey: ['instructors'],
     queryFn: async () => {
-      const result = process.env.NEXT_PUBLIC_USE_MOCKS === 'true' ? await fetchInstructorsMock() : await fetchInstructors();
+      const result = await fetchInstructors();
       if (result.error) throw result.error;
       return result.data!;
     },
