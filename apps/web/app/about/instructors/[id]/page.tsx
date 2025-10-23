@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 
 import { fetchInstructor } from "@/lib/api/profile";
 import { InstructorDetailsBody, InstructorDetailsHeader } from '@/components/instructors/details';
+import { InstructorExperienceChart } from '@/components/instructors/chart';
 
 export default async function Page({ params }: { params: Promise<{ id: string; }>; }) {
   const { id } = await params;
@@ -28,6 +29,7 @@ export default async function Page({ params }: { params: Promise<{ id: string; }
         <div className="max-w-3xl space-y-4">
           <InstructorDetailsHeader instructor={instructor} />
           <InstructorDetailsBody instructor={instructor} />
+          <InstructorExperienceChart experience={instructor.experience} />
         </div>
       </div>
     </div>
