@@ -4,7 +4,7 @@ import { Instructor } from "@/lib/model/profile";
 import { getInitials } from "@/lib/utils/text";
 import { Avatar, AvatarImage, AvatarFallback } from "@repo/ui/components/avatar";
 import { Item, ItemContent, ItemMedia, ItemTitle, ItemDescription } from "@repo/ui/components/item";
-
+import { DanceCategoryBadge } from "@/components/instructors/badge";
 
 interface InstructorPreviewCardProps {
   instructor: Instructor;
@@ -34,13 +34,5 @@ export function InstructorPreviewCard({ instructor }: InstructorPreviewCardProps
         </ItemContent>
       </Item>
     </Link>
-  );
-}
-
-function DanceCategoryBadge({ category }: { category: string; }) {
-  return (
-    <span className='px-3 py-1 text-xs font-bold rounded-sm bg-primary/10 text-primary'>
-      {category}
-    </span>
   );
 }
