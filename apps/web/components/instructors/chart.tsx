@@ -51,7 +51,7 @@ export function InstructorExperienceChart({ experience }: InstructorExperienceCh
       <p className="text-sm text-muted-foreground">Chart below shows the hours spent teaching each dance category and advancement level.</p>
       <ChartContainer
         config={chartConfig}
-        className="aspect-square w-full max-w-[500px]"
+        className="aspect-square w-full max-w-[500px] mx-auto"
       >
         <PieChart>
           <ChartTooltip
