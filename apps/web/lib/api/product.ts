@@ -1,4 +1,12 @@
-import { Course, AdditionalProductData, ClassTemplate, Class, CourseSummary, CoursesClassesResponse } from "@/lib/model/product";
+import {
+  Course,
+  AdditionalProductData,
+  ClassTemplate,
+  Class,
+  CourseSummary,
+  CoursesClassesResponse,
+  ClassStatus,
+} from "@/lib/model/product";
 import { ApiResult, fetcher } from "@/lib/api/axios";
 import { IApiScheduleResponse } from "@/modules/calendar/types";
 
@@ -42,6 +50,12 @@ interface UpdateClassTemplatePayload {
   advancementLevelId: number | null;
 };
 
+type UpdateClassStatusPayload = {
+  classId: number;
+  newStatus: ClassStatus;
+  isConfirmation: boolean;
+};
+
 interface CreateClassTemplatePayload extends UpdateClassTemplatePayload {
   isConfirmation: boolean;
 }
@@ -52,6 +66,10 @@ export async function createCourse(payload: CreateCoursePayload) {
 
 export async function createClass(payload: CreateClassPayload) {
   return await fetcher<Class>("/product/cms/class", "POST", payload);
+}
+
+export async function updateClassStatus(payload: UpdateClassStatusPayload, cookie?: string) {
+  return await fetcher<Class>("/product/cms/class/status/edit", "PUT", payload, { cookie });
 }
 
 export async function updateCourse(payload: UpdateCoursePayload) {
