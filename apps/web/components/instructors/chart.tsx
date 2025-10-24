@@ -20,8 +20,18 @@ function getChartColor(index: number, total: number): string {
   return `hsl(${hue}, 70%, ${lightness}%)`;
 }
 
+function experienceNotEmpty(experience: InstructorExperience): boolean {
+  return experience.danceCategoryName !== "" && experience.advancementLevelName !== "" && experience.spentHours > 0;
+}
+
 export function InstructorExperienceChart({ experience }: InstructorExperienceChartProps) {
-  const chartData = experience.map((item, index) => ({
+  const filteredExperience = experience.filter(experienceNotEmpty);
+
+  if (filteredExperience.length === 0) {
+    return null;
+  }
+
+  const chartData = filteredExperience.map((item, index) => ({
     name: item.danceCategoryName,
     category: item.danceCategoryName,
     level: item.advancementLevelName,
