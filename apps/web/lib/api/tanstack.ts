@@ -8,13 +8,11 @@ import { fetchAdditionalProductData, fetchSchedule } from '@/lib/api/product';
 import { fetchInstructors } from '@/lib/api/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
 
-import { fetchAdditionalProductData as fetchAdditionalProductDataMock } from '@/mocks/product';
-
 export function useAdditionalProductData() {
   return useQuery<AdditionalProductData, ApiError>({
     queryKey: ['additionalProductData'],
     queryFn: async () => {
-      const result = process.env.NEXT_PUBLIC_USE_MOCKS === 'true' ? await fetchAdditionalProductDataMock() : await fetchAdditionalProductData();
+      const result = await fetchAdditionalProductData();
       if (result.error) throw result.error;
       return result.data!;
     },
