@@ -15,27 +15,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
+          version: 10
           run_install: false
 
-      - name: Cache pnpm store
-        uses: actions/cache@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          node-version: 22
+          cache: "pnpm"
+
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
 
       - name: Run linting
         run: pnpm lint
@@ -56,23 +50,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
+          version: 10
           run_install: false
 
-      - name: Restore pnpm cache
-        uses: actions/cache@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          node-version: 22
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
