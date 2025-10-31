@@ -2,7 +2,8 @@
 import { QRCodeSVG } from "qrcode.react";
 
 import { Ticket } from "@/lib/model/enroll";
-import { fmtTime, isToday } from "@/lib/utils/time";
+import { fmtDate, fmtTime } from "@/lib/utils/time";
+import { isSameDay } from "date-fns";
 
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
@@ -66,7 +67,8 @@ function TicketDialog({ ticket, withCode = true }: TicketDialogProps) {
 
   const startTime = fmtTime(ticket.startDate);
   const endTime = fmtTime(ticket.endDate);
-  const startDate = ticket.startDate.split("T")[0]!;
+  const startDate = fmtDate(ticket.startDate);
+  const isToday = isSameDay(new Date(ticket.startDate), new Date());
 
   const date = `${startDate} (${startTime} - ${endTime})`;
 
@@ -88,7 +90,7 @@ function TicketDialog({ ticket, withCode = true }: TicketDialogProps) {
           <Info caption="Category:" value={ticket.danceCategoryName} />
           <Info caption="Level:" value={ticket.advancementLevelName} />
         </div>
-        {withCode && isToday(ticket.startDate) && (
+        {withCode && isToday && (
           <>
             <Separator />
             <p className="font-normal text-xs md:text-sm text-muted-foreground">This is your ticket for the class. Scan it, please.</p>
