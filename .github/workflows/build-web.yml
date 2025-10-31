@@ -28,7 +28,7 @@ jobs:
 
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Run linting
         run: pnpm lint
@@ -61,7 +61,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Build Next.js app
         run: pnpm run build
