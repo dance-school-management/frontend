@@ -132,7 +132,7 @@ export function NavProfile({ user }: { user: User | null; }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-    </SidebarMenu >
+    </SidebarMenu>
   );
 }
 

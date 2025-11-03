@@ -37,7 +37,7 @@ export default function SettingsLayout({
     <div className="container mx-auto py-8 px-4 max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Settings</h1>
-        <p className="text-muted-foreground">Manage your account settings and set e-mail preferences.</p>
+        <p className="text-muted-foreground">Manage your account settings and preferences.</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">

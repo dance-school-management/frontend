@@ -60,4 +60,3 @@ export default function NotificationsPage() {
     </Card>
   );
 }
-
