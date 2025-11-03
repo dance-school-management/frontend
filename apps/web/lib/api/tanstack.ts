@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
 import { ApiError } from './axios';
 
 
-import { fetchNewNotifications } from '@/lib/api/notification';
+import { fetchNewNotifications, getNotificationsStatus, NotificationsStatusResponse } from '@/lib/api/notification';
 import { fetchAdditionalProductData, fetchSchedule } from '@/lib/api/product';
 import { fetchInstructors } from '@/lib/api/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
@@ -58,6 +58,17 @@ export function useScheduleEvents(selectedDate: Date) {
     },
     staleTime: 15 * 60 * 1000, // 15 minutes
     gcTime: 30 * 60 * 1000, // 30 minutes
+  });
+}
+
+export function useNotificationsStatus() {
+  return useQuery<NotificationsStatusResponse, ApiError>({
+    queryKey: ['notifications:status'],
+    queryFn: async () => {
+      const result = await getNotificationsStatus(typeof document !== 'undefined' ? document.cookie : undefined);
+      if (result.error) throw result.error;
+      return result.data!;
+    },
   });
 }
 
@@ -115,5 +126,9 @@ export function useNotificationsPolling(limit = 50) {
     notifications: allQuery.data ?? [],
     refresh: () => queryClient.invalidateQueries({ queryKey: ['notifications:poll'] }),
     lengthUnread: allQuery.data?.filter((notification) => !notification.hasBeenRead).length ?? 0,
+    removeAll: () => {
+      queryClient.removeQueries({ queryKey: ['notifications:all', 'notifications:poll', 'notifications:status'], exact: true });
+      queryClient.clear();
+    },
   };
 }

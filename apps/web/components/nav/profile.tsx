@@ -42,7 +42,7 @@ import {
 } from "@repo/ui/dialog";
 
 export function NavProfile({ user }: { user: User | null; }) {
-  const { notifications, lengthUnread } = useNotificationsPolling();
+  const { notifications, lengthUnread, removeAll } = useNotificationsPolling();
   const { setUser } = useUserStore();
   const pathname = usePathname();
 
@@ -97,10 +97,12 @@ export function NavProfile({ user }: { user: User | null; }) {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserIcon />
-                Profile
-              </DropdownMenuItem>
+              <Link href="/user/settings/profile">
+                <DropdownMenuItem>
+                  <UserIcon />
+                  Profile
+                </DropdownMenuItem>
+              </Link>
               <Dialog modal={true}>
                 <DialogTrigger asChild>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
@@ -110,15 +112,18 @@ export function NavProfile({ user }: { user: User | null; }) {
                 </DialogTrigger>
                 <NotificationsList notifications={notifications} />
               </Dialog>
-              <DropdownMenuItem>
-                <SettingsIcon />
-                Settings
-              </DropdownMenuItem>
+              <Link href="/user/settings/appearance">
+                <DropdownMenuItem>
+                  <SettingsIcon />
+                  Settings
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
-              signOut();
               setUser(null);
+              removeAll();
+              signOut();
               redirect("/login", RedirectType.replace);
             }}>
               <LogOut />
