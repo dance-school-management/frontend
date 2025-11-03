@@ -2,10 +2,8 @@
 
 import {
   Bell,
-  CreditCard,
   type LucideIcon,
   Palette,
-  Shield,
   User,
 } from "lucide-react";
 import Link from "next/link";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 
 export default function ProfilePage() {
   return (
