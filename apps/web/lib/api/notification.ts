@@ -10,3 +10,13 @@ export async function fetchNewNotifications(dateFrom?: string, limit = 50): Prom
   params.set('limit', String(limit));
   return await fetcher<Paginated<Notification>>(`/notification/notification?${params.toString()}`, "GET");
 }
+
+interface MarkNotificationAsReadResponse {
+  userId: string;
+  notificationId: number;
+  hasBeenRead: boolean;
+};
+
+export async function markNotificationAsRead(id: number, cookie?: string): Promise<ApiResult<MarkNotificationAsReadResponse>> {
+  return await fetcher<MarkNotificationAsReadResponse>(`/notification/notification/status/${id}`, "PUT", { hasBeenRead: true }, { cookie });
+}

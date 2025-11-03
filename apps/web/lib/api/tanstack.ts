@@ -114,5 +114,6 @@ export function useNotificationsPolling(limit = 50) {
     ...pollQuery,
     notifications: allQuery.data ?? [],
     refresh: () => queryClient.invalidateQueries({ queryKey: ['notifications:poll'] }),
+    lengthUnread: allQuery.data?.filter((notification) => !notification.hasBeenRead).length ?? 0,
   };
 }
