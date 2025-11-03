@@ -1,11 +1,12 @@
 "use client";
 
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
   LogIn,
   LogOut,
+  SettingsIcon,
+  UserIcon,
   UserPlus
 } from "lucide-react";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@repo/ui/avatar";
+import { Badge } from "@repo/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,10 +32,17 @@ import {
   SidebarMenuItem,
 } from "@repo/ui/sidebar";
 
+import { NotificationsList } from "@/components/notifications/list";
+import { useNotificationsPolling } from "@/lib/api/tanstack";
 import { signOut, User } from "@/lib/model";
 import { useUserStore } from "@/lib/store";
+import {
+  Dialog,
+  DialogTrigger
+} from "@repo/ui/dialog";
 
 export function NavProfile({ user }: { user: User | null; }) {
+  const { notifications, lengthUnread } = useNotificationsPolling();
   const { setUser } = useUserStore();
   const pathname = usePathname();
 
@@ -67,10 +76,13 @@ export function NavProfile({ user }: { user: User | null; }) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.image || ""} alt={user.name} />
-                <AvatarFallback className="rounded-lg">{fallbackAvatar(user.name)}</AvatarFallback>
-              </Avatar>
+              <div className="relative">
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage src={user.image || ""} alt={user.name} />
+                  <AvatarFallback className="rounded-lg">{fallbackAvatar(user.name)}</AvatarFallback>
+                </Avatar>
+                {lengthUnread > 0 && <Badge className='absolute -top-1.5 -right-1.5 h-4 min-w-4 rounded-full bg-indigo-500 px-1 tabular-nums'>{lengthUnread}</Badge>}
+              </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
@@ -86,12 +98,21 @@ export function NavProfile({ user }: { user: User | null; }) {
           >
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                <UserIcon />
+                Profile
               </DropdownMenuItem>
+              <Dialog modal={true}>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <Bell />
+                    Notifications
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <NotificationsList notifications={notifications} />
+              </Dialog>
               <DropdownMenuItem>
-                <Bell />
-                Notifications
+                <SettingsIcon />
+                Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -106,7 +127,7 @@ export function NavProfile({ user }: { user: User | null; }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-    </SidebarMenu>
+    </SidebarMenu >
   );
 }
 
