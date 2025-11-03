@@ -22,8 +22,8 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   { id: "profile", label: "Profile", icon: User, href: "/user/settings/profile" },
-  { id: "account", label: "Account", icon: Shield, href: "/user/settings/account" },
-  { id: "payments", label: "Payments", icon: CreditCard, href: "/user/settings/payments" },
+  // { id: "account", label: "Account", icon: Shield, href: "/user/settings/account" },
+  // { id: "payments", label: "Payments", icon: CreditCard, href: "/user/settings/payments" },
   { id: "appearance", label: "Appearance", icon: Palette, href: "/user/settings/appearance" },
   { id: "notifications", label: "Notifications", icon: Bell, href: "/user/settings/notifications" },
 ];
