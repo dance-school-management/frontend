@@ -26,7 +26,7 @@ interface RegisterForNotificationsResponse {
 }
 
 export async function registerForNotifications(cookie?: string): Promise<ApiResult<RegisterForNotificationsResponse>> {
-  return await fetcher<RegisterForNotificationsResponse>(`/notification/notification/register`, "POST", { cookie });
+  return await fetcher<RegisterForNotificationsResponse>(`/notification/notification/register`, "POST", undefined, { cookie });
 }
 
 interface ToggleNotificationsResponse {
