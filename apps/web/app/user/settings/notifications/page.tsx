@@ -18,24 +18,19 @@ export default function NotificationsPage() {
   const handleUpdateNotifications = async (
     values: NotificationsFormValues,
   ) => {
-    let errorMessage = "";
     try {
       const registerResult = await registerForNotifications(document.cookie);
       if (registerResult.error) {
-        errorMessage = registerResult.error.message;
+        toast.error(registerResult.error.message);
         return;
       }
 
       const toggleResult = await toggleNotifications(values.enableNotifications, document.cookie);
       if (toggleResult.error) {
-        errorMessage = toggleResult.error.message;
+        toast.error(toggleResult.error.message);
         return;
       }
 
-      if (errorMessage !== "") {
-        toast.error(errorMessage);
-        return;
-      }
       await queryClient.invalidateQueries({ queryKey: ["notifications:status"] });
       toast.success("Notification settings updated successfully");
     } catch {

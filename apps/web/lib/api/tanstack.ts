@@ -79,12 +79,7 @@ export function useNotificationsPolling(limit = 50) {
 
   const enabled = user !== null;
 
-  const allQuery = useQuery<Notification[]>({
-    queryKey: ['notifications:all'],
-    queryFn: () => queryClient.getQueryData<Notification[]>(['notifications:all']) ?? [],
-    staleTime: Infinity,
-    initialData: [],
-  });
+  const notifications = queryClient.getQueryData<Notification[]>(['notifications:all']) ?? [];
 
   const pollQuery = useQuery<Paginated<Notification>, ApiError>({
     queryKey: ['notifications:poll'],
@@ -123,12 +118,13 @@ export function useNotificationsPolling(limit = 50) {
 
   return {
     ...pollQuery,
-    notifications: allQuery.data ?? [],
+    notifications,
     refresh: () => queryClient.invalidateQueries({ queryKey: ['notifications:poll'] }),
-    lengthUnread: allQuery.data?.filter((notification) => !notification.hasBeenRead).length ?? 0,
+    lengthUnread: notifications.filter((notification) => !notification.hasBeenRead).length,
     removeAll: () => {
-      queryClient.removeQueries({ queryKey: ['notifications:all', 'notifications:poll', 'notifications:status'], exact: true });
-      queryClient.clear();
+      queryClient.removeQueries({ queryKey: ['notifications:all'] });
+      queryClient.removeQueries({ queryKey: ['notifications:poll'] });
+      queryClient.removeQueries({ queryKey: ['notifications:status'] });
     },
   };
 }
