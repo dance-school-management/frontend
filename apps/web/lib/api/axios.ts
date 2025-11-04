@@ -18,7 +18,7 @@ type FetcherOpts = { cookie?: string; };
 
 export async function fetcher<T>(
   url: string,
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET',
   body?: unknown,
   opts?: FetcherOpts
 ): Promise<ApiResult<T>> {
