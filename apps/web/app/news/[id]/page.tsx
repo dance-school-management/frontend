@@ -1,9 +1,7 @@
 import { getPublishedPostByIdOrSlug, getPublishedPosts } from "@/lib/api/blog";
 import { notFound } from "next/navigation";
 import type { ComponentPropsWithoutRef } from "react";
-import type { Components } from "react-markdown";
 import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 
 export const revalidate = 3600;
@@ -41,8 +39,7 @@ export default async function Page({
           </header>
           <div className="markdown-content prose prose-slate dark:prose-invert max-w-none">
             <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight]}
+              remarkPlugins={[[remarkGfm]]}
               components={{
                 h1: (props: ComponentPropsWithoutRef<"h1">) => <h1 className="text-4xl font-bold mt-8 mb-4" {...props} />,
                 h2: (props: ComponentPropsWithoutRef<"h2">) => <h2 className="text-3xl font-semibold mt-6 mb-3" {...props} />,
@@ -55,17 +52,9 @@ export default async function Page({
                 blockquote: (props: ComponentPropsWithoutRef<"blockquote">) => (
                   <blockquote className="border-l-4 border-muted-foreground pl-4 italic my-4" {...props} />
                 ),
-                code: (props: ComponentPropsWithoutRef<"code"> & { inline?: boolean; }) => {
-                  const { inline, ...rest } = props;
-                  if (inline) {
-                    return (
-                      <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...rest} />
-                    );
-                  }
-                  return (
-                    <code className="block bg-muted p-4 rounded-lg overflow-x-auto text-sm font-mono" {...rest} />
-                  );
-                },
+                code: (props: ComponentPropsWithoutRef<"code">) => (
+                  <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+                ),
                 pre: (props: ComponentPropsWithoutRef<"pre">) => (
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4" {...props} />
                 ),
@@ -86,7 +75,7 @@ export default async function Page({
                 hr: (props: ComponentPropsWithoutRef<"hr">) => (
                   <hr className="my-6 border-t border-border" {...props} />
                 ),
-              } satisfies Components}
+              }}
             >
               {post.content}
             </ReactMarkdown>
