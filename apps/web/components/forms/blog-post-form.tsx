@@ -1,9 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { TagsInput } from "@/components/forms/tags-input";
+import { BlogPost, CreatePostRequest, UpdatePostRequest } from "@/lib/model/blog";
 import { Button } from "@repo/ui/button";
 import {
   Form,
@@ -15,10 +18,7 @@ import {
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
-import { TagsInput } from "@/components/forms/tags-input";
-import { BlogPost, CreatePostRequest, UpdatePostRequest } from "@/lib/model/blog";
 
-// Schema for creating (all fields required except tags)
 const createBlogPostFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   content: z.string().min(1, "Content is required"),
@@ -26,7 +26,6 @@ const createBlogPostFormSchema = z.object({
   tags: z.array(z.string()).optional(),
 });
 
-// Schema for updating (all fields optional, but if provided must meet requirements)
 const updateBlogPostFormSchema = z.object({
   title: z.union([z.string().min(1, "Title is required"), z.literal("")]).optional(),
   content: z.union([z.string().min(1, "Content is required"), z.literal("")]).optional(),
@@ -41,6 +40,7 @@ type BlogPostFormValues = CreateBlogPostFormValues | UpdateBlogPostFormValues;
 interface BlogPostFormProps {
   mode?: "create" | "update";
   initialValues?: Partial<BlogPost>;
+  originalValues?: Partial<BlogPost>;
   onSubmit: (
     values: CreatePostRequest | UpdatePostRequest
   ) => Promise<void> | void;
@@ -50,11 +50,13 @@ interface BlogPostFormProps {
   isSubmitting?: boolean;
   showActions?: boolean;
   formId?: string;
+  onFormChange?: (field: keyof BlogPost, value: string | string[] | undefined) => void;
 }
 
 export function BlogPostForm({
   mode = "create",
   initialValues,
+  originalValues,
   onSubmit,
   onCancel,
   submitLabel,
@@ -62,39 +64,76 @@ export function BlogPostForm({
   isSubmitting = false,
   showActions = true,
   formId,
+  onFormChange,
 }: BlogPostFormProps) {
   const schema = mode === "create" ? createBlogPostFormSchema : updateBlogPostFormSchema;
 
+  const defaultValues = useMemo(() => ({
+    title: initialValues?.title ?? "",
+    content: initialValues?.content ?? "",
+    excerpt: initialValues?.excerpt ?? "",
+    tags: initialValues?.tags ?? [],
+  }), [initialValues?.title, initialValues?.content, initialValues?.excerpt, initialValues?.tags]);
+
   const form = useForm<BlogPostFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      title: initialValues?.title ?? "",
-      content: initialValues?.content ?? "",
-      excerpt: initialValues?.excerpt ?? "",
-      tags: initialValues?.tags ?? [],
-    },
+    defaultValues,
   });
 
+  const originalValuesRef = useRef<Partial<BlogPost> | undefined>(
+    originalValues ? { ...originalValues } : (initialValues ? { ...initialValues } : undefined)
+  );
+
+  const watchedTitle = form.watch("title");
+  const watchedContent = form.watch("content");
+  const watchedExcerpt = form.watch("excerpt");
+  const watchedTags = form.watch("tags");
+
+  const onFormChangeRef = useRef(onFormChange);
+  useEffect(() => {
+    onFormChangeRef.current = onFormChange;
+  }, [onFormChange]);
+
+  useEffect(() => {
+    if (onFormChangeRef.current) {
+      onFormChangeRef.current("title", watchedTitle);
+    }
+  }, [watchedTitle]);
+
+  useEffect(() => {
+    if (onFormChangeRef.current) {
+      onFormChangeRef.current("content", watchedContent);
+    }
+  }, [watchedContent]);
+
+  useEffect(() => {
+    if (onFormChangeRef.current) {
+      onFormChangeRef.current("excerpt", watchedExcerpt);
+    }
+  }, [watchedExcerpt]);
+
+  useEffect(() => {
+    if (onFormChangeRef.current) {
+      onFormChangeRef.current("tags", watchedTags);
+    }
+  }, [watchedTags]);
+
   const handleSubmit = async (values: BlogPostFormValues) => {
-    // For update mode, only include fields that have been changed
     if (mode === "update") {
+      const originalValues = originalValuesRef.current ?? initialValues;
       const updatePayload: UpdatePostRequest = {};
 
-      // Only include title if it's changed and not empty
-      if (values.title !== undefined && values.title !== initialValues?.title && values.title.trim() !== "") {
+      if (values.title !== undefined && values.title !== originalValues?.title && values.title.trim() !== "") {
         updatePayload.title = values.title;
       }
-      // Only include content if it's changed and not empty
-      if (values.content !== undefined && values.content !== initialValues?.content && values.content.trim() !== "") {
+      if (values.content !== undefined && values.content !== originalValues?.content && values.content.trim() !== "") {
         updatePayload.content = values.content;
       }
-      // Only include excerpt if it's changed and not empty
-      if (values.excerpt !== undefined && values.excerpt !== initialValues?.excerpt && values.excerpt.trim() !== "") {
+      if (values.excerpt !== undefined && values.excerpt !== originalValues?.excerpt && values.excerpt.trim() !== "") {
         updatePayload.excerpt = values.excerpt;
       }
-      // Check if tags array has changed
       if (values.tags !== undefined) {
-        const initialTags = initialValues?.tags ?? [];
+        const initialTags = originalValues?.tags ?? [];
         const currentTags = values.tags ?? [];
         const tagsChanged =
           initialTags.length !== currentTags.length ||
@@ -108,7 +147,6 @@ export function BlogPostForm({
 
       await onSubmit(updatePayload);
     } else {
-      // For create mode, include all required fields
       const createPayload: CreatePostRequest = {
         title: values.title ?? "",
         content: values.content ?? "",

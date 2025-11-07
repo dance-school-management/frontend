@@ -45,7 +45,7 @@ export function BlogPreviewActions({ post }: BlogPreviewActionsProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
             <Link
-              href={`/coordinator/blog/${post.id}/edit`}
+              href={`/coordinator/blog/${post.id}`}
               className="flex items-center gap-2 cursor-pointer"
             >
               <Edit className="h-4 w-4 mr-2" />
