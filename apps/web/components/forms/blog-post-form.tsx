@@ -48,6 +48,8 @@ interface BlogPostFormProps {
   submitLabel?: string;
   cancelLabel?: string;
   isSubmitting?: boolean;
+  showActions?: boolean;
+  formId?: string;
 }
 
 export function BlogPostForm({
@@ -58,6 +60,8 @@ export function BlogPostForm({
   submitLabel,
   cancelLabel,
   isSubmitting = false,
+  showActions = true,
+  formId,
 }: BlogPostFormProps) {
   const schema = mode === "create" ? createBlogPostFormSchema : updateBlogPostFormSchema;
 
@@ -122,6 +126,7 @@ export function BlogPostForm({
   return (
     <Form {...form}>
       <form
+        id={formId}
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-6"
       >
@@ -185,28 +190,30 @@ export function BlogPostForm({
           placeholder="Select or add tags"
         />
 
-        <div className="flex justify-end gap-4">
-          {onCancel && (
+        {showActions && (
+          <div className="flex justify-end gap-4">
+            {onCancel && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onCancel}
+                disabled={isSubmitting}
+              >
+                {cancelLabel ?? defaultCancelLabel}
+              </Button>
+            )}
             <Button
-              type="button"
-              variant="outline"
-              onClick={onCancel}
-              disabled={isSubmitting}
+              type="submit"
+              disabled={isSubmitting || form.formState.isSubmitting}
             >
-              {cancelLabel ?? defaultCancelLabel}
+              {isSubmitting || form.formState.isSubmitting
+                ? mode === "create"
+                  ? "Creating..."
+                  : "Updating..."
+                : submitLabel ?? defaultSubmitLabel}
             </Button>
-          )}
-          <Button
-            type="submit"
-            disabled={isSubmitting || form.formState.isSubmitting}
-          >
-            {isSubmitting || form.formState.isSubmitting
-              ? mode === "create"
-                ? "Creating..."
-                : "Updating..."
-              : submitLabel ?? defaultSubmitLabel}
-          </Button>
-        </div>
+          </div>
+        )}
       </form>
     </Form>
   );
