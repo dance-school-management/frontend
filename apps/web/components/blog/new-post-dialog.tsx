@@ -94,4 +94,3 @@ export function NewPostDialog({ children }: NewPostDialogProps) {
     </Dialog>
   );
 }
-
