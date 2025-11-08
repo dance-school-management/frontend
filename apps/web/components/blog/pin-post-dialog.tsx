@@ -44,7 +44,7 @@ export function PinPostDialog({
     }
 
     // Combine date and time
-    const [hours, minutes] = selectedTime.split(":").map(Number) ?? [0, 0];
+    const [hours, minutes] = selectedTime.split(":").map(Number);
     const pinnedUntilDate = new Date(selectedDate);
     pinnedUntilDate.setHours(hours ?? 0, minutes, 0, 0);
 

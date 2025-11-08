@@ -46,7 +46,7 @@ export function PublishPostDialog({
     }
 
     // Combine date and time
-    const [hours, minutes] = selectedTime.split(":").map(Number) ?? [0, 0];
+    const [hours, minutes] = selectedTime.split(":").map(Number);
     const scheduledDate = new Date(selectedDate);
     scheduledDate.setHours(hours ?? 0, minutes, 0, 0);
 
