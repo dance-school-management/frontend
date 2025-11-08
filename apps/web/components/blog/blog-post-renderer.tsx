@@ -2,6 +2,7 @@ import { BlogPost } from "@/lib/model/blog";
 import { Badge } from "@repo/ui/components/badge";
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
+import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -28,9 +29,11 @@ export function BlogPostRenderer({ post }: BlogPostRendererProps) {
         {post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
             {post.tags.map((tag) => (
-              <Badge key={tag} variant="outline" className="text-xs">
-                {tag}
-              </Badge>
+              <Link key={tag} href={`/news/tag/${tag}`}>
+                <Badge variant="outline" className="text-xs hover:bg-muted hover:text-foreground transition-colors">
+                  {tag}
+                </Badge>
+              </Link>
             ))}
           </div>
         )}
