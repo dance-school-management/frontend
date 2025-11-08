@@ -44,7 +44,7 @@ export const pop: Variants = {
 
 // Shared transition settings
 export const transition = {
-  type: "spring",
+  type: "spring" as const,
   stiffness: 200,
   damping: 20,
 };
