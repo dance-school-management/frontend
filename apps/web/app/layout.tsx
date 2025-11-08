@@ -1,16 +1,19 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 import {
   QueryClient,
   QueryClientProvider,
   isServer
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { Geist, Geist_Mono } from "next/font/google";
+import { useEffect } from "react";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { authClient } from "@/lib/model";
+import { useUserStore } from "@/lib/store";
 import {
   SidebarInset,
   SidebarProvider,
@@ -24,6 +27,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const { data: session } = authClient.useSession();
+  const { setUser } = useUserStore();
+
+  useEffect(() => {
+    if (session && session.user) {
+      setUser(session.user);
+    }
+  }, [session, setUser]);
+
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}>

@@ -5,6 +5,7 @@ import {
   BookOpen,
   Calendar,
   ChartColumn,
+  FileText,
   Home,
   Info,
   LifeBuoy,
@@ -105,6 +106,11 @@ const data = {
       url: "/coordinator/courses",
       icon: Notebook,
     },
+    {
+      title: "Blog Posts",
+      url: "/coordinator/blog",
+      icon: FileText,
+    }
   ],
   user: [
     {
