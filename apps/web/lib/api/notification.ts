@@ -11,14 +11,12 @@ export async function fetchNewNotifications(dateFrom?: string, limit = 50): Prom
   return await fetcher<Paginated<Notification>>(`/notification/notification?${params.toString()}`, "GET");
 }
 
-interface MarkNotificationAsReadResponse {
-  userId: string;
-  notificationId: number;
-  hasBeenRead: boolean;
+interface MarkNotificationsAsReadResponse {
+  count: number;
 };
 
-export async function markNotificationAsRead(id: number, cookie?: string): Promise<ApiResult<MarkNotificationAsReadResponse>> {
-  return await fetcher<MarkNotificationAsReadResponse>(`/notification/notification/status/${id}`, "PUT", { hasBeenRead: true }, { cookie });
+export async function markNotificationsAsRead(ids: number[], cookie?: string): Promise<ApiResult<MarkNotificationsAsReadResponse>> {
+  return await fetcher<MarkNotificationsAsReadResponse>(`/notification/notification/status`, "PUT", { ids: ids, hasBeenRead: true }, { cookie });
 }
 
 interface RegisterForNotificationsResponse {
@@ -26,7 +24,7 @@ interface RegisterForNotificationsResponse {
 }
 
 export async function registerForNotifications(cookie?: string): Promise<ApiResult<RegisterForNotificationsResponse>> {
-  return await fetcher<RegisterForNotificationsResponse>(`/notification/notification/register`, "POST", undefined, { cookie });
+  return await fetcher<RegisterForNotificationsResponse>(`/notification/notification/register`, "POST", {}, { cookie });
 }
 
 interface ToggleNotificationsResponse {
