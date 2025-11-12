@@ -79,8 +79,6 @@ export function useNotificationsPolling(limit = 50) {
 
   const enabled = user !== null;
 
-  const notifications = queryClient.getQueryData<Notification[]>(['notifications:all']) ?? [];
-
   const pollQuery = useQuery<Paginated<Notification>, ApiError>({
     queryKey: ['notifications:poll'],
     queryFn: async () => {
@@ -93,6 +91,16 @@ export function useNotificationsPolling(limit = 50) {
     refetchIntervalInBackground: true,
     enabled: enabled,
   });
+
+  useEffect(() => {
+    const cached = queryClient.getQueryData<Notification[]>(['notifications:all']);
+    if (!cached && pollQuery.data?.data?.length) {
+      const sorted = [...pollQuery.data.data].sort(
+        (a, b) => new Date(b.sendDate).getTime() - new Date(a.sendDate).getTime()
+      );
+      queryClient.setQueryData(['notifications:all'], sorted);
+    }
+  }, [pollQuery.data, queryClient]);
 
   useEffect(() => {
     const resp = pollQuery.data;
@@ -116,10 +124,36 @@ export function useNotificationsPolling(limit = 50) {
     queryClient.setQueryData(['notifications:all'], mergedArr);
   }, [pollQuery.data, queryClient]);
 
+  const cachedData = queryClient.getQueryData<Notification[]>(['notifications:all']);
+  const notificationsQuery = useQuery<Notification[], ApiError>({
+    queryKey: ['notifications:all'],
+    queryFn: async () => {
+      return cachedData ?? [];
+    },
+    enabled: true,
+    initialData: cachedData ?? pollQuery.data?.data ?? [],
+    placeholderData: pollQuery.data?.data ?? [],
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
+
+  const notifications = notificationsQuery.data ?? [];
+
+  const markAsRead = (ids: number[]) => {
+    queryClient.setQueryData<Notification[]>(['notifications:all'], (old = []) => {
+      return old.map((notification) =>
+        ids.includes(notification.id)
+          ? { ...notification, hasBeenRead: true }
+          : notification
+      );
+    });
+  };
+
   return {
     ...pollQuery,
     notifications,
     refresh: () => queryClient.invalidateQueries({ queryKey: ['notifications:poll'] }),
+    markAsRead,
     lengthUnread: notifications.filter((notification) => !notification.hasBeenRead).length,
     removeAll: () => {
       queryClient.removeQueries({ queryKey: ['notifications:all'] });

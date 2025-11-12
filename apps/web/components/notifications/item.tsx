@@ -1,4 +1,4 @@
-import { markNotificationAsRead } from "@/lib/api/notification";
+import { markNotificationsAsRead } from "@/lib/api/notification";
 import { useNotificationsPolling } from "@/lib/api/tanstack";
 import { Notification } from "@/lib/model/notification";
 import { Button } from "@repo/ui/components/button";
@@ -17,7 +17,7 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification }: NotificationItemProps) {
-  const { refresh } = useNotificationsPolling();
+  const { markAsRead } = useNotificationsPolling();
 
   return (
     <Item className="group" data-read={notification.hasBeenRead} variant={notification.hasBeenRead ? "outline" : "muted"}>
@@ -29,7 +29,11 @@ export function NotificationItem({ notification }: NotificationItemProps) {
         <ItemDescription className="text-sm text-foreground font-bold group-data-[read=true]:text-muted-foreground">{notification.body}</ItemDescription>
       </ItemContent>
       <ItemActions>
-        <Button variant="ghost" size="lg" disabled={notification.hasBeenRead} onClick={() => markNotificationAsRead(notification.id, document.cookie).then(() => refresh())}>
+        <Button variant="ghost" size="lg" disabled={notification.hasBeenRead} onClick={() => {
+          markNotificationsAsRead([notification.id], document.cookie).then(() => {
+            markAsRead([notification.id]);
+          });
+        }}>
           {notification.hasBeenRead ? <MailOpen /> : <Mail />}
         </Button>
       </ItemActions>
