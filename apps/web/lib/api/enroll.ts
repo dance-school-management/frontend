@@ -32,6 +32,10 @@ export async function checkTicketValidity(qrCodeUUID: string, cookie?: string): 
   return await fetcher(`/enroll/ticket/scan?qrCodeUUID=${qrCodeUUID}`, "GET", undefined, { cookie });
 }
 
+export async function markTicketAsUsed(qrCodeUUID: string, cookie?: string): Promise<ApiResult<unknown>> {
+  return await fetcher(`/enroll/ticket/scan`, "PUT", { qrCodeUUID }, { cookie });
+}
+
 export async function getPaymentLink(classId?: number, courseId?: number, cookie?: string): Promise<ApiResult<PaymentLinkResponse>> {
   const params = new URLSearchParams();
   if (classId) {

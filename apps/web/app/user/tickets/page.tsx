@@ -1,10 +1,11 @@
 import { headers } from "next/headers";
 
-import { fetchTickets } from "@/lib/api/enroll";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
-import { TicketList } from "@/components/tickets/ticket-list";
 import { PaymentList } from "@/components/tickets/payment-list";
+import { TicketList } from "@/components/tickets/ticket-list";
+import { fetchTickets } from "@/lib/api/enroll";
+import { filterTickets } from "@/lib/utils/filters";
 import { cn } from "@repo/ui/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
 
 export default async function Page() {
   const cookie = (await headers()).get('cookie') ?? "";
@@ -15,11 +16,8 @@ export default async function Page() {
   }
 
   const { tickets } = data;
-  const today = new Date().setHours(0, 0, 0, 0);
 
-  const pastTickets = tickets.filter((ticket) => new Date(ticket.endDate).setHours(0, 0, 0, 0) < today);
-  const paymentPendingTickets = tickets.filter((ticket) => ticket.paymentStatus === "PENDING");
-  const restTickets = tickets.filter((ticket) => ticket.paymentStatus !== "PENDING" && new Date(ticket.endDate).setHours(0, 0, 0, 0) > today);
+  const { pastTickets, paymentPendingTickets, restTickets } = filterTickets(tickets);
 
   const tabs = [
     {
