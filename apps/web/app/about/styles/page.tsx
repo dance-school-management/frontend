@@ -32,7 +32,7 @@ export default async function Page() {
 
 function Headings() {
     return (
-        <div className="flex flex-col p-4">
+        <div className="flex flex-col">
             <h1 className="text-4xl font-bold">Dance Styles</h1>
             <h3 className="text-lg text-muted-foreground">
                 Explore our diverse range of dance categories and find the perfect style for you
