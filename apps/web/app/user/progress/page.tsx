@@ -1,7 +1,7 @@
 import { ProgressChart } from "@/components/progress/progress-chart";
 import { ProgressItemGroup } from "@/components/progress/progress-item";
 import { TotalHoursInfo } from "@/components/progress/total-hours-info";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/card";
 
 import {
     transformDanceCategoryStatsToChartData,

@@ -1,4 +1,4 @@
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
 

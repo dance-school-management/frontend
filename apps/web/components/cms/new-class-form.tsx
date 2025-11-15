@@ -9,7 +9,7 @@ import { ClassRoomSelect, InstructorsSelect } from "@/components/forms/select";
 import { ClassTemplate } from "@/lib/model/product";
 import { Button } from "@repo/ui/button";
 import { Calendar } from "@repo/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import {
   Form,
   FormControl,

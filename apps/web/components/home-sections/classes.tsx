@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { fmtTime } from "@/lib/utils/time";
 import { Calendar, Users, ArrowRight } from "lucide-react";

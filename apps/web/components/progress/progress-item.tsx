@@ -7,7 +7,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from "@repo/ui/item";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/components/empty";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
 
 interface ProgressItemGroupProps {
   data: ProgressItemProps[];

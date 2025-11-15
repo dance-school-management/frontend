@@ -1,6 +1,6 @@
 import { DanceCategoryCard } from "@/components/courses/dance-category-card";
 import { fetchDanceCategories } from "@/lib/api/product";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/components/empty";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
 import { headers } from "next/headers";
 
 export default async function Page() {

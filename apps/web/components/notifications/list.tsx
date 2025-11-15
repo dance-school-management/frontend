@@ -3,7 +3,7 @@ import { markNotificationsAsRead } from '@/lib/api/notification';
 import { useNotificationsPolling, useNotificationsStatus } from '@/lib/api/tanstack';
 import { Notification } from '@/lib/model/notification';
 import { Button } from '@repo/ui/button';
-import { Empty, EmptyDescription } from '@repo/ui/components/empty';
+import { Empty, EmptyDescription } from '@repo/ui/empty';
 import {
   DialogClose,
   DialogContent,

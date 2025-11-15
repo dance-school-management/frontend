@@ -1,7 +1,7 @@
 import { InstructorWithDetails } from "@/lib/model/profile";
 import { getInitials } from "@/lib/utils/text";
-import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar";
-import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@repo/ui/components/item";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/avatar";
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@repo/ui/item";
 import { DanceCategoryBadge } from "@/components/instructors/badge";
 
 import { Mail, Phone } from "lucide-react";

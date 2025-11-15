@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 // import { fetchClassTemplate } from "@/mocks/product";
 import { fetchClassTemplate } from "@/lib/api/product";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { NonCourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
 

@@ -1,5 +1,5 @@
 import { BlogPost } from "@/lib/model/blog";
-import { Badge } from "@repo/ui/components/badge";
+import { Badge } from "@repo/ui/badge";
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";

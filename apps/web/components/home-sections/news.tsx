@@ -1,6 +1,6 @@
 import { PublicPreview } from "@/components/blog/public-preview";
 import { LightweightBlogPost } from "@/lib/model/blog";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 

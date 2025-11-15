@@ -22,7 +22,7 @@ import {
 } from "@repo/ui/dialog";
 import { ScrollArea } from "@repo/ui/scroll-area";
 import { Separator } from "@repo/ui/separator";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 
 interface CourseScheduleCardProps {
   course: CourseSummary;

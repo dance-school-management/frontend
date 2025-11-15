@@ -16,9 +16,9 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@repo/ui/components/popover";
+} from "@repo/ui/popover";
 import { Input } from "@repo/ui/input";
-import { Label } from "@repo/ui/components/label";
+import { Label } from "@repo/ui/label";
 import { cn } from "@repo/ui/lib/utils";
 import { format } from "date-fns";
 

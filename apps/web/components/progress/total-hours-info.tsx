@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert";
+import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Info } from "lucide-react";
 
 function hoursInfoText(hours: number) {
