@@ -12,9 +12,9 @@ export default function Page() {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" aria-label="Dance school floor plan">
                         <style>
                             {`
-                                .room {fill: var(--card); stroke: var(--border); strokeWidth: 2; rx:6; ry:6; }
-                                .label {font - family: Arial, Helvetica, sans-serif; font-size:16px; fill:var(--foreground); pointer-events:none; font-weight:600; }
-                                .sub {font - size:12px; fill:var(--muted-foreground); pointer-events:none; }
+                                .room {fill: var(--card); stroke: var(--border); stroke-width: 2; rx:6; ry:6; }
+                                .label {font-family: Arial, Helvetica, sans-serif; font-size:16px; fill:var(--foreground); pointer-events:none; font-weight:600; }
+                                .sub {font-size:12px; fill:var(--muted-foreground); pointer-events:none; }
                                 .door {fill:var(--primary); }
                                 .entrance {fill:var(--primary); }
                                 .hall {fill:var(--secondary); rx:6; ry:6; }
