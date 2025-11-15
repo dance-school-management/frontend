@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Banknote,
   BookOpen,
   Calendar,
   ChartColumn,
@@ -54,11 +53,6 @@ const data = {
       title: "News",
       url: "/news",
       icon: Newspaper,
-    },
-    {
-      title: "Pricing",
-      url: "/pricing",
-      icon: Banknote,
     },
     {
       title: "Schedule",

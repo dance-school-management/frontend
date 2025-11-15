@@ -6,6 +6,7 @@ import {
   CourseSummary,
   CoursesClassesResponse,
   ClassStatus,
+  DanceCategory,
 } from "@/lib/model/product";
 import { ApiResult, fetcher } from "@/lib/api/axios";
 import { IApiScheduleResponse } from "@/modules/calendar/types";
@@ -118,4 +119,8 @@ export async function fetchCoursesClasses(courseIds: number[], cookie?: string):
 
 export async function fetchSchedule(dateFrom: string, dateTo: string, cookie?: string): Promise<ApiResult<IApiScheduleResponse>> {
   return await fetcher<IApiScheduleResponse>(`/product/schedule?dateFrom=${dateFrom}&dateTo=${dateTo}`, undefined, undefined, { cookie });
+}
+
+export async function fetchDanceCategories(cookie?: string): Promise<ApiResult<DanceCategory[]>> {
+  return await fetcher<DanceCategory[]>("/product/cms/dance_category", undefined, undefined, { cookie });
 }
