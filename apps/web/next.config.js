@@ -10,6 +10,7 @@ const nextConfig = {
         pathname: '/**',
       },
       {
+        // TODO: Remove this pattern once we have a proper image solution
         protocol: 'https',
         hostname: '**',
       },
