@@ -4,7 +4,7 @@ import {
   ItemDescription,
   ItemHeader,
   ItemTitle
-} from "@repo/ui/components/item";
+} from "@repo/ui/item";
 import { Separator } from "@repo/ui/separator";
 
 import { ClassWithTemplate } from "@/lib/model/product";

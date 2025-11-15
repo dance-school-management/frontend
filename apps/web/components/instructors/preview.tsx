@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import { Instructor } from "@/lib/model/profile";
 import { getInitials } from "@/lib/utils/text";
-import { Avatar, AvatarImage, AvatarFallback } from "@repo/ui/components/avatar";
-import { Item, ItemContent, ItemMedia, ItemTitle, ItemDescription } from "@repo/ui/components/item";
+import { Avatar, AvatarImage, AvatarFallback } from "@repo/ui/avatar";
+import { Item, ItemContent, ItemMedia, ItemTitle, ItemDescription } from "@repo/ui/item";
 import { DanceCategoryBadge } from "@/components/instructors/badge";
 
 interface InstructorPreviewCardProps {

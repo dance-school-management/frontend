@@ -1,7 +1,7 @@
 import { markNotificationsAsRead } from "@/lib/api/notification";
 import { useNotificationsPolling } from "@/lib/api/tanstack";
 import { Notification } from "@/lib/model/notification";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import {
   Item,
   ItemActions,

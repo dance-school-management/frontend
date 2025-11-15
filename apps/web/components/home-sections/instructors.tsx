@@ -1,6 +1,6 @@
 import { InstructorPreviewCard } from "@/components/instructors/preview";
 import { Instructor } from "@/lib/model/profile";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import { BookOpen, Calendar, Sparkles } from "lucide-react";
 import Link from "next/link";
 

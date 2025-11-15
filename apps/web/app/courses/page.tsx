@@ -2,7 +2,7 @@ import { fetchScheduleCourses, fetchCoursesClasses } from "@/lib/api/product";
 
 import { headers } from "next/headers";
 import { CourseScheduleCard } from "@/components/courses/course-schedule-card";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/components/empty";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
 
 
 export default async function Page() {

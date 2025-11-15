@@ -11,7 +11,7 @@ import { fetchDanceCategories, fetchSchedule } from "@/lib/api/product";
 import { fetchInstructors } from "@/lib/api/profile";
 import { transformScheduleToEvents } from "@/modules/calendar/helpers";
 import { IEvent } from "@/modules/calendar/types";
-import { Separator } from "@repo/ui/components/separator";
+import { Separator } from "@repo/ui/separator";
 import { headers } from "next/headers";
 
 export default async function Page() {

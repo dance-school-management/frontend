@@ -14,7 +14,7 @@ import {
 import { ScrollArea } from "@repo/ui/scroll-area";
 
 import type { IEvent } from "@/modules/calendar/types";
-import { Button } from "@repo/ui/components/button";
+import { Button } from "@repo/ui/button";
 import { ReactNode } from "react";
 import { formatTime } from "../../helpers";
 

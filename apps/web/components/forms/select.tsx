@@ -3,7 +3,7 @@ import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
 import { useAdditionalProductData, useInstructors } from "@/lib/api/tanstack";
-import { MultiSelect } from "@repo/ui/components/multi-select";
+import { MultiSelect } from "@repo/ui/multi-select";
 
 interface CurrencySelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;

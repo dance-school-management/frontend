@@ -4,7 +4,7 @@ import {
   PaginationEllipsis,
   PaginationItem,
 } from "@repo/ui/pagination";
-import { Button, buttonVariants } from "@repo/ui/components/button";
+import { Button, buttonVariants } from "@repo/ui/button";
 import { cn } from "@repo/ui/lib/utils";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";

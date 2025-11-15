@@ -36,7 +36,7 @@ export default function ProtectedLayout({
     );
   }
 
-  if (hydrated && user && user.role !== "COORDINATOR") {
+  if (hydrated && user && user.role !== "COORDINATOR" && user.role !== "ADMINISTRATOR") {
     return (
       <div className="flex flex-col items-center justify-center h-full">
         <p className="text-2xl">
