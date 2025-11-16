@@ -17,11 +17,6 @@ export function TicketList({ tickets, variant = "current" }: TicketListProps) {
 
   const filteredAndSortedTickets = searchAndSortTickets(tickets, searchQuery);
 
-
-  if (filteredAndSortedTickets.length === 0) {
-    return <EmptyState />;
-  }
-
   return (
     <div className="flex flex-col items-center gap-4 grid-flow-row h-full p-4">
       <div className="w-full max-w-xl">
@@ -33,9 +28,13 @@ export function TicketList({ tickets, variant = "current" }: TicketListProps) {
           className="w-full"
         />
       </div>
-      {filteredAndSortedTickets.map((ticket) => (
-        <TicketPreview key={ticket.qrCodeUUID} ticket={ticket} variant={variant} />
-      ))}
+      {filteredAndSortedTickets.length === 0 ? (
+        <EmptyState />
+      ) : (
+        filteredAndSortedTickets.map((ticket) => (
+          <TicketPreview key={ticket.qrCodeUUID} ticket={ticket} variant={variant} />
+        ))
+      )}
     </div>
   );
 }
