@@ -1,11 +1,23 @@
 
+import { GetProfileResponse, InstructorsResponse, InstructorWithDetails, ProfileData } from "@/lib/model/profile";
+
 import { ApiResult, fetcher } from "./axios";
-import { InstructorsResponse, InstructorWithDetails } from "@/lib/model/profile";
 
 export async function fetchInstructors(cookie?: string): Promise<ApiResult<InstructorsResponse>> {
-  return await fetcher("/profile/instructors", "GET", undefined, { cookie });
+  return await fetcher("/profile/public/instructors", "GET", undefined, { cookie });
 }
 
 export async function fetchInstructor(id: number, cookie: string): Promise<ApiResult<InstructorWithDetails>> {
-  return await fetcher(`/profile/instructors/${id}`, "GET", undefined, { cookie });
+  return await fetcher(`/profile/public/instructors/${id}`, "GET", undefined, { cookie });
+}
+
+export async function fetchUserProfile(cookie?: string): Promise<ApiResult<GetProfileResponse>> {
+  return await fetcher("/profile/user/profile", "GET", undefined, { cookie });
+}
+
+export async function updateUserProfile(
+  formData: FormData,
+  cookie?: string
+): Promise<ApiResult<ProfileData>> {
+  return await fetcher<ProfileData>("/profile/user/profile", "PUT", formData, { cookie });
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
   ChevronsUpDown,
@@ -42,7 +43,8 @@ import {
 } from "@repo/ui/dialog";
 
 export function NavProfile({ user }: { user: User | null; }) {
-  const { notifications, lengthUnread, removeAll } = useNotificationsPolling();
+  const { notifications, lengthUnread } = useNotificationsPolling();
+  const queryClient = useQueryClient();
   const { setUser } = useUserStore();
   const pathname = usePathname();
 
@@ -120,9 +122,10 @@ export function NavProfile({ user }: { user: User | null; }) {
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {
+            <DropdownMenuItem onClick={async () => {
               setUser(null);
-              removeAll();
+              await queryClient.cancelQueries();
+              queryClient.clear();
               signOut();
               redirect("/login", RedirectType.replace);
             }}>

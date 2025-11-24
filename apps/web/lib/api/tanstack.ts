@@ -1,7 +1,7 @@
 import { Paginated } from '@/lib/model';
 import { Notification } from '@/lib/model/notification';
-import { AdditionalProductData } from '@/lib/model/product';
-import { InstructorsResponse } from '@/lib/model/profile';
+import { AdditionalProductData, DanceCategory } from '@/lib/model/product';
+import { InstructorsResponse, GetProfileResponse } from '@/lib/model/profile';
 import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
@@ -9,8 +9,8 @@ import { ApiError } from './axios';
 
 
 import { fetchNewNotifications, getNotificationsStatus, NotificationsStatusResponse } from '@/lib/api/notification';
-import { fetchAdditionalProductData, fetchSchedule } from '@/lib/api/product';
-import { fetchInstructors } from '@/lib/api/profile';
+import { fetchAdditionalProductData, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
+import { fetchInstructors, fetchUserProfile } from '@/lib/api/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
 import { useUserStore } from '../store';
 
@@ -31,6 +31,28 @@ export function useInstructors() {
     queryKey: ['instructors'],
     queryFn: async () => {
       const result = await fetchInstructors();
+      if (result.error) throw result.error;
+      return result.data!;
+    },
+  });
+}
+
+export function useDanceCategories() {
+  return useQuery<DanceCategory[], ApiError>({
+    queryKey: ['danceCategories'],
+    queryFn: async () => {
+      const result = await fetchDanceCategories();
+      if (result.error) throw result.error;
+      return result.data!;
+    },
+  });
+}
+
+export function useUserProfile() {
+  return useQuery<GetProfileResponse, ApiError>({
+    queryKey: ['user:profile'],
+    queryFn: async () => {
+      const result = await fetchUserProfile(typeof document !== 'undefined' ? document.cookie : undefined);
       if (result.error) throw result.error;
       return result.data!;
     },

@@ -1,3 +1,4 @@
+import { UserRole } from "@/lib/model/auth";
 
 export type Instructor = {
   id: string;
@@ -25,4 +26,21 @@ export type InstructorsResponse = {
 
 export type InstructorResponse = {
   data: InstructorWithDetails;
+};
+
+export type ProfileData = {
+  id: string;
+  name: string;
+  surname: string;
+  email: string | null;
+  phone: string | null;
+  startDate: string | null;
+  description: string | null;
+  photoPath: string | null;
+  favouriteDanceCategories: number[];
+  role: UserRole;
+};
+
+export type GetProfileResponse = {
+  userData: ProfileData;
 };
