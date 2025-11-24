@@ -57,8 +57,6 @@ export function RegisterForm() {
       email,
       password,
       name: `${name} ${surname}`,
-      surname,
-      first_name: name,
       fetchOptions: {
         onError: (ctx) => {
           toast.error(ctx.error.message);
