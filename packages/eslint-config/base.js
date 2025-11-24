@@ -27,6 +27,15 @@ export const config = [
     },
   },
   {
+    plugins: {
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
+    },
+  },
+  {
     ignores: ["dist/**"],
   },
 ];
