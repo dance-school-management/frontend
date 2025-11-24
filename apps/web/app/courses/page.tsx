@@ -1,14 +1,12 @@
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
-import { headers } from "next/headers";
 
 import { CourseScheduleCard } from "@/components/courses/course-schedule-card";
 import { fetchCoursesClasses,fetchScheduleCourses } from "@/lib/api/product";
 
 
-export default async function Page() {
-  const cookie = (await headers()).get('cookie') ?? "";
-  const { data, error } = await fetchScheduleCourses(cookie);
-  const { data: classes, error: classesError } = await fetchCoursesClasses(data?.map((course) => course.id) ?? [], cookie);
+export default async function Page() {  
+  const { data, error } = await fetchScheduleCourses();
+  const { data: classes, error: classesError } = await fetchCoursesClasses(data?.map((course) => course.id) ?? []);
 
   if (error || !data || data.length === 0 || classesError || !classes || classes.length === 0) {
     return (
