@@ -13,12 +13,6 @@ export const authClient = createAuthClient({
         defaultValue: "STUDENT",
         input: false,
       },
-      description: {
-        type: "string",
-        required: false,
-        defaultValue: "",
-        input: true
-      }
     }
   })],
 });
