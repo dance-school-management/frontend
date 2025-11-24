@@ -18,9 +18,24 @@ import {
   DialogTrigger,
 } from "@repo/ui/dialog";
 
+import { deleteCourse } from "@/lib/api/product";
 import { truncateAtWordBoundary } from "@/lib/utils/text";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function CourseActions(course: Course) {
+  const router = useRouter();
+  
+  const handleDelete = async () => {
+    const { error } = await deleteCourse(course.id);
+    if (error) {
+      toast.error(error.message ?? "Failed to delete course");
+      return;
+    } else {
+      toast.success("Course deleted successfully");
+      router.replace("/coordinator/courses");
+    }
+  };
   return (
     <Card className="gap-2">
       <CardHeader>
@@ -31,7 +46,7 @@ export function CourseActions(course: Course) {
       </CardHeader>
       <CardContent>
         <div className="space-x-2">
-          <Button variant="destructive" className="w-fit cursor-pointer">
+          <Button variant="destructive" className="w-fit cursor-pointer" onClick={handleDelete}>
             <TrashIcon />
             Delete
           </Button>
