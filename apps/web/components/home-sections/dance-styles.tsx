@@ -1,8 +1,9 @@
-import { DanceCategoryCard } from "@/components/courses/dance-category-card";
-import { DanceCategory } from "@/lib/model/product";
 import { Button } from "@repo/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+
+import { DanceCategoryCard } from "@/components/courses/dance-category-card";
+import { DanceCategory } from "@/lib/model/product";
 
 interface FeaturedDanceStylesSectionProps {
   categories: DanceCategory[];

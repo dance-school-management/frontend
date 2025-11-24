@@ -1,5 +1,9 @@
 "use client";
 
+import { Sidebar, SidebarContent, SidebarFooter } from "@repo/ui/sidebar";
+import { NavProfile } from "components/nav/profile";
+import { NavSecondary } from "components/nav/secondary";
+import { NavSection } from "components/nav/section";
 import {
   BookOpen,
   Calendar,
@@ -18,10 +22,6 @@ import {
 } from "lucide-react";
 
 import { useUserStore } from "@/lib/store";
-import { Sidebar, SidebarContent, SidebarFooter } from "@repo/ui/sidebar";
-import { NavProfile } from "components/nav/profile";
-import { NavSecondary } from "components/nav/secondary";
-import { NavSection } from "components/nav/section";
 
 const data = {
   general: [

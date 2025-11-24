@@ -1,5 +1,5 @@
-import { Ticket } from "@/lib/model/enroll";
 import { ClassPaymentCard } from "@/components/tickets/payment";
+import { Ticket } from "@/lib/model/enroll";
 
 interface PaymentListProps {
   tickets: Ticket[];

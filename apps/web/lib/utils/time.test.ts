@@ -1,5 +1,6 @@
-import { expect, test, describe } from 'vitest';
-import { fmtTime, fmtDate } from './time';
+import { describe,expect, test } from 'vitest';
+
+import { fmtDate,fmtTime } from './time';
 
 describe('fmtTime', () => {
   test('extracts time in HH:MM format from ISO datetime string', () => {

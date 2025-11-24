@@ -1,15 +1,13 @@
+import { Card, CardContent, CardDescription,CardHeader, CardTitle } from "@repo/ui/card";
+import { Separator } from "@repo/ui/separator";
 import { headers } from 'next/headers';
 
-// import { fetchCourse } from "@/mocks/product";
-import { fetchCourse } from "@/lib/api/product";
-
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@repo/ui/card";
-import { Separator } from "@repo/ui/separator";
-
-import { CourseActions } from "@/components/cms/misc";
-import { CourseDetailsForm } from "@/components/cms/course-details-form";
 import { CourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
+import { CourseDetailsForm } from "@/components/cms/course-details-form";
+import { CourseActions } from "@/components/cms/misc";
+// import { fetchCourse } from "@/mocks/product";
+import { fetchCourse } from "@/lib/api/product";
 
 export default async function Page({ params }: { params: Promise<{ id: string; }>; }) {
   const { id } = await params;

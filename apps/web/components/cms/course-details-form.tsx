@@ -1,11 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { toast } from "sonner";
-import { SaveIcon } from "lucide-react";
-
 import { Button } from "@repo/ui/button";
 import {
   Card,
@@ -24,11 +19,15 @@ import {
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
+import { SaveIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import { MoneyInput } from "@/components/forms/input";
 import { AdvancementLevelSelect, /*CurrencySelect,*/ DanceCategorySelect } from "@/components/forms/select";
-import { Course } from "@/lib/model/product";
-
 import { updateCourse } from "@/lib/api/product";
+import { Course } from "@/lib/model/product";
 
 const courseFormSchema = z.object({
   name: z.string().min(1, "Name is required"),

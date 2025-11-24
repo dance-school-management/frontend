@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { DanceCategory } from "@/lib/model/product";
 import {
   Card,
   CardContent,
@@ -7,6 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/card";
+import Image from "next/image";
+
+import { DanceCategory } from "@/lib/model/product";
 
 interface DanceCategoryCardProps {
   category: DanceCategory;

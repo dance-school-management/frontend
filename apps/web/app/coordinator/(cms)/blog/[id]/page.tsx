@@ -1,7 +1,8 @@
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { getPostByIdOrSlug } from "@/lib/api/blog";
+
 import { EditBlogPostPage } from "@/components/blog/edit-blog-post-page";
+import { getPostByIdOrSlug } from "@/lib/api/blog";
 
 export default async function Page({
   params,

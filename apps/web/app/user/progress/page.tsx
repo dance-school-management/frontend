@@ -1,22 +1,21 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/card";
+import { headers } from 'next/headers';
+
 import { ProgressChart } from "@/components/progress/progress-chart";
 import { ProgressItemGroup } from "@/components/progress/progress-item";
 import { TotalHoursInfo } from "@/components/progress/total-hours-info";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/card";
-
-import {
-    transformDanceCategoryStatsToChartData,
-    transformInstructorStatsToChartData,
-    transformCourseAttendanceToProgressItems,
-    transformMasteredCategoriesToProgressItems,
-    calculateTotalHours
-} from "@/lib/utils/progress-transformers";
 import {
     fetchCourseAttendanceRate,
     fetchDanceCategoryStats,
     fetchInstructorStats,
     fetchMasteredDanceCategories
 } from "@/lib/api/enroll";
-import { headers } from 'next/headers';
+import {
+    calculateTotalHours,
+    transformCourseAttendanceToProgressItems,
+    transformDanceCategoryStatsToChartData,
+    transformInstructorStatsToChartData,
+    transformMasteredCategoriesToProgressItems} from "@/lib/utils/progress-transformers";
 
 const ongoingCoursesEmptyState = {
     title: "No ongoing courses",

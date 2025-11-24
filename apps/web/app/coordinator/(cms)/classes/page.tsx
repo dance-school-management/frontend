@@ -1,6 +1,6 @@
 import { headers } from 'next/headers';
-import { ClassTemplatePreview, NewClassTemplateDialog } from "@/components/cms/misc";
 
+import { ClassTemplatePreview, NewClassTemplateDialog } from "@/components/cms/misc";
 import { fetchClassTemplates } from "@/lib/api/product";
 // import { fetchClassTemplates } from "@/mocks/product";
 

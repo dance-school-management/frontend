@@ -1,8 +1,8 @@
 import { headers } from 'next/headers';
 
-import { fetchInstructor } from "@/lib/api/profile";
-import { InstructorDetailsBody, InstructorDetailsHeader } from '@/components/instructors/details';
 import { InstructorExperienceChart } from '@/components/instructors/chart';
+import { InstructorDetailsBody, InstructorDetailsHeader } from '@/components/instructors/details';
+import { fetchInstructor } from "@/lib/api/profile";
 
 export default async function Page({ params }: { params: Promise<{ id: string; }>; }) {
   const { id } = await params;

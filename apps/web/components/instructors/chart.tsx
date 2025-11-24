@@ -1,13 +1,14 @@
 "use client";
 
-import { InstructorExperience } from "@/lib/model/profile";
-import { Pie, PieChart } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/ui/chart";
+import { Pie, PieChart } from "recharts";
+
+import { InstructorExperience } from "@/lib/model/profile";
 
 interface InstructorExperienceChartProps {
   experience: InstructorExperience[];

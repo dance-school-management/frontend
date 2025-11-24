@@ -1,4 +1,3 @@
-import { BlogPost } from "@/lib/model/blog";
 import { Badge } from "@repo/ui/badge";
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
@@ -6,6 +5,8 @@ import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
+import { BlogPost } from "@/lib/model/blog";
 
 interface BlogPostRendererProps {
   post: BlogPost;

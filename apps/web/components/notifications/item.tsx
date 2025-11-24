@@ -1,6 +1,3 @@
-import { markNotificationsAsRead } from "@/lib/api/notification";
-import { useNotificationsPolling } from "@/lib/api/tanstack";
-import { Notification } from "@/lib/model/notification";
 import { Button } from "@repo/ui/button";
 import {
   Item,
@@ -11,6 +8,10 @@ import {
 } from '@repo/ui/item';
 import { formatDistanceToNow } from "date-fns";
 import { Mail, MailOpen } from "lucide-react";
+
+import { markNotificationsAsRead } from "@/lib/api/notification";
+import { useNotificationsPolling } from "@/lib/api/tanstack";
+import { Notification } from "@/lib/model/notification";
 
 interface NotificationItemProps {
   notification: Notification;

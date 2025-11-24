@@ -1,18 +1,18 @@
-import { Paginated } from '@/lib/model';
-import { Notification } from '@/lib/model/notification';
-import { AdditionalProductData, DanceCategory } from '@/lib/model/product';
-import { GetProfileResponse, InstructorsResponse } from '@/lib/model/profile';
-import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
-import { ApiError } from './axios';
-
 
 import { fetchNewNotifications, getNotificationsStatus, NotificationsStatusResponse } from '@/lib/api/notification';
 import { fetchAdditionalProductData, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
 import { fetchInstructors, fetchUserProfile } from '@/lib/api/profile';
+import { Paginated } from '@/lib/model';
+import { Notification } from '@/lib/model/notification';
+import { AdditionalProductData, DanceCategory } from '@/lib/model/product';
+import { GetProfileResponse, InstructorsResponse } from '@/lib/model/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
+import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
+
 import { useUserStore } from '../store';
+import { ApiError } from './axios';
 
 export function useAdditionalProductData() {
   return useQuery<AdditionalProductData, ApiError>({

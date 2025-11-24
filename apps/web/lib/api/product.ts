@@ -5,8 +5,8 @@ import {
   ClassStatus,
   ClassTemplate,
   Course,
-  CourseSummary,
   CoursesClassesResponse,
+  CourseSummary,
   DanceCategory,
 } from "@/lib/model/product";
 import { IApiScheduleResponse } from "@/modules/calendar/types";

@@ -1,33 +1,32 @@
 "use client";
 
+import "@repo/ui/globals.css";
+
+import { AuthUIProvider } from "@daveyplate/better-auth-ui";
+import { SidebarInset, SidebarProvider } from "@repo/ui/sidebar";
+import { Toaster } from "@repo/ui/sonner";
 import {
+  isServer,
   QueryClient,
   QueryClientProvider,
-  isServer
-} from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useEffect } from "react";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { authClient } from "@/lib/model";
 import { useUserStore } from "@/lib/store";
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@repo/ui/sidebar";
-import { Toaster } from "@repo/ui/sonner";
-
-import "@repo/ui/globals.css";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const { data: session } = authClient.useSession();
   const { setUser } = useUserStore();
 
@@ -37,18 +36,17 @@ export default function RootLayout({
     }
   }, [session, setUser]);
 
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}>
+      <body
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+      >
         <Providers>
           <SiteHeader />
           <div className="flex flex-1">
             <AppSidebar />
             <SidebarInset>
-              <div className="min-h-full">
-                {children}
-              </div>
+              <div className="min-h-full">{children}</div>
             </SidebarInset>
           </div>
           <Toaster richColors closeButton className="pointer-events-auto" />
@@ -59,24 +57,49 @@ export default function RootLayout({
   );
 }
 
-function Providers({ children }: { children: React.ReactNode; }) {
+function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
+  const router = useRouter();
 
   return (
     <div className="[--header-height:calc(--spacing(14))]">
       <QueryClientProvider client={queryClient}>
-        <SidebarProvider className="flex flex-col h-[100svh-var(--header-height)]!">
-          <NextThemesProvider
-            attribute="class"
-            enableSystem
-            disableTransitionOnChange
-            enableColorScheme
-          >
-            {children}
-          </NextThemesProvider>
-        </SidebarProvider>
+        <AuthUIProvider
+          authClient={authClient}
+          navigate={router.push}
+          replace={router.replace}
+          onSessionChange={() => {
+            // Clear router cache (protected routes)
+            router.refresh();
+          }}
+          Link={Link}
+          additionalFields={{
+            description: {
+              type: "string",
+              required: false,
+              label: "Description",
+            }
+          }}
+          signUp={{
+            fields: ["description"]
+          }}
+          account={{
+            fields: ["description"]
+          }}
+        >
+          <SidebarProvider className="h-[100svh-var(--header-height)]! flex flex-col">
+            <NextThemesProvider
+              attribute="class"
+              enableSystem
+              disableTransitionOnChange
+              enableColorScheme
+            >
+              {children}
+            </NextThemesProvider>
+          </SidebarProvider>
+        </AuthUIProvider>
       </QueryClientProvider>
-    </div >
+    </div>
   );
 }
 

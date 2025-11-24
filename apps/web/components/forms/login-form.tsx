@@ -1,14 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { redirect, RedirectType } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
-import { authClient } from "@/lib/auth/auth-client";
-import { useUserStore } from "@/lib/store";
 import { Button } from "@repo/ui/button";
 import {
   Card,
@@ -26,6 +18,14 @@ import {
   FormMessage,
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
+import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { authClient } from "@/lib/auth/auth-client";
+import { useUserStore } from "@/lib/store";
 
 const formSchema = z.object({
   email: z.string().email(),

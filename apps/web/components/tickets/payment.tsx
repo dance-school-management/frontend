@@ -1,11 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
-import { Ticket } from "@/lib/model/enroll";
-import { fmtTime } from "@/lib/utils/time";
-import { getPaymentLink } from "@/lib/api/enroll";
-
 import { Button } from "@repo/ui/button";
 import {
   Card,
@@ -15,6 +9,11 @@ import {
   CardTitle,
 } from "@repo/ui/card";
 import { Separator } from "@repo/ui/separator";
+import { useState } from "react";
+
+import { getPaymentLink } from "@/lib/api/enroll";
+import { Ticket } from "@/lib/model/enroll";
+import { fmtTime } from "@/lib/utils/time";
 
 interface ClassPaymentCardProps {
   ticket: Ticket;

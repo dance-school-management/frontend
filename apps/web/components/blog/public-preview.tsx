@@ -1,6 +1,3 @@
-import { Clock, Pin } from "lucide-react";
-import Link from "next/link";
-import { LightweightBlogPost } from "@/lib/model/blog";
 import { Badge } from "@repo/ui/badge";
 import {
   Card,
@@ -11,6 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/card";
+import { Clock, Pin } from "lucide-react";
+import Link from "next/link";
+
+import { LightweightBlogPost } from "@/lib/model/blog";
 
 interface PublicPreviewProps {
   post: LightweightBlogPost;

@@ -1,7 +1,6 @@
+import { ApiResult, fetcher } from "@/lib/api/axios";
 import { Paginated } from "@/lib/model";
 import { Notification } from "@/lib/model/notification";
-
-import { ApiResult, fetcher } from "@/lib/api/axios";
 
 export async function fetchNewNotifications(dateFrom?: string, limit = 50): Promise<ApiResult<Paginated<Notification>>> {
   const params = new URLSearchParams();

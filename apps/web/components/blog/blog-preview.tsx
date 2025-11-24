@@ -1,8 +1,5 @@
 "use client";
 
-import { Clock, Pin } from "lucide-react";
-import Link from "next/link";
-import { LightweightBlogPost } from "@/lib/model/blog";
 import { Badge } from "@repo/ui/badge";
 import {
   Card,
@@ -18,8 +15,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@repo/ui/tooltip";
-import { BlogPreviewActions } from "./blog-preview-actions";
 import { format } from "date-fns";
+import { Clock, Pin } from "lucide-react";
+import Link from "next/link";
+
+import { LightweightBlogPost } from "@/lib/model/blog";
+
+import { BlogPreviewActions } from "./blog-preview-actions";
 
 interface BlogPreviewProps {
   post: LightweightBlogPost;

@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
 import {
   Item,
   ItemContent,
@@ -7,7 +6,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from "@repo/ui/item";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
+import * as React from "react";
 
 interface ProgressItemGroupProps {
   data: ProgressItemProps[];

@@ -1,13 +1,13 @@
 "use client";
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { ProfileForm, type ProfileFormValues } from "@/components/forms/profile-form";
-import { useUserProfile } from "@/lib/api/tanstack";
-import { updateUserProfile } from "@/lib/api/profile";
 import { Loader } from "@/components/loader";
+import { updateUserProfile } from "@/lib/api/profile";
+import { useUserProfile } from "@/lib/api/tanstack";
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();

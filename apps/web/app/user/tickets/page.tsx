@@ -1,11 +1,11 @@
+import { cn } from "@repo/ui/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
 import { headers } from "next/headers";
 
 import { PaymentList } from "@/components/tickets/payment-list";
 import { TicketList } from "@/components/tickets/ticket-list";
 import { fetchTickets } from "@/lib/api/enroll";
 import { filterTickets } from "@/lib/utils/filters";
-import { cn } from "@repo/ui/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/tabs";
 
 export default async function Page() {
   const cookie = (await headers()).get('cookie') ?? "";

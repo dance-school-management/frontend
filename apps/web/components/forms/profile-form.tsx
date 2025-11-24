@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useHookFormMask } from "use-mask-input";
-import { CloudUpload, Paperclip } from "lucide-react";
-
 import { Button } from "@repo/ui/button";
+import {
+  FileInput,
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+} from "@repo/ui/file-upload";
 import {
   Form,
   FormControl,
@@ -18,14 +18,15 @@ import {
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
-import {
-  FileInput,
-  FileUploader,
-  FileUploaderContent,
-  FileUploaderItem,
-} from "@repo/ui/file-upload";
-import { DanceCategoriesMultiSelect } from "./select";
+import { CloudUpload, Paperclip } from "lucide-react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useHookFormMask } from "use-mask-input";
+import { z } from "zod";
+
 import { ProfileData } from "@/lib/model/profile";
+
+import { DanceCategoriesMultiSelect } from "./select";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address").nullable().optional().or(z.literal("")),

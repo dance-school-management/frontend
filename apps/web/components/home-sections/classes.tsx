@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { ArrowRight,Calendar, Users } from "lucide-react";
+import Link from "next/link";
+
 import { fmtTime } from "@/lib/utils/time";
-import { Calendar, Users, ArrowRight } from "lucide-react";
 import { IEvent } from "@/modules/calendar/types";
 
 interface TodaysClassesSectionProps {

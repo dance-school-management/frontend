@@ -1,7 +1,7 @@
 "use client";
 
-import { UseFormReturn, FieldValues, Path } from "react-hook-form";
-import { useState } from "react";
+import { Badge } from "@repo/ui/badge";
+import { Button } from "@repo/ui/button";
 import {
   FormControl,
   FormField,
@@ -9,10 +9,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@repo/ui/form";
-import { Badge } from "@repo/ui/badge";
 import { Input } from "@repo/ui/input";
-import { Button } from "@repo/ui/button";
 import { Plus, X } from "lucide-react";
+import { useState } from "react";
+import { FieldValues, Path,UseFormReturn } from "react-hook-form";
 
 interface TagsInputProps<T extends FieldValues> {
   form: UseFormReturn<T>;

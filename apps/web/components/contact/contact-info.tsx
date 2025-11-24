@@ -1,5 +1,3 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
-
 import {
   Card,
   CardContent,
@@ -7,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/card";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 
 

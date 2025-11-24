@@ -1,14 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconPlus } from "@tabler/icons-react";
-import { CloudUpload, Paperclip } from "lucide-react";
-import { useState } from "react";
-import { ControllerRenderProps, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
-import { EmployeeRole } from "@/lib/model/employee";
 import { Button } from "@repo/ui/button";
 import {
   Drawer,
@@ -44,6 +36,14 @@ import {
   SelectValue,
 } from "@repo/ui/select";
 import { Textarea } from "@repo/ui/textarea";
+import { IconPlus } from "@tabler/icons-react";
+import { CloudUpload, Paperclip } from "lucide-react";
+import { useState } from "react";
+import { ControllerRenderProps, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { EmployeeRole } from "@/lib/model/employee";
 
 const dropZoneConfig = {
   maxFiles: 1,

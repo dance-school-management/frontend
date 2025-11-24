@@ -1,29 +1,6 @@
 "use client";
 
 import {
-  IconChevronDown,
-  IconChevronRight,
-  IconLayoutColumns,
-} from "@tabler/icons-react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  Row,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import * as React from "react";
-import z from "zod";
-
-import { NewEmployeeDrawer, UpdateEmployeeDrawer } from "@/components/forms/employee-drawers";
-import { EmployeeRole } from "@/lib/model/employee";
-import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -44,6 +21,29 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/table";
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconLayoutColumns,
+} from "@tabler/icons-react";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getSortedRowModel,
+  Row,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
+import * as React from "react";
+import z from "zod";
+
+import { NewEmployeeDrawer, UpdateEmployeeDrawer } from "@/components/forms/employee-drawers";
+import { EmployeeRole } from "@/lib/model/employee";
 
 export const schema = z.object({
   id: z.number(),

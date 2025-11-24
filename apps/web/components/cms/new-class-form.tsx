@@ -1,15 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDays, format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
-import { ClassRoomSelect, InstructorsSelect } from "@/components/forms/select";
-import { ClassTemplate } from "@/lib/model/product";
 import { Button } from "@repo/ui/button";
 import { Calendar } from "@repo/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import {
   Form,
   FormControl,
@@ -20,6 +11,7 @@ import {
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { cn } from "@repo/ui/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import {
   Select,
   SelectContent,
@@ -28,8 +20,16 @@ import {
   SelectValue,
 } from "@repo/ui/select";
 import { TimeRangePicker } from "@repo/ui/time-range";
+import { addDays, format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
+import { ClassRoomSelect, InstructorsSelect } from "@/components/forms/select";
 import { createClass } from "@/lib/api/product";
+import { ClassTemplate } from "@/lib/model/product";
+
 import { PeopleLimitConfirmation } from "../forms/checkbox";
 
 

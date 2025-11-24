@@ -1,9 +1,4 @@
-import { NotificationItem } from '@/components/notifications/item';
-import { markNotificationsAsRead } from '@/lib/api/notification';
-import { useNotificationsPolling, useNotificationsStatus } from '@/lib/api/tanstack';
-import { Notification } from '@/lib/model/notification';
 import { Button } from '@repo/ui/button';
-import { Empty, EmptyDescription } from '@repo/ui/empty';
 import {
   DialogClose,
   DialogContent,
@@ -12,9 +7,15 @@ import {
   DialogHeader,
   DialogTitle
 } from '@repo/ui/dialog';
+import { Empty, EmptyDescription } from '@repo/ui/empty';
 import { ScrollArea } from '@repo/ui/scroll-area';
 import { BellOffIcon, CheckIcon } from 'lucide-react';
 import Link from 'next/link';
+
+import { NotificationItem } from '@/components/notifications/item';
+import { markNotificationsAsRead } from '@/lib/api/notification';
+import { useNotificationsPolling, useNotificationsStatus } from '@/lib/api/tanstack';
+import { Notification } from '@/lib/model/notification';
 
 
 interface NotificationsListProps {

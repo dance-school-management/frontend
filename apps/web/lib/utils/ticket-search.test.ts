@@ -1,5 +1,7 @@
-import { Ticket } from '@/lib/model/enroll';
 import { describe, expect, test } from 'vitest';
+
+import { Ticket } from '@/lib/model/enroll';
+
 import { searchAndSortTickets } from './ticket-search';
 
 describe('searchAndSortTickets', () => {

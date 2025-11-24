@@ -1,14 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SaveIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-
-import { MoneyInput } from "@/components/forms/input";
-import { AdvancementLevelSelect, CurrencySelect, DanceCategorySelect } from "@/components/forms/select";
-import { ClassTemplate } from "@/lib/model/product";
 import { Button } from "@repo/ui/button";
 import {
   Form,
@@ -27,8 +19,17 @@ import {
   SelectValue,
 } from "@repo/ui/select";
 import { Textarea } from "@repo/ui/textarea";
-import { createClassTemplate, updateClassTemplate } from "@/lib/api/product";
+import { SaveIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { MoneyInput } from "@/components/forms/input";
+import { AdvancementLevelSelect, CurrencySelect, DanceCategorySelect } from "@/components/forms/select";
+import { createClassTemplate, updateClassTemplate } from "@/lib/api/product";
+import { ClassTemplate } from "@/lib/model/product";
+
 import { IsConfirmationCheckbox } from "../forms/checkbox";
 
 const classTemplateFormSchema = z.object({

@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 
-import { fetchInstructors } from "@/lib/api/profile";
 import { InstructorPreviewCard } from '@/components/instructors/preview';
+import { fetchInstructors } from "@/lib/api/profile";
 
 
 export default async function Page() {
