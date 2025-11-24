@@ -2,7 +2,6 @@
 
 import "@repo/ui/globals.css";
 
-import { AuthUIProvider } from "@daveyplate/better-auth-ui";
 import { SidebarInset, SidebarProvider } from "@repo/ui/sidebar";
 import { Toaster } from "@repo/ui/sonner";
 import {
@@ -11,10 +10,8 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { Geist, Geist_Mono } from "next/font/google";
 import { useEffect } from "react";
 
 import { AppSidebar } from "@/components/app-sidebar";
@@ -59,45 +56,20 @@ export default function RootLayout({
 
 function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  const router = useRouter();
 
   return (
     <div className="[--header-height:calc(--spacing(14))]">
       <QueryClientProvider client={queryClient}>
-        <AuthUIProvider
-          authClient={authClient}
-          navigate={router.push}
-          replace={router.replace}
-          onSessionChange={() => {
-            // Clear router cache (protected routes)
-            router.refresh();
-          }}
-          Link={Link}
-          additionalFields={{
-            description: {
-              type: "string",
-              required: false,
-              label: "Description",
-            }
-          }}
-          signUp={{
-            fields: ["description"]
-          }}
-          account={{
-            fields: ["description"]
-          }}
-        >
-          <SidebarProvider className="h-[100svh-var(--header-height)]! flex flex-col">
-            <NextThemesProvider
-              attribute="class"
-              enableSystem
-              disableTransitionOnChange
-              enableColorScheme
-            >
-              {children}
-            </NextThemesProvider>
-          </SidebarProvider>
-        </AuthUIProvider>
+        <SidebarProvider className="h-[100svh-var(--header-height)]! flex flex-col">
+          <NextThemesProvider
+            attribute="class"
+            enableSystem
+            disableTransitionOnChange
+            enableColorScheme
+          >
+            {children}
+          </NextThemesProvider>
+        </SidebarProvider>
       </QueryClientProvider>
     </div>
   );
