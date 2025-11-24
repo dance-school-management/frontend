@@ -1,7 +1,7 @@
 import { Paginated } from '@/lib/model';
 import { Notification } from '@/lib/model/notification';
 import { AdditionalProductData, DanceCategory } from '@/lib/model/product';
-import { InstructorsResponse, GetProfileResponse } from '@/lib/model/profile';
+import { GetProfileResponse, InstructorsResponse } from '@/lib/model/profile';
 import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';

@@ -1,8 +1,8 @@
 import {
   BlogPost,
-  LightweightBlogPost,
   BlogPostStatus,
   CreatePostRequest,
+  LightweightBlogPost,
   PaginatedResponse,
   PinPostRequest,
   PublishPostRequest,
@@ -16,7 +16,7 @@ export async function createPost(
   data: CreatePostRequest,
   cookie?: string
 ): Promise<ApiResult<BlogPost>> {
-  return await fetcher("/blog/blog/posts", "POST", data, { cookie });
+  return await fetcher("/blog/posts", "POST", data, { cookie });
 }
 
 export async function getAllPosts(
@@ -36,7 +36,7 @@ export async function getAllPosts(
   if (params?.q) queryParams.append("q", params.q);
   if (params?.expand) queryParams.append("expand", params.expand);
 
-  const url = `/blog/blog/posts${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+  const url = `/blog/posts${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
   return await fetcher(url, "GET", undefined, { cookie });
 }
 
@@ -44,7 +44,7 @@ export async function getPostByIdOrSlug(
   idOrSlug: string,
   cookie?: string
 ): Promise<ApiResult<BlogPost>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}`, "GET", undefined, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}`, "GET", undefined, { cookie });
 }
 
 export async function updatePost(
@@ -52,14 +52,14 @@ export async function updatePost(
   data: UpdatePostRequest,
   cookie?: string
 ): Promise<ApiResult<BlogPost>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}`, "PATCH", data, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}`, "PATCH", data, { cookie });
 }
 
 export async function deletePost(
   idOrSlug: string,
   cookie?: string
 ): Promise<ApiResult<void>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}`, "DELETE", undefined, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}`, "DELETE", undefined, { cookie });
 }
 
 export async function publishPost(
@@ -67,14 +67,14 @@ export async function publishPost(
   data?: PublishPostRequest,
   cookie?: string
 ): Promise<ApiResult<void>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}/publish`, "PATCH", data, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}/publish`, "PATCH", data, { cookie });
 }
 
 export async function unpublishPost(
   idOrSlug: string,
   cookie?: string
 ): Promise<ApiResult<void>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}/unpublish`, "PATCH", undefined, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}/unpublish`, "PATCH", undefined, { cookie });
 }
 
 export async function pinPost(
@@ -82,14 +82,14 @@ export async function pinPost(
   data: PinPostRequest,
   cookie?: string
 ): Promise<ApiResult<void>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}/pin`, "PATCH", data, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}/pin`, "PATCH", data, { cookie });
 }
 
 export async function unpinPost(
   idOrSlug: string,
   cookie?: string
 ): Promise<ApiResult<void>> {
-  return await fetcher(`/blog/blog/posts/${idOrSlug}/unpin`, "PATCH", undefined, { cookie });
+  return await fetcher(`/blog/posts/${idOrSlug}/unpin`, "PATCH", undefined, { cookie });
 }
 
 // Public routes
@@ -106,12 +106,12 @@ export async function getPublishedPosts(params?: {
   if (params?.q) queryParams.append("q", params.q);
   if (params?.tag) queryParams.append("tag", params.tag);
 
-  const url = `/blog/blog/public/posts${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+  const url = `/blog/public/posts${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
   return await fetcher(url, "GET");
 }
 
 export async function getPublishedPostByIdOrSlug(
   idOrSlug: string
 ): Promise<ApiResult<BlogPost>> {
-  return await fetcher(`/blog/blog/public/posts/${idOrSlug}`, "GET");
+  return await fetcher(`/blog/public/posts/${idOrSlug}`, "GET");
 }

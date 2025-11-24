@@ -1,14 +1,14 @@
+import { ApiResult, fetcher } from "@/lib/api/axios";
 import {
-  Course,
   AdditionalProductData,
-  ClassTemplate,
   Class,
+  ClassStatus,
+  ClassTemplate,
+  Course,
   CourseSummary,
   CoursesClassesResponse,
-  ClassStatus,
   DanceCategory,
 } from "@/lib/model/product";
-import { ApiResult, fetcher } from "@/lib/api/axios";
 import { IApiScheduleResponse } from "@/modules/calendar/types";
 
 type CreateCoursePayload = {
@@ -109,18 +109,18 @@ export async function fetchAdditionalProductData(): Promise<ApiResult<Additional
 }
 
 export async function fetchScheduleCourses(cookie?: string): Promise<ApiResult<CourseSummary[]>> {
-  return await fetcher<CourseSummary[]>(`/product/schedule/search/courses`, undefined, undefined, { cookie });
+  return await fetcher<CourseSummary[]>(`/product/public/schedule/search/courses`, undefined, undefined, { cookie });
 }
 
 export async function fetchCoursesClasses(courseIds: number[], cookie?: string): Promise<ApiResult<CoursesClassesResponse>> {
   const searchParams = new URLSearchParams(courseIds.map((courseId) => ["coursesIds", courseId.toString()]));
-  return await fetcher<CoursesClassesResponse>(`/product/schedule/courses/classes?${searchParams.toString()}`, undefined, undefined, { cookie });
+  return await fetcher<CoursesClassesResponse>(`/product/public/schedule/courses/classes?${searchParams.toString()}`, undefined, undefined, { cookie });
 }
 
 export async function fetchSchedule(dateFrom: string, dateTo: string, cookie?: string): Promise<ApiResult<IApiScheduleResponse>> {
-  return await fetcher<IApiScheduleResponse>(`/product/schedule?dateFrom=${dateFrom}&dateTo=${dateTo}`, undefined, undefined, { cookie });
+  return await fetcher<IApiScheduleResponse>(`/product/public/schedule?dateFrom=${dateFrom}&dateTo=${dateTo}`, undefined, undefined, { cookie });
 }
 
-export async function fetchDanceCategories(cookie?: string): Promise<ApiResult<DanceCategory[]>> {
-  return await fetcher<DanceCategory[]>("/product/cms/dance_category", undefined, undefined, { cookie });
+export async function fetchDanceCategories(): Promise<ApiResult<DanceCategory[]>> {
+  return await fetcher<DanceCategory[]>("/product/public/cms/dance_category");
 }
