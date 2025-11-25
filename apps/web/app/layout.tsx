@@ -10,8 +10,8 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useEffect } from "react";
 
 import { AppSidebar } from "@/components/app-sidebar";

@@ -13,14 +13,14 @@ import {
 } from "@repo/ui/dialog";
 import { CloudUploadIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { NewClassTemplateForm } from "@/components/cms/class-template-form";
 import { NewCourseForm } from "@/components/cms/new-course-form";
-import { Course } from "@/lib/model/product";
 import { deleteCourse } from "@/lib/api/product";
+import { Course } from "@/lib/model/product";
 import { truncateAtWordBoundary } from "@/lib/utils/text";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export function CourseActions(course: Course) {
   const router = useRouter();
