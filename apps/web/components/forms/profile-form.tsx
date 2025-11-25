@@ -146,7 +146,7 @@ export function ProfileForm({
                 <Input
                   type="tel"
                   placeholder="+48 XXX XXX XXX"
-                  {...registerWithMask(field.name, "+48 999 999 999", {prefix: "+48", showMaskOnHover: false, placeholder: "_"})}
+                  {...registerWithMask(field.name, "+48 999 999 999", { prefix: "+48", showMaskOnHover: false, placeholder: "_" })}
                 />
               </FormControl>
               <FormMessage />
