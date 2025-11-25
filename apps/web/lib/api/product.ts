@@ -77,6 +77,10 @@ export async function updateCourse(payload: UpdateCoursePayload) {
   return await fetcher<Course>("/product/cms/course/edit", "PUT", payload);
 }
 
+export async function deleteCourse(id: number, cookie?: string) {
+  return await fetcher<null>(`/product/cms/course/${id}`, "DELETE", undefined, { cookie });
+}
+
 export async function updateClassTemplate(id: number, payload: UpdateClassTemplatePayload) {
   return await fetcher<ClassTemplate>(`/product/cms/class_template/${id}`, "PUT", payload);
 }
