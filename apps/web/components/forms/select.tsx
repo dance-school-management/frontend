@@ -1,9 +1,9 @@
-import { UseFormReturn, FieldValues, Path } from "react-hook-form";
-
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
-import { useAdditionalProductData, useInstructors } from "@/lib/api/tanstack";
 import { MultiSelect } from "@repo/ui/multi-select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+
+import { useAdditionalProductData, useDanceCategories, useInstructors } from "@/lib/api/tanstack";
 
 interface CurrencySelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -183,6 +183,50 @@ export function InstructorsSelect<T extends FieldValues>({ form, name, label = "
           <FormMessage />
         </FormItem>
       )}
+    />
+  );
+}
+
+interface DanceCategoriesMultiSelectProps<T extends FieldValues> {
+  form: UseFormReturn<T>;
+  name: Path<T>;
+  label?: string;
+  placeholder?: string;
+}
+
+export function DanceCategoriesMultiSelect<T extends FieldValues>({ form, name, label = "Favourite Dance Categories", placeholder = "Select dance categories" }: DanceCategoriesMultiSelectProps<T>) {
+  const { data } = useDanceCategories();
+
+  const options = data?.map((category) => ({
+    label: category.name,
+    value: String(category.id),
+  })) || [];
+
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => {
+        const value = Array.isArray(field.value) 
+          ? field.value.map((v: number) => String(v))
+          : [];
+
+        return (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <MultiSelect
+              onValueChange={(values) => {
+                field.onChange(values.map((v) => Number(v)));
+              }}
+              value={value}
+              options={options}
+              placeholder={placeholder}
+              disabled={!data}
+            />
+            <FormMessage />
+          </FormItem>
+        );
+      }}
     />
   );
 }

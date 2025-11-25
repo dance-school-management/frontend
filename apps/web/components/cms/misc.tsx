@@ -1,11 +1,5 @@
 "use client";
 
-import { CloudUploadIcon, PlusIcon, TrashIcon } from "lucide-react";
-import Link from "next/link";
-
-import { NewClassTemplateForm } from "@/components/cms/class-template-form";
-import { NewCourseForm } from "@/components/cms/new-course-form";
-import { Course } from "@/lib/model/product";
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardHeader } from "@repo/ui/card";
@@ -17,11 +11,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/dialog";
-
-import { deleteCourse } from "@/lib/api/product";
-import { truncateAtWordBoundary } from "@/lib/utils/text";
-import { toast } from "sonner";
+import { CloudUploadIcon, PlusIcon, TrashIcon } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import { NewClassTemplateForm } from "@/components/cms/class-template-form";
+import { NewCourseForm } from "@/components/cms/new-course-form";
+import { deleteCourse } from "@/lib/api/product";
+import { Course } from "@/lib/model/product";
+import { truncateAtWordBoundary } from "@/lib/utils/text";
 
 export function CourseActions(course: Course) {
   const router = useRouter();

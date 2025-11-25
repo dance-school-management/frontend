@@ -1,6 +1,5 @@
 'use client';
 
-import { checkTicketValidity, markTicketAsUsed } from '@/lib/api/enroll';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,6 +14,8 @@ import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
 import { CircleCheckBig } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+
+import { checkTicketValidity, markTicketAsUsed } from '@/lib/api/enroll';
 
 interface QRScannerProps {
   cookie: string;

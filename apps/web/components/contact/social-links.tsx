@@ -1,7 +1,5 @@
 "use client";
 
-import { siFacebook, siInstagram, siYoutube, siTiktok } from "simple-icons";
-
 import {
   Card,
   CardContent,
@@ -9,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/card";
+import { siFacebook, siInstagram, siTiktok, siYoutube } from "simple-icons";
 
 const socialLinks = [
   {

@@ -1,11 +1,10 @@
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
+
 import { DanceCategoryCard } from "@/components/courses/dance-category-card";
 import { fetchDanceCategories } from "@/lib/api/product";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
-import { headers } from "next/headers";
 
 export default async function Page() {
-    const cookie = (await headers()).get('cookie') ?? "";
-    const { data, error } = await fetchDanceCategories(cookie);
+    const { data, error } = await fetchDanceCategories();
 
     if (error || !data || data.length === 0) {
         return (

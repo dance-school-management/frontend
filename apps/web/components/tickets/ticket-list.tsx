@@ -1,11 +1,10 @@
 "use client";
+import { Input } from "@repo/ui/input";
 import { useState } from "react";
 
-import { Ticket } from "@/lib/model/enroll";
 import { TicketPreview } from "@/components/tickets/ticket";
+import { Ticket } from "@/lib/model/enroll";
 import { searchAndSortTickets } from "@/lib/utils/ticket-search";
-
-import { Input } from "@repo/ui/input";
 
 interface TicketListProps {
   tickets: Ticket[];

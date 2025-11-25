@@ -1,10 +1,10 @@
-import { InstructorWithDetails } from "@/lib/model/profile";
-import { getInitials } from "@/lib/utils/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/avatar";
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@repo/ui/item";
-import { DanceCategoryBadge } from "@/components/instructors/badge";
-
 import { Mail, Phone } from "lucide-react";
+
+import { DanceCategoryBadge } from "@/components/instructors/badge";
+import { InstructorWithDetails } from "@/lib/model/profile";
+import { getInitials } from "@/lib/utils/text";
 
 export function InstructorDetailsHeader({ instructor }: { instructor: InstructorWithDetails; }) {
   const name = `${instructor.name} ${instructor.surname}`;

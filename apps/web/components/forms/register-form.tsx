@@ -1,13 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import { redirect, RedirectType } from "next/navigation";
-
-import { signUp } from "@/lib/auth/auth-client";
 import { Button } from "@repo/ui/button";
 import {
   Card,
@@ -25,6 +18,13 @@ import {
   FormMessage,
 } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
+import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { signUp } from "@/lib/auth/auth-client";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -57,8 +57,6 @@ export function RegisterForm() {
       email,
       password,
       name: `${name} ${surname}`,
-      surname,
-      first_name: name,
       fetchOptions: {
         onError: (ctx) => {
           toast.error(ctx.error.message);

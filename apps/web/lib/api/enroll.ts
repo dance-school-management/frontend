@@ -1,4 +1,3 @@
-import { ApiResult, fetcher } from "./axios";
 import {
   CourseAttendanceRateResponse,
   DanceCategoryStatsResponse,
@@ -7,6 +6,8 @@ import {
   PaymentLinkResponse,
   TicketResponse
 } from "@/lib/model/enroll";
+
+import { ApiResult, fetcher } from "./axios";
 
 export async function fetchTickets(cookie?: string): Promise<ApiResult<TicketResponse>> {
   return await fetcher("/enroll/ticket/retrieve", "GET", undefined, { cookie });

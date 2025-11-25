@@ -1,7 +1,5 @@
 "use client";
 
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -15,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@repo/ui/chart";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 interface ProgressChartData {
   name: string;

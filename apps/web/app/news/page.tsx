@@ -1,7 +1,7 @@
-import { getPublishedPosts } from "@/lib/api/blog";
+import { NewsSearch } from "@/components/blog/news-search";
 import { PublicPreview } from "@/components/blog/public-preview";
 import { PaginationControls } from "@/components/utility/pagination";
-import { NewsSearch } from "@/components/blog/news-search";
+import { getPublishedPosts } from "@/lib/api/blog";
 
 export const revalidate = 60;
 

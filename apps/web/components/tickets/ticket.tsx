@@ -1,10 +1,4 @@
 "use client";
-import { QRCodeSVG } from "qrcode.react";
-
-import { Ticket } from "@/lib/model/enroll";
-import { fmtDate, fmtTime } from "@/lib/utils/time";
-import { isSameDay } from "date-fns";
-
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
 import {
@@ -24,6 +18,11 @@ import {
   DialogTrigger,
 } from "@repo/ui/dialog";
 import { Separator } from "@repo/ui/separator";
+import { isSameDay } from "date-fns";
+import { QRCodeSVG } from "qrcode.react";
+
+import { Ticket } from "@/lib/model/enroll";
+import { fmtDate, fmtTime } from "@/lib/utils/time";
 
 interface TicketPreviewProps {
   ticket: Ticket;

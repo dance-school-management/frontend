@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { CircleCheckBig } from "lucide-react";
+import Link from "next/link";
 
 export default function Page() {
   return (

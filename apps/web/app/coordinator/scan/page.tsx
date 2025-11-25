@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+
 import { QRScanner } from '@/components/qr/qr-scanner';
 
 export default async function Page() {

@@ -1,4 +1,4 @@
-import { DanceCategoryStats, InstructorStats, CourseAttendanceRate, MasteredDanceCategory } from "@/lib/model/enroll";
+import { CourseAttendanceRate, DanceCategoryStats, InstructorStats, MasteredDanceCategory } from "@/lib/model/enroll";
 
 /**
  * Transforms DanceCategoryStats array to chart data format

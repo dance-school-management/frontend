@@ -1,10 +1,10 @@
 "use client";
 
-import { MenuIcon } from "lucide-react";
-
 import { Button } from "@repo/ui/button";
 import { Separator } from "@repo/ui/separator";
 import { useSidebar } from "@repo/ui/sidebar";
+import { MenuIcon } from "lucide-react";
+
 import { ModeToggle } from "./theme-toggle";
 
 export function SiteHeader() {

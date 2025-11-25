@@ -6,6 +6,7 @@ import type {
   InstructorStats,
   MasteredDanceCategory,
 } from '@/lib/model/enroll';
+
 import {
   calculateTotalHours,
   transformCourseAttendanceToProgressItems,

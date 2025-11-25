@@ -1,7 +1,8 @@
 "use client";
 
-import { truncateAtWordBoundary } from "@/lib/utils/text";
 import { useState } from "react";
+
+import { truncateAtWordBoundary } from "@/lib/utils/text";
 
 interface ExpandableDescriptionProps {
   text: string;

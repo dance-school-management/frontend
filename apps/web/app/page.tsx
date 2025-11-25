@@ -1,3 +1,5 @@
+import { Separator } from "@repo/ui/separator";
+
 import { TodaysClassesSection } from "@/components/home-sections/classes";
 import { CallToActionSection } from "@/components/home-sections/cta";
 import { FeaturedDanceStylesSection } from "@/components/home-sections/dance-styles";
@@ -11,22 +13,18 @@ import { fetchDanceCategories, fetchSchedule } from "@/lib/api/product";
 import { fetchInstructors } from "@/lib/api/profile";
 import { transformScheduleToEvents } from "@/modules/calendar/helpers";
 import { IEvent } from "@/modules/calendar/types";
-import { Separator } from "@repo/ui/separator";
-import { headers } from "next/headers";
 
 export default async function Page() {
-  const cookie = (await headers()).get('cookie') ?? "";
-
   const [
     scheduleResult,
     instructorsResult,
     newsResult,
     categoriesResult,
   ] = await Promise.all([
-    fetchTodaySchedule(cookie),
+    fetchTodaySchedule(),
     fetchInstructors(),
     getPublishedPosts({ limit: 3 }),
-    fetchDanceCategories(cookie),
+    fetchDanceCategories(),
   ]);
 
   const todayClasses = scheduleResult.data
@@ -74,11 +72,11 @@ export default async function Page() {
   );
 }
 
-async function fetchTodaySchedule(cookie: string) {
+async function fetchTodaySchedule() {
   const today = new Date();
   const dateFrom = today.toISOString().split('T')[0]!;
   const dateTo = today.toISOString().split('T')[0]!;
-  return await fetchSchedule(dateFrom, dateTo, cookie);
+  return await fetchSchedule(dateFrom, dateTo);
 }
 
 function getTodayClasses(events: IEvent[]): IEvent[] {

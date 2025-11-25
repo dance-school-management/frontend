@@ -1,8 +1,4 @@
-import { truncateAtWordBoundary } from "@/lib/utils/text";
-import { CourseSummary, ClassWithTemplate } from "@/lib/model/product";
-import { ExpandableDescription } from "@/components/utility/expandable";
-import { CourseClassItem } from "@/components/courses/course-class-item";
-
+import { Button } from "@repo/ui/button";
 import {
   Card,
   CardContent,
@@ -22,7 +18,11 @@ import {
 } from "@repo/ui/dialog";
 import { ScrollArea } from "@repo/ui/scroll-area";
 import { Separator } from "@repo/ui/separator";
-import { Button } from "@repo/ui/button";
+
+import { CourseClassItem } from "@/components/courses/course-class-item";
+import { ExpandableDescription } from "@/components/utility/expandable";
+import { ClassWithTemplate, CourseSummary } from "@/lib/model/product";
+import { truncateAtWordBoundary } from "@/lib/utils/text";
 
 interface CourseScheduleCardProps {
   course: CourseSummary;

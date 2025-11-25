@@ -1,6 +1,7 @@
+import { notFound } from "next/navigation";
+
 import { BlogPostRenderer } from "@/components/blog/blog-post-renderer";
 import { getPublishedPostByIdOrSlug, getPublishedPosts } from "@/lib/api/blog";
-import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
 

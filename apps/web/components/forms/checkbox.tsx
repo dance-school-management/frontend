@@ -1,7 +1,6 @@
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
-
 import { Checkbox } from "@repo/ui/checkbox";
 import { FormField, FormItem, FormLabel } from "@repo/ui/form";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
 import { useAdditionalProductData } from "@/lib/api/tanstack";
 

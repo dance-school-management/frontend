@@ -1,23 +1,15 @@
 "use client";
 
 import {
-  Bell,
-  ChevronsUpDown,
-  LogIn,
-  LogOut,
-  SettingsIcon,
-  UserIcon,
-  UserPlus
-} from "lucide-react";
-import Link from "next/link";
-import { redirect, RedirectType, usePathname } from "next/navigation";
-
-import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@repo/ui/avatar";
 import { Badge } from "@repo/ui/badge";
+import {
+  Dialog,
+  DialogTrigger
+} from "@repo/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,18 +23,27 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@repo/ui/sidebar";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  Bell,
+  ChevronsUpDown,
+  LogIn,
+  LogOut,
+  SettingsIcon,
+  UserIcon,
+  UserPlus
+} from "lucide-react";
+import Link from "next/link";
+import { redirect, RedirectType, usePathname } from "next/navigation";
 
 import { NotificationsList } from "@/components/notifications/list";
 import { useNotificationsPolling } from "@/lib/api/tanstack";
 import { signOut, User } from "@/lib/model";
 import { useUserStore } from "@/lib/store";
-import {
-  Dialog,
-  DialogTrigger
-} from "@repo/ui/dialog";
 
 export function NavProfile({ user }: { user: User | null; }) {
-  const { notifications, lengthUnread, removeAll } = useNotificationsPolling();
+  const { notifications, lengthUnread } = useNotificationsPolling();
+  const queryClient = useQueryClient();
   const { setUser } = useUserStore();
   const pathname = usePathname();
 
@@ -120,9 +121,10 @@ export function NavProfile({ user }: { user: User | null; }) {
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {
+            <DropdownMenuItem onClick={async () => {
               setUser(null);
-              removeAll();
+              await queryClient.cancelQueries();
+              queryClient.clear();
               signOut();
               redirect("/login", RedirectType.replace);
             }}>

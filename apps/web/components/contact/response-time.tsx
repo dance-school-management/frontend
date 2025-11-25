@@ -1,6 +1,5 @@
-import { Clock } from "lucide-react";
-
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
+import { Clock } from "lucide-react";
 
 export function ResponseTime() {
   return (

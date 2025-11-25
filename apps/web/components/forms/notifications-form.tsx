@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-
 import { Button } from "@repo/ui/button";
 import {
   Field,
@@ -17,6 +14,8 @@ import {
   FormItem,
 } from "@repo/ui/form";
 import { Switch } from "@repo/ui/switch";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 export interface NotificationsFormValues {
   enableNotifications: boolean;

@@ -1,13 +1,13 @@
+import { Button, buttonVariants } from "@repo/ui/button";
+import { cn } from "@repo/ui/lib/utils";
 import {
   Pagination as UIPagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
 } from "@repo/ui/pagination";
-import { Button, buttonVariants } from "@repo/ui/button";
-import { cn } from "@repo/ui/lib/utils";
-import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import Link from "next/link";
 
 interface PaginationProps {
   currentPage: number;

@@ -1,9 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
-import { PlusIcon, EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
-
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
 import {
   AlertDialog,
@@ -32,10 +28,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@repo/ui/drawer";
-import { Class, ClassStatus, ClassTemplate } from "@/lib/model/product";
-import { updateClassStatus } from "@/lib/api/product";
-import { NewClassForm } from "./new-class-form";
+import { format } from "date-fns";
+import { EyeIcon, EyeOffIcon, PlusIcon } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+
+import { updateClassStatus } from "@/lib/api/product";
+import { Class, ClassStatus, ClassTemplate } from "@/lib/model/product";
+
+import { NewClassForm } from "./new-class-form";
 
 interface ClassesListProps {
   classTemplate: ClassTemplate;

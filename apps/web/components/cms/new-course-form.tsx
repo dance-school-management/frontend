@@ -1,13 +1,12 @@
 
-import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
-import { toast } from "sonner";
-
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
 import { DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@repo/ui/dialog";
 import { Input } from "@repo/ui/input";
 import { Label } from "@repo/ui/label";
+import { useRouter } from "next/navigation";
+import { FormEvent } from "react";
+import { toast } from "sonner";
 
 import { createCourse } from "@/lib/api/product";
 

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
-import { Award, Clock, Users, Heart, Sparkles, Star } from "lucide-react";
+import { Award, Clock, Heart, Sparkles, Star, Users } from "lucide-react";
 
 export function WhyChooseUsSection() {
   const benefits = [
