@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback,AvatarImage } from "@repo/ui/avatar";
-import { Item, ItemContent, ItemDescription,ItemMedia, ItemTitle } from "@repo/ui/item";
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@repo/ui/item";
 import Link from "next/link";
 
 import { DanceCategoryBadge } from "@/components/instructors/badge";

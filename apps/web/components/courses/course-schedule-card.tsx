@@ -21,7 +21,7 @@ import { Separator } from "@repo/ui/separator";
 
 import { CourseClassItem } from "@/components/courses/course-class-item";
 import { ExpandableDescription } from "@/components/utility/expandable";
-import { ClassWithTemplate,CourseSummary } from "@/lib/model/product";
+import { ClassWithTemplate, CourseSummary } from "@/lib/model/product";
 import { truncateAtWordBoundary } from "@/lib/utils/text";
 
 interface CourseScheduleCardProps {

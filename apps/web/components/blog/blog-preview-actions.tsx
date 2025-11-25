@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/dropdown-menu";
-import { Edit, Eye, EyeOff, MoreVertical,Pin, PinOff, Trash2 } from "lucide-react";
+import { Edit, Eye, EyeOff, MoreVertical, Pin, PinOff, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 

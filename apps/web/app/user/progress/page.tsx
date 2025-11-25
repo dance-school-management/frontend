@@ -15,7 +15,8 @@ import {
     transformCourseAttendanceToProgressItems,
     transformDanceCategoryStatsToChartData,
     transformInstructorStatsToChartData,
-    transformMasteredCategoriesToProgressItems} from "@/lib/utils/progress-transformers";
+    transformMasteredCategoriesToProgressItems
+} from "@/lib/utils/progress-transformers";
 
 const ongoingCoursesEmptyState = {
     title: "No ongoing courses",

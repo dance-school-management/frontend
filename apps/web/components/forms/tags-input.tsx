@@ -12,7 +12,7 @@ import {
 import { Input } from "@repo/ui/input";
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
-import { FieldValues, Path,UseFormReturn } from "react-hook-form";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
 interface TagsInputProps<T extends FieldValues> {
   form: UseFormReturn<T>;

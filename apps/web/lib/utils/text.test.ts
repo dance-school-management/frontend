@@ -1,6 +1,6 @@
-import { describe,expect, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
-import { calculateNameSimilarity,getInitials, truncateAtWordBoundary } from './text';
+import { calculateNameSimilarity, getInitials, truncateAtWordBoundary } from './text';
 
 describe('getInitials', () => {
   test('returns initials for standard name/surname', () => {

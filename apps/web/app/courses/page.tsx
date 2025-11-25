@@ -1,7 +1,7 @@
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@repo/ui/empty";
 
 import { CourseScheduleCard } from "@/components/courses/course-schedule-card";
-import { fetchCoursesClasses,fetchScheduleCourses } from "@/lib/api/product";
+import { fetchCoursesClasses, fetchScheduleCourses } from "@/lib/api/product";
 
 
 export default async function Page() {  

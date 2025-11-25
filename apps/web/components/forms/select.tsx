@@ -1,7 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { MultiSelect } from "@repo/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
-import { FieldValues, Path,UseFormReturn } from "react-hook-form";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
 import { useAdditionalProductData, useDanceCategories, useInstructors } from "@/lib/api/tanstack";
 

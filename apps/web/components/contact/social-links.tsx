@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/card";
-import { siFacebook, siInstagram, siTiktok,siYoutube } from "simple-icons";
+import { siFacebook, siInstagram, siTiktok, siYoutube } from "simple-icons";
 
 const socialLinks = [
   {
