@@ -207,23 +207,18 @@ export function DanceCategoriesMultiSelect<T extends FieldValues>({ form, name, 
       control={form.control}
       name={name}
       render={({ field }) => {
-        const defaultValue = Array.isArray(field.value) 
+        const value = Array.isArray(field.value) 
           ? field.value.map((v: number) => String(v))
           : [];
-
-        const key = Array.isArray(field.value) 
-          ? field.value.join(',') 
-          : 'empty';
 
         return (
           <FormItem>
             <FormLabel>{label}</FormLabel>
             <MultiSelect
-              key={key}
               onValueChange={(values) => {
                 field.onChange(values.map((v) => Number(v)));
               }}
-              defaultValue={defaultValue}
+              value={value}
               options={options}
               placeholder={placeholder}
               disabled={!data}
