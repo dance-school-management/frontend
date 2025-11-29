@@ -11,6 +11,7 @@ import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { useAdditionalProductData, useDanceCategories, useInstructors, useUsersSearch } from "@/lib/api/tanstack";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { useIdCache } from "@/lib/hooks/use-id-cache";
+import { ProfileData } from "@/lib/model/profile";
 
 interface CurrencySelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -52,7 +53,12 @@ interface AdvancementLevelSelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-export function AdvancementLevelSelect<T extends FieldValues>({ form, name, label = "Advancement Level", placeholder = "Select advancement level" }: AdvancementLevelSelectProps<T>) {
+export function AdvancementLevelSelect<T extends FieldValues>({
+  form,
+  name,
+  label = "Advancement Level",
+  placeholder = "Select advancement level",
+}: AdvancementLevelSelectProps<T>) {
   const { data } = useAdditionalProductData();
 
   return (
@@ -90,7 +96,12 @@ interface DanceCategorySelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-export function DanceCategorySelect<T extends FieldValues>({ form, name, label = "Dance Category", placeholder = "Select dance category" }: DanceCategorySelectProps<T>) {
+export function DanceCategorySelect<T extends FieldValues>({
+  form,
+  name,
+  label = "Dance Category",
+  placeholder = "Select dance category",
+}: DanceCategorySelectProps<T>) {
   const { data } = useAdditionalProductData();
 
   return (
@@ -119,7 +130,7 @@ export function DanceCategorySelect<T extends FieldValues>({ form, name, label =
       )}
     />
   );
-};
+}
 interface ClassRoomSelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
   name: Path<T>;
@@ -127,7 +138,12 @@ interface ClassRoomSelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-export function ClassRoomSelect<T extends FieldValues>({ form, name, label = "Classroom", placeholder = "Select classroom" }: ClassRoomSelectProps<T>) {
+export function ClassRoomSelect<T extends FieldValues>({
+  form,
+  name,
+  label = "Classroom",
+  placeholder = "Select classroom",
+}: ClassRoomSelectProps<T>) {
   const { data } = useAdditionalProductData();
 
   return (
@@ -165,13 +181,19 @@ interface InstructorSelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-export function InstructorsSelect<T extends FieldValues>({ form, name, label = "Instructors", placeholder = "Select instructors" }: InstructorSelectProps<T>) {
+export function InstructorsSelect<T extends FieldValues>({
+  form,
+  name,
+  label = "Instructors",
+  placeholder = "Select instructors",
+}: InstructorSelectProps<T>) {
   const { data } = useInstructors();
 
-  const options = data?.instructors.map((instructor) => ({
-    label: instructor.name + " " + instructor.surname,
-    value: instructor.id,
-  })) || [];
+  const options =
+    data?.instructors.map((instructor) => ({
+      label: instructor.name + " " + instructor.surname,
+      value: instructor.id,
+    })) || [];
 
   return (
     <FormField
@@ -201,22 +223,26 @@ interface DanceCategoriesMultiSelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-export function DanceCategoriesMultiSelect<T extends FieldValues>({ form, name, label = "Favourite Dance Categories", placeholder = "Select dance categories" }: DanceCategoriesMultiSelectProps<T>) {
+export function DanceCategoriesMultiSelect<T extends FieldValues>({
+  form,
+  name,
+  label = "Favourite Dance Categories",
+  placeholder = "Select dance categories",
+}: DanceCategoriesMultiSelectProps<T>) {
   const { data } = useDanceCategories();
 
-  const options = data?.map((category) => ({
-    label: category.name,
-    value: String(category.id),
-  })) || [];
+  const options =
+    data?.map((category) => ({
+      label: category.name,
+      value: String(category.id),
+    })) || [];
 
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => {
-        const value = Array.isArray(field.value) 
-          ? field.value.map((v: number) => String(v))
-          : [];
+        const value = Array.isArray(field.value) ? field.value.map((v: number) => String(v)) : [];
 
         return (
           <FormItem>
@@ -245,9 +271,12 @@ interface UserMultiSelectProps<T extends FieldValues> {
   placeholder?: string;
 }
 
-type CachedUser = { id: string; name: string; surname: string; email: string | null; photoPath: string | null };
-
-export function UserMultiSelect<T extends FieldValues>({ form, name, label = "Users", placeholder = "Search users..." }: UserMultiSelectProps<T>) {
+export function UserMultiSelect<T extends FieldValues>({
+  form,
+  name,
+  label = "Users",
+  placeholder = "Search users...",
+}: UserMultiSelectProps<T>) {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedQuery = useDebounce(searchQuery, 400);
   const [isOpen, setIsOpen] = useState(false);
@@ -262,19 +291,9 @@ export function UserMultiSelect<T extends FieldValues>({ form, name, label = "Us
       render={({ field }) => {
         const selectedUserIds: string[] = Array.isArray(field.value) ? field.value : [];
         const filteredUsers = data ? data.filter((user) => !selectedUserIds.includes(user.id)) : [];
-        const selectedUsers: CachedUser[] = selectedUserIds
-          .map((id): CachedUser | null => {
-            const cached = usersCache.get(id);
-            if (!cached) return null;
-            return {
-              id,
-              name: cached.name,
-              surname: cached.surname,
-              email: cached.email,
-              photoPath: cached.photoPath,
-            };
-          })
-          .filter((user): user is CachedUser => user !== null);
+        const selectedUsers = selectedUserIds
+          .map((id) => usersCache.get(id))
+          .filter((user): user is ProfileData => user !== undefined);
 
         const handleSelectUser = (userId: string) => {
           const newValue = [...selectedUserIds, userId];
@@ -312,10 +331,10 @@ export function UserMultiSelect<T extends FieldValues>({ form, name, label = "Us
                         className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer"
                       >
                         <div className="flex flex-col items-start">
-                          <span className="font-medium">{user.name} {user.surname}</span>
-                          {user.email && (
-                            <span className="text-xs text-muted-foreground">{user.email}</span>
-                          )}
+                          <span className="font-medium">
+                            {user.name} {user.surname}
+                          </span>
+                          {user.email && <span className="text-xs text-muted-foreground">{user.email}</span>}
                         </div>
                       </button>
                     ))}
@@ -336,7 +355,9 @@ export function UserMultiSelect<T extends FieldValues>({ form, name, label = "Us
               <div className="mt-3 flex flex-wrap gap-2">
                 {selectedUsers.map((user) => (
                   <Badge key={user.id} variant="secondary" className="gap-1 pl-2 pr-1">
-                    <span className="text-sm">{user.name} {user.surname}</span>
+                    <span className="text-sm">
+                      {user.name} {user.surname}
+                    </span>
                     <Button
                       type="button"
                       variant="ghost"
@@ -345,7 +366,9 @@ export function UserMultiSelect<T extends FieldValues>({ form, name, label = "Us
                       onClick={() => handleRemoveUser(user.id)}
                     >
                       <X className="h-3 w-3" />
-                      <span className="sr-only">Remove {user.name} {user.surname}</span>
+                      <span className="sr-only">
+                        Remove {user.name} {user.surname}
+                      </span>
                     </Button>
                   </Badge>
                 ))}

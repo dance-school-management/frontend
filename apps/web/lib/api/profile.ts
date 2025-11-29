@@ -23,5 +23,5 @@ export async function updateUserProfile(
 }
 
 export async function searchUsers(query: string, cookie?: string): Promise<ApiResult<ProfileData[]>> {
-  return await fetcher<ProfileData[]>(`/profile/search?q=${query}`, "GET", undefined, { cookie });
+  return await fetcher<ProfileData[]>(`/profile/search?q=${encodeURIComponent(query)}`, "GET", undefined, { cookie });
 }
