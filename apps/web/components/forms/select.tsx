@@ -1,9 +1,16 @@
+import { Badge } from "@repo/ui/badge";
+import { Button } from "@repo/ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
+import { Input } from "@repo/ui/input";
 import { MultiSelect } from "@repo/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
+import { X } from "lucide-react";
+import { useState } from "react";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
-import { useAdditionalProductData, useDanceCategories, useInstructors } from "@/lib/api/tanstack";
+import { useAdditionalProductData, useDanceCategories, useInstructors, useUsersSearch } from "@/lib/api/tanstack";
+import { useDebounce } from "@/lib/hooks/use-debounce";
+import { useIdCache } from "@/lib/hooks/use-id-cache";
 
 interface CurrencySelectProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -223,6 +230,127 @@ export function DanceCategoriesMultiSelect<T extends FieldValues>({ form, name, 
               placeholder={placeholder}
               disabled={!data}
             />
+            <FormMessage />
+          </FormItem>
+        );
+      }}
+    />
+  );
+}
+
+interface UserMultiSelectProps<T extends FieldValues> {
+  form: UseFormReturn<T>;
+  name: Path<T>;
+  label?: string;
+  placeholder?: string;
+}
+
+type CachedUser = { id: string; name: string; surname: string; email: string | null; photoPath: string | null };
+
+export function UserMultiSelect<T extends FieldValues>({ form, name, label = "Users", placeholder = "Search users..." }: UserMultiSelectProps<T>) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedQuery = useDebounce(searchQuery, 400);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { data, isLoading } = useUsersSearch(debouncedQuery, isOpen);
+  const usersCache = useIdCache(data);
+
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => {
+        const selectedUserIds: string[] = Array.isArray(field.value) ? field.value : [];
+        const filteredUsers = data ? data.filter((user) => !selectedUserIds.includes(user.id)) : [];
+        const selectedUsers: CachedUser[] = selectedUserIds
+          .map((id): CachedUser | null => {
+            const cached = usersCache.get(id);
+            if (!cached) return null;
+            return {
+              id,
+              name: cached.name,
+              surname: cached.surname,
+              email: cached.email,
+              photoPath: cached.photoPath,
+            };
+          })
+          .filter((user): user is CachedUser => user !== null);
+
+        const handleSelectUser = (userId: string) => {
+          const newValue = [...selectedUserIds, userId];
+          field.onChange(newValue);
+        };
+
+        const handleRemoveUser = (userId: string) => {
+          const newValue = selectedUserIds.filter((id) => id !== userId);
+          field.onChange(newValue);
+        };
+
+        return (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <div className="space-y-3">
+              <Input
+                type="text"
+                placeholder={placeholder}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsOpen(true);
+                }}
+                className="w-full"
+              />
+
+              {searchQuery && filteredUsers.length > 0 && (
+                <div className="rounded-md border bg-background">
+                  <div className="max-h-60 overflow-y-auto p-1">
+                    {filteredUsers.map((user) => (
+                      <button
+                        key={user.id}
+                        type="button"
+                        onClick={() => handleSelectUser(user.id)}
+                        className="flex w-full items-center gap-2 rounded-sm px-2 py-2 text-sm hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                      >
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">{user.name} {user.surname}</span>
+                          {user.email && (
+                            <span className="text-xs text-muted-foreground">{user.email}</span>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {searchQuery && !isLoading && filteredUsers.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-6">No users found.</p>
+              )}
+
+              {isLoading && searchQuery && (
+                <p className="text-sm text-muted-foreground text-center py-6">Searching...</p>
+              )}
+            </div>
+
+            {selectedUsers.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {selectedUsers.map((user) => (
+                  <Badge key={user.id} variant="secondary" className="gap-1 pl-2 pr-1">
+                    <span className="text-sm">{user.name} {user.surname}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 hover:bg-transparent"
+                      onClick={() => handleRemoveUser(user.id)}
+                    >
+                      <X className="h-3 w-3" />
+                      <span className="sr-only">Remove {user.name} {user.surname}</span>
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            )}
             <FormMessage />
           </FormItem>
         );
