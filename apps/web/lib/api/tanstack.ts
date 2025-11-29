@@ -3,11 +3,11 @@ import { useEffect, useRef } from 'react';
 
 import { fetchNewNotifications, getNotificationsStatus, NotificationsStatusResponse } from '@/lib/api/notification';
 import { fetchAdditionalProductData, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
-import { fetchInstructors, fetchUserProfile } from '@/lib/api/profile';
+import { fetchInstructors, fetchUserProfile, searchUsers } from '@/lib/api/profile';
 import { Paginated } from '@/lib/model';
 import { Notification } from '@/lib/model/notification';
 import { AdditionalProductData, DanceCategory } from '@/lib/model/product';
-import { GetProfileResponse, InstructorsResponse } from '@/lib/model/profile';
+import { GetProfileResponse, InstructorsResponse, ProfileData } from '@/lib/model/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
 import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
 
@@ -45,6 +45,18 @@ export function useDanceCategories() {
       if (result.error) throw result.error;
       return result.data!;
     },
+  });
+}
+
+export function useUsersSearch(query: string, enabled = true) {
+  return useQuery<ProfileData[], ApiError>({
+    queryKey: ['users:search', query],
+    queryFn: async () => {
+      const result = await searchUsers(query, typeof document !== 'undefined' ? document.cookie : undefined);
+      if (result.error) throw result.error;
+      return result.data ?? [];
+    },
+    enabled: enabled,
   });
 }
 
