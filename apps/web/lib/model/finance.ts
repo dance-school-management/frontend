@@ -29,3 +29,5 @@ export type RevenueData = {
   };
   change: RevenueChange;
 };
+
+export type PredefinedTimePeriod = "7d" | "30d" | "90d" | "this-month" | "last-month" | "this-year";
