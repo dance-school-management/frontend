@@ -19,7 +19,7 @@ export function TrendCard({ period, totalRevenue, currency, change, previousPeri
   const trendCharacter =
     trendIsUp ? "+"
     : trendIsDown ? "-"
-    : null;
+    : "";
 
   return (
     <Card className="@container/card">
@@ -86,7 +86,7 @@ export function TrendCard({ period, totalRevenue, currency, change, previousPeri
   );
 }
 
-const chooseTrendColor = cva("text-green-600 dark:text-green-500", {
+const chooseTrendColor = cva("", {
   variants: {
     trend: {
       up: "text-green-600 dark:text-green-500",
@@ -96,7 +96,7 @@ const chooseTrendColor = cva("text-green-600 dark:text-green-500", {
   },
 });
 
-const chooseBadgeBgColor = cva("bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800", {
+const chooseBadgeBgColor = cva("", {
   variants: {
     trend: {
       up: "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800",
