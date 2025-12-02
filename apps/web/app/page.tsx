@@ -1,4 +1,5 @@
 import { Separator } from "@repo/ui/separator";
+import { compareAsc, format } from "date-fns";
 
 import { TodaysClassesSection } from "@/components/home-sections/classes";
 import { CallToActionSection } from "@/components/home-sections/cta";
@@ -15,21 +16,14 @@ import { transformScheduleToEvents } from "@/modules/calendar/helpers";
 import { IEvent } from "@/modules/calendar/types";
 
 export default async function Page() {
-  const [
-    scheduleResult,
-    instructorsResult,
-    newsResult,
-    categoriesResult,
-  ] = await Promise.all([
+  const [scheduleResult, instructorsResult, newsResult, categoriesResult] = await Promise.all([
     fetchTodaySchedule(),
     fetchInstructors(),
     getPublishedPosts({ limit: 3 }),
     fetchDanceCategories(),
   ]);
 
-  const todayClasses = scheduleResult.data
-    ? getTodayClasses(transformScheduleToEvents(scheduleResult.data))
-    : [];
+  const todayClasses = scheduleResult.data ? getTodayClasses(transformScheduleToEvents(scheduleResult.data)) : [];
 
   const categories = categoriesResult.data?.slice(0, 4) ?? [];
   const instructors = instructorsResult.data?.instructors.slice(0, 4) ?? [];
@@ -74,8 +68,9 @@ export default async function Page() {
 
 async function fetchTodaySchedule() {
   const today = new Date();
-  const dateFrom = today.toISOString().split('T')[0]!;
-  const dateTo = today.toISOString().split('T')[0]!;
+  const dateFrom = format(today, "yyyy-MM-dd");
+  const dateTo = format(today, "yyyy-MM-dd");
+
   return await fetchSchedule(dateFrom, dateTo);
 }
 
@@ -85,10 +80,12 @@ function getTodayClasses(events: IEvent[]): IEvent[] {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  return events.filter((event) => {
-    const eventDate = new Date(event.startDate);
-    return eventDate >= today && eventDate < tomorrow;
-  }).sort((a, b) => {
-    return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-  });
+  return events
+    .filter((event) => {
+      const eventDate = new Date(event.startDate);
+      return eventDate >= today && eventDate < tomorrow;
+    })
+    .sort((a, b) => {
+      return compareAsc(a.startDate, b.startDate);
+    });
 }

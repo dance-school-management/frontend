@@ -1,22 +1,8 @@
 "use client";
 import { AspectRatio } from "@repo/ui/aspect-ratio";
 import { Button } from "@repo/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@repo/ui/dialog";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@repo/ui/dialog";
 import { Separator } from "@repo/ui/separator";
 import { isSameDay } from "date-fns";
 import { QRCodeSVG } from "qrcode.react";
@@ -32,7 +18,7 @@ interface TicketPreviewProps {
 export function TicketPreview({ ticket, variant = "current" }: TicketPreviewProps) {
   const startTime = fmtTime(ticket.startDate);
   const endTime = fmtTime(ticket.endDate);
-  const startDate = ticket.startDate.split("T")[0]!;
+  const startDate = fmtDate(ticket.startDate);
 
   const date = `${startDate} (${startTime} - ${endTime})`;
 
@@ -42,7 +28,7 @@ export function TicketPreview({ ticket, variant = "current" }: TicketPreviewProp
         <CardTitle className="text-2xl">{ticket.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription >
+        <CardDescription>
           <p className="text-lg">Date: {date}</p>
           <p className="text-base">Room: {ticket.classRoomName}</p>
         </CardDescription>
@@ -79,9 +65,7 @@ function TicketDialog({ ticket, withCode = true }: TicketDialogProps) {
       <DialogContent className="w-full max-h-[90%] overflow-auto">
         <DialogHeader>
           <DialogTitle>{ticket.name}</DialogTitle>
-          <DialogDescription>
-            {ticket.description}
-          </DialogDescription>
+          <DialogDescription>{ticket.description}</DialogDescription>
         </DialogHeader>
         <div className="text-foreground font-semibold text-base">
           <Info caption="Date:" value={date} />
@@ -92,15 +76,12 @@ function TicketDialog({ ticket, withCode = true }: TicketDialogProps) {
         {withCode && isToday && (
           <>
             <Separator />
-            <p className="font-normal text-xs md:text-sm text-muted-foreground">This is your ticket for the class. Scan it, please.</p>
+            <p className="font-normal text-xs md:text-sm text-muted-foreground">
+              This is your ticket for the class. Scan it, please.
+            </p>
             <AspectRatio ratio={1 / 1} className="w-full">
               <div className="bg-white rounded-xl w-full h-full flex justify-center items-center">
-                <QRCodeSVG
-                  className="p-3 w-full h-full"
-                  value={JSON.stringify(meta)}
-                  bgColor="transparent"
-                  level="H"
-                />
+                <QRCodeSVG className="p-3 w-full h-full" value={JSON.stringify(meta)} bgColor="transparent" level="H" />
               </div>
             </AspectRatio>
             <p className="text-xs text-right">
@@ -113,7 +94,7 @@ function TicketDialog({ ticket, withCode = true }: TicketDialogProps) {
   );
 }
 
-function Info({ caption, value }: { caption: string; value: string; }) {
+function Info({ caption, value }: { caption: string; value: string }) {
   return (
     <p>
       <span className="font-normal text-muted-foreground">{caption}</span>

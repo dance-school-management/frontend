@@ -3,30 +3,31 @@ import {
   addMonths,
   addWeeks,
   addYears,
+  compareAsc,
+  differenceInDays,
+  differenceInMinutes,
+  eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
+  format,
+  isSameDay,
+  isSameMonth,
+  isSameWeek,
+  isSameYear,
+  isValid,
+  parseISO,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
   subDays,
   subMonths,
   subWeeks,
   subYears,
-  isSameWeek,
-  isSameDay,
-  isSameMonth,
-  isSameYear,
-  startOfWeek,
-  startOfMonth,
-  endOfMonth,
-  endOfWeek,
-  format,
-  parseISO,
-  differenceInMinutes,
-  eachDayOfInterval,
-  startOfDay,
-  differenceInDays,
-  isValid,
 } from "date-fns";
 
-import { TCalendarView, TEventColor } from "@/modules/calendar/types";
-import type { ICalendarCell, IEvent, IApiScheduleResponse, IApiScheduleItem } from "@/modules/calendar/types";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
+import type { IApiScheduleItem, IApiScheduleResponse, ICalendarCell, IEvent } from "@/modules/calendar/types";
+import { TCalendarView, TEventColor } from "@/modules/calendar/types";
 
 
 
@@ -72,7 +73,7 @@ export function getEventsCount(events: IEvent[], date: Date, view: TCalendarView
 }
 
 export function groupEvents(dayEvents: IEvent[]) {
-  const sortedEvents = dayEvents.sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime());
+  const sortedEvents = dayEvents.sort((a, b) => compareAsc(a.startDate, b.startDate));
   const groups: IEvent[][] = [];
 
   for (const event of sortedEvents) {
@@ -159,9 +160,9 @@ export function calculateMonthEventPositions(multiDayEvents: IEvent[], singleDay
     ...multiDayEvents.sort((a, b) => {
       const aDuration = differenceInDays(parseISO(a.endDate), parseISO(a.startDate));
       const bDuration = differenceInDays(parseISO(b.endDate), parseISO(b.startDate));
-      return bDuration - aDuration || parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime();
+      return bDuration - aDuration || compareAsc(a.startDate, b.startDate);
     }),
-    ...singleDayEvents.sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime()),
+    ...singleDayEvents.sort((a, b) => compareAsc(a.startDate, b.startDate)),
   ];
 
   sortedEvents.forEach(event => {

@@ -2,10 +2,12 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@repo/ui/chart";
+import { compareAsc } from "date-fns";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import type { RevenueSeries } from "@/lib/model/finance";
 import { formatCurrency, formatDateShort } from "@/lib/utils/finance";
+import { fmtDate } from "@/lib/utils/time";
 
 export const description = "An interactive area chart";
 
@@ -36,8 +38,8 @@ export function DailyRevenueChart({
   currency = "PLN",
 }: DailyRevenueChartProps) {
   const chartData: ChartDataPoint[] = series.map((item) => {
-    const dateStart = item.start.split("T")[0] ?? item.start;
-    const dateEnd = item.end.split("T")[0] ?? item.end;
+    const dateStart = fmtDate(item.start);
+    const dateEnd = fmtDate(item.end);
     return {
       date: dateStart,
       dateEnd: dateEnd,
@@ -45,7 +47,7 @@ export function DailyRevenueChart({
     };
   });
 
-  chartData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  chartData.sort((a, b) => compareAsc(a.date, b.date));
 
   return (
     <Card className="@container/card lg:col-span-2">

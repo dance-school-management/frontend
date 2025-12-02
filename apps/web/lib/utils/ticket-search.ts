@@ -1,3 +1,5 @@
+import { compareAsc } from "date-fns";
+
 import { Ticket } from "@/lib/model/enroll";
 import { calculateNameSimilarity } from "@/lib/utils/text";
 
@@ -6,7 +8,7 @@ export function searchAndSortTickets(tickets: Ticket[], searchQuery: string): Ti
   if (!searchQuery.trim()) {
     // If no search query, return all tickets sorted by date only
     return [...tickets].sort((a, b) =>
-      new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+      compareAsc(a.endDate, b.endDate)
     );
   }
 
@@ -25,6 +27,6 @@ export function searchAndSortTickets(tickets: Ticket[], searchQuery: string): Ti
     }
 
     // If similarity is equal, sort by end date (newer first)
-    return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+    return compareAsc(a.endDate, b.endDate);
   });
 }
