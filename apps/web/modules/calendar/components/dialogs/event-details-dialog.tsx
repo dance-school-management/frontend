@@ -12,7 +12,7 @@ import {
 } from "@repo/ui/dialog";
 import { ScrollArea } from "@repo/ui/scroll-area";
 import { format, parseISO } from "date-fns";
-import { Building, Calendar, ChevronsUp, SquareChartGantt, Text, User } from "lucide-react";
+import { Building, Calendar, ChevronsUp, SquareChartGantt, User } from "lucide-react";
 import { ReactNode } from "react";
 
 import type { IEvent } from "@/modules/calendar/types";
