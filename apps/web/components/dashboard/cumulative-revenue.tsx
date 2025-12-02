@@ -34,7 +34,7 @@ export function CumulativeRevenueChart({
   const data = cumulativeFromSeries(series);
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card lg:col-span-2">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {description && (

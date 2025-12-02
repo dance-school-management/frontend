@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2 mt-4 md:mt-6">
-        <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card flex flex-col gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6">
+        <div className="flex flex-col gap-4 px-4 lg:px-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-2">
             <div className="flex-1">
               <Tabs value={activeTab}>
@@ -34,7 +34,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
             <TimePeriodPicker />
           </div>
-          {children}
+          <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 lg:grid-cols-2 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs">
+            {children}
+          </div>
         </div>
       </div>
     </div>

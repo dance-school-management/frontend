@@ -48,7 +48,7 @@ export function DailyRevenueChart({
   chartData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card lg:col-span-2">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {descriptionText && (

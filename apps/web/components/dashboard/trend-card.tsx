@@ -22,7 +22,7 @@ export function TrendCard({ period, totalRevenue, currency, change, previousPeri
     : "";
 
   return (
-    <Card className="@container/card">
+    <Card className="@container/card lg:col-span-2">
       <CardHeader>
         <CardDescription>Total Revenue</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
