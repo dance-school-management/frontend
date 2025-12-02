@@ -19,10 +19,6 @@ const chartConfig = {
     label: "Cumulative",
     color: "var(--color-financial-primary)",
   },
-  revenue: {
-    label: "Revenue",
-    color: "hsl(var(--muted-foreground))",
-  },
 } satisfies ChartConfig;
 
 export function CumulativeRevenueChart({
@@ -46,8 +42,8 @@ export function CumulativeRevenueChart({
           <AreaChart data={data}>
             <defs>
               <linearGradient id="fillCumulative" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-cumulative)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-cumulative)" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="var(--color-financial-primary)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-financial-primary)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
@@ -69,13 +65,7 @@ export function CumulativeRevenueChart({
                 />
               }
             />
-            <Area
-              type="natural"
-              dataKey="cumulative"
-              fill="url(#fillCumulative)"
-              stroke="var(--color-cumulative)"
-              stackId="a"
-            />
+            <Area type="natural" dataKey="cumulative" fill="url(#fillCumulative)" stackId="a" />
           </AreaChart>
         </ChartContainer>
       </CardContent>
