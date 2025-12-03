@@ -65,9 +65,6 @@ export function CalendarProvider({
 
   const toggleAgendaMode = (isAgenda?: boolean) => {
     const newMode = isAgenda ?? !isAgendaMode;
-    if (!newMode) {
-      setCurrentView(view);
-    }
     setAgendaMode(newMode);
   };
 
