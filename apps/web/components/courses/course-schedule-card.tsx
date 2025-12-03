@@ -13,7 +13,7 @@ import { ScrollArea } from "@repo/ui/scroll-area";
 import { Separator } from "@repo/ui/separator";
 import { compareAsc } from "date-fns";
 
-import { CourseClassItem } from "@/components/courses/course-class-item";
+import { MinimalCourseClassItem } from "@/components/courses/course-class-item";
 import { ExpandableDescription } from "@/components/utility/expandable";
 import { ClassWithTemplate, CourseSummary } from "@/lib/model/product";
 import { truncateAtWordBoundary } from "@/lib/utils/text";
@@ -79,7 +79,7 @@ function CourseDetailsDialogContent({ course, classes }: CourseDetailsDialogCont
                     {classes
                       .sort((a, b) => compareAsc(a.startDate, b.startDate))
                       .map((cls) => (
-                        <CourseClassItem key={cls.id} classData={cls} />
+                        <MinimalCourseClassItem key={cls.id} classData={cls} />
                       ))}
                   </div>
                 </div>
