@@ -1,12 +1,11 @@
+import { Button } from "@repo/ui/button";
 import { formatDate } from "date-fns";
 import { motion } from "framer-motion";
 
-import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 import { buttonHover, transition } from "@/modules/calendar/animations";
+import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
-import { Button } from "@repo/ui/button";
-
-const MotionButton = motion(Button);
+const MotionButton = motion.create(Button);
 
 export function TodayButton() {
   const { setSelectedDate } = useCalendar();

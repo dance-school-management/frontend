@@ -1,17 +1,13 @@
-import { parseISO, format } from "date-fns";
-
-import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-
 import { DayPicker } from "@repo/ui/day-picker";
 import { ScrollArea } from "@repo/ui/scroll-area";
+import { format, parseISO } from "date-fns";
 
 import { CalendarTimeline } from "@/modules/calendar/components/week-and-day-view/calendar-time-line";
 import { DayViewMultiDayEventsRow } from "@/modules/calendar/components/week-and-day-view/day-view-multi-day-events-row";
-
-import { groupEvents } from "@/modules/calendar/helpers";
-
-import type { IEvent } from "@/modules/calendar/types";
 import { RenderGroupedEvents } from "@/modules/calendar/components/week-and-day-view/render-grouped-events";
+import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
+import { groupEvents } from "@/modules/calendar/helpers";
+import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
   singleDayEvents: IEvent[];
@@ -22,7 +18,7 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
   const { selectedDate, setSelectedDate } = useCalendar();
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
-  const dayEvents = singleDayEvents.filter(event => {
+  const dayEvents = singleDayEvents.filter((event) => {
     const eventDate = parseISO(event.startDate);
     return (
       eventDate.getDate() === selectedDate.getDate() &&
@@ -58,10 +54,7 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
                   <div className="absolute -top-3 right-2 flex h-6 items-center">
                     {index !== 0 && (
                       <span className="text-xs text-t-quaternary">
-                        {format(
-                          new Date().setHours(hour, 0, 0, 0),
-                          "HH:00"
-                        )}
+                        {format(new Date().setHours(hour, 0, 0, 0), "HH:00")}
                       </span>
                     )}
                   </div>
@@ -91,9 +84,15 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
       </div>
 
       <div className="hidden w-72 divide-y border-l md:block">
-        <DayPicker className="mx-auto w-fit" mode="single" selected={selectedDate} onSelect={(date) => date && setSelectedDate(date)} initialFocus />
+        <DayPicker
+          className="mx-auto w-fit"
+          mode="single"
+          selected={selectedDate}
+          onSelect={(date) => date && setSelectedDate(date)}
+          initialFocus
+        />
         <div></div>
       </div>
-    </div >
+    </div>
   );
 }

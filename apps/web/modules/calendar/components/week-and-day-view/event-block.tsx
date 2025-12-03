@@ -1,15 +1,13 @@
+import { cn } from "@repo/ui/lib/utils";
+import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
 import { differenceInMinutes, parseISO } from "date-fns";
-
-import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
+import type { HTMLAttributes } from "react";
 
 import { EventDetailsDialog } from "@/modules/calendar/components/dialogs/event-details-dialog";
-import { cn } from "@repo/ui/lib/utils";
-
-import type { HTMLAttributes } from "react";
-import type { IEvent } from "@/modules/calendar/types";
-import type { VariantProps } from "class-variance-authority";
+import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 import { formatTime } from "@/modules/calendar/helpers";
+import type { IEvent } from "@/modules/calendar/types";
 
 const calendarWeekEventCardVariants = cva(
   "flex select-none flex-col gap-0.5 truncate whitespace-nowrap rounded-md border px-2 py-1.5 text-xs focus-visible:outline-offset-2",
@@ -46,12 +44,12 @@ const calendarWeekEventCardVariants = cva(
     defaultVariants: {
       color: "blue-dot",
     },
-  }
+  },
 );
 
 interface IProps
   extends HTMLAttributes<HTMLDivElement>,
-  Omit<VariantProps<typeof calendarWeekEventCardVariants>, "color"> {
+    Omit<VariantProps<typeof calendarWeekEventCardVariants>, "color"> {
   event: IEvent;
 }
 
@@ -63,14 +61,14 @@ export function EventBlock({ event, className }: IProps) {
   const durationInMinutes = differenceInMinutes(end, start);
   const heightInPixels = (durationInMinutes / 60) * 96 - 8;
 
-  const color = (
-    badgeVariant === "dot" ? `${event.color}-dot` : event.color
-  ) as VariantProps<typeof calendarWeekEventCardVariants>["color"];
+  const color = (badgeVariant === "dot" ? `${event.color}-dot` : event.color) as VariantProps<
+    typeof calendarWeekEventCardVariants
+  >["color"];
 
   const calendarWeekEventCardClasses = cn(
     calendarWeekEventCardVariants({ color, className }),
     durationInMinutes < 35 && "py-0 justify-center",
-    "cursor-pointer"
+    "cursor-pointer",
   );
 
   return (
@@ -93,9 +91,7 @@ export function EventBlock({ event, className }: IProps) {
 
         {durationInMinutes > 25 && (
           <>
-            <p>
-              {event.classroom}
-            </p>
+            <p>{event.classroom}</p>
             <p>
               {formatTime(start)} - {formatTime(end)}
             </p>

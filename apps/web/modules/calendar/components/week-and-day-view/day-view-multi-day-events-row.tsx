@@ -1,7 +1,6 @@
 import { differenceInDays, endOfDay, isWithinInterval, parseISO, startOfDay } from "date-fns";
 
 import { MonthEventBadge } from "@/modules/calendar/components/month-view/month-event-badge";
-
 import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
@@ -14,13 +13,15 @@ export function DayViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IProp
   const dayEnd = endOfDay(selectedDate);
 
   const multiDayEventsInDay = multiDayEvents
-    .filter(event => {
+    .filter((event) => {
       const eventStart = parseISO(event.startDate);
       const eventEnd = parseISO(event.endDate);
 
-      return isWithinInterval(dayStart, { start: eventStart, end: eventEnd }) ||
+      return (
+        isWithinInterval(dayStart, { start: eventStart, end: eventEnd }) ||
         isWithinInterval(dayEnd, { start: eventStart, end: eventEnd }) ||
-        (eventStart <= dayStart && eventEnd >= dayEnd);
+        (eventStart <= dayStart && eventEnd >= dayEnd)
+      );
     })
     .sort((a, b) => {
       const durationA = differenceInDays(parseISO(a.endDate), parseISO(a.startDate));
@@ -34,7 +35,7 @@ export function DayViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IProp
     <div className="flex border-b">
       <div className="w-18"></div>
       <div className="flex flex-1 flex-col gap-1 border-l py-1">
-        {multiDayEventsInDay.map(event => {
+        {multiDayEventsInDay.map((event) => {
           const eventStart = startOfDay(parseISO(event.startDate));
           const eventEnd = startOfDay(parseISO(event.endDate));
           const currentDate = startOfDay(selectedDate);
@@ -42,7 +43,15 @@ export function DayViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IProp
           const eventTotalDays = differenceInDays(eventEnd, eventStart) + 1;
           const eventCurrentDay = differenceInDays(currentDate, eventStart) + 1;
 
-          return <MonthEventBadge key={event.id} event={event} cellDate={selectedDate} eventCurrentDay={eventCurrentDay} eventTotalDays={eventTotalDays} />;
+          return (
+            <MonthEventBadge
+              key={event.id}
+              event={event}
+              cellDate={selectedDate}
+              eventCurrentDay={eventCurrentDay}
+              eventTotalDays={eventTotalDays}
+            />
+          );
         })}
       </div>
     </div>

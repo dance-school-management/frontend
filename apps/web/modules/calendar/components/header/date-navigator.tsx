@@ -1,43 +1,28 @@
-import { useMemo } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-
-import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-import {
-  buttonHover,
-  transition,
-} from "@/modules/calendar/animations";
-
 import { Badge } from "@repo/ui/badge";
 import { Button } from "@repo/ui/button";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useMemo } from "react";
 
-import {
-  getEventsCount,
-  navigateDate,
-  rangeText,
-} from "@/modules/calendar/helpers";
-
-import type { TCalendarView, IEvent } from "@/modules/calendar/types";
+import { buttonHover, transition } from "@/modules/calendar/animations";
+import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
+import { getEventsCount, navigateDate, rangeText } from "@/modules/calendar/helpers";
+import type { IEvent, TCalendarView } from "@/modules/calendar/types";
 
 interface IProps {
   view: TCalendarView;
   events: IEvent[];
 }
 
-const MotionButton = motion(Button);
-const MotionBadge = motion(Badge);
+const MotionButton = motion.create(Button);
+const MotionBadge = motion.create(Badge);
 
 export function DateNavigator({ view, events }: IProps) {
   const { selectedDate, setSelectedDate } = useCalendar();
-  const eventCount = useMemo(
-    () => getEventsCount(events, selectedDate, view),
-    [events, selectedDate, view]
-  );
+  const eventCount = useMemo(() => getEventsCount(events, selectedDate, view), [events, selectedDate, view]);
 
-  const handlePrevious = () =>
-    setSelectedDate(navigateDate(selectedDate, view, "previous"));
-  const handleNext = () =>
-    setSelectedDate(navigateDate(selectedDate, view, "next"));
+  const handlePrevious = () => setSelectedDate(navigateDate(selectedDate, view, "previous"));
+  const handleNext = () => setSelectedDate(navigateDate(selectedDate, view, "next"));
 
   return (
     <div className="space-y-0.5">

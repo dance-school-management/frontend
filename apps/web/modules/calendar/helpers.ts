@@ -29,8 +29,6 @@ import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 import type { IApiScheduleItem, IApiScheduleResponse, ICalendarCell, IEvent } from "@/modules/calendar/types";
 import { TCalendarView, TEventColor } from "@/modules/calendar/types";
 
-
-
 export function rangeText(view: TCalendarView, date: Date) {
   const formatString = "d MMM yyyy";
   let start: Date;
