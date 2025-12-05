@@ -31,7 +31,7 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
         transition={transition}
       >
         <p>Weekly view is not available on smaller devices.</p>
-        <p>Please switch to daily or monthly view.</p>
+        <p>Please switch to daily view.</p>
       </motion.div>
 
       <motion.div className="hidden flex-col sm:flex" variants={staggerContainer}>
