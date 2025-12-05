@@ -1,6 +1,7 @@
 import { ApiResult, fetcher } from "@/lib/api/axios";
 import {
   AdditionalProductData,
+  AdvancementLevel,
   Class,
   ClassStatus,
   ClassTemplate,
@@ -127,4 +128,8 @@ export async function fetchSchedule(dateFrom: string, dateTo: string): Promise<A
 
 export async function fetchDanceCategories(): Promise<ApiResult<DanceCategory[]>> {
   return await fetcher<DanceCategory[]>("/product/public/cms/dance_category");
+}
+
+export async function fetchAdvancementLevels(): Promise<ApiResult<AdvancementLevel[]>> {
+  return await fetcher<AdvancementLevel[]>("/product/public/cms/advancement_level");
 }
