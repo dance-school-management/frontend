@@ -35,13 +35,13 @@ export function ClientContainer() {
   });
 
   return (
-    <div className="w-full border-b">
+    <div className="w-full h-[calc(100dvh-64px)] border-b flex flex-col">
       <CalendarHeader events={filteredEvents} />
       {isAgendaMode ?
-        <div key="agenda">
+        <div key="agenda" className="flex flex-col flex-1 min-h-0">
           <AgendaEvents />
         </div>
-      : <div key={view}>
+      : <div key={view} className="flex flex-col flex-1 min-h-0">
           {view === "week" && <CalendarWeekView singleDayEvents={singleDayEvents} multiDayEvents={multiDayEvents} />}
           {view === "day" && <CalendarDayView singleDayEvents={singleDayEvents} multiDayEvents={multiDayEvents} />}
         </div>

@@ -23,7 +23,14 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
   const hours = Array.from({ length: endHour - startHour }, (_, i) => startHour + i);
 
   return (
-    <motion.div initial="initial" animate="animate" exit="exit" variants={fadeIn} transition={transition}>
+    <motion.div
+      className="flex flex-1 min-h-0 flex-col"
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={fadeIn}
+      transition={transition}
+    >
       <motion.div
         className="flex flex-col items-center justify-center border-b py-4 text-sm text-t-quaternary sm:hidden"
         initial={{ opacity: 0, y: -20 }}
@@ -34,7 +41,7 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
         <p>Please switch to daily view.</p>
       </motion.div>
 
-      <motion.div className="hidden flex-col sm:flex" variants={staggerContainer}>
+      <motion.div className="hidden flex-1 min-h-0 flex-col sm:flex" variants={staggerContainer}>
         <div>
           <WeekViewMultiDayEventsRow selectedDate={selectedDate} multiDayEvents={multiDayEvents} />
 
@@ -62,7 +69,7 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
           </motion.div>
         </div>
 
-        <ScrollArea className="h-[736px]" type="always">
+        <ScrollArea className="flex-1 min-h-0 pb-4" type="always">
           <div className="flex">
             {/* Hours column */}
             <motion.div className="relative w-18" variants={staggerContainer}>
