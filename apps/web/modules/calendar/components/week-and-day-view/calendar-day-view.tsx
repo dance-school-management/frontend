@@ -50,30 +50,44 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
           <div className="flex">
             {/* Hours column */}
             <div className="relative w-18">
-              {hours.map((hour, index) => (
-                <div key={hour} className="relative" style={{ height: "96px" }}>
-                  <div className="absolute -top-3 right-2 flex h-6 items-center">
-                    {index !== 0 && (
-                      <span className="text-xs text-t-quaternary">
-                        {format(new Date().setHours(hour, 0, 0, 0), "HH:00")}
-                      </span>
+              {hours.map((hour, index) => {
+                const isLast = index === hours.length - 1;
+                return (
+                  <div key={hour} className="relative" style={{ height: "96px" }}>
+                    <div className="absolute -top-3 right-2 flex h-6 items-center">
+                      {index !== 0 && (
+                        <span className="text-xs text-t-quaternary">
+                          {format(new Date().setHours(hour, 0, 0, 0), "HH:00")}
+                        </span>
+                      )}
+                    </div>
+                    {isLast && (
+                      <div className="absolute -bottom-3 right-2 flex h-6 items-center">
+                        <span className="text-xs text-t-quaternary">
+                          {format(new Date().setHours(hour + 1, 0, 0, 0), "HH:00")}
+                        </span>
+                      </div>
                     )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Day grid */}
             <div className="relative flex-1 border-l">
               <div className="relative">
-                {hours.map((hour, index) => (
-                  <div key={hour} className="relative" style={{ height: "96px" }}>
-                    {index !== 0 && <div className="pointer-events-none absolute inset-x-0 top-0 border-b"></div>}
-                    <div className="absolute inset-x-0 top-0 h-[48px] transition-colors hover:bg-bg-primary-hover" />
-                    <div className="pointer-events-none absolute inset-x-0 top-1/2 border-b border-dashed border-b-tertiary"></div>
-                    <div className="absolute inset-x-0 top-[48px] h-[48px] transition-colors hover:bg-bg-primary-hover" />
-                  </div>
-                ))}
+                {hours.map((hour, index) => {
+                  const isLast = index === hours.length - 1;
+                  return (
+                    <div key={hour} className="relative" style={{ height: "96px" }}>
+                      {index !== 0 && <div className="pointer-events-none absolute inset-x-0 top-0 border-b"></div>}
+                      {isLast && <div className="pointer-events-none absolute inset-x-0 bottom-0 border-b"></div>}
+                      <div className="absolute inset-x-0 top-0 h-[48px] transition-colors hover:bg-bg-primary-hover" />
+                      <div className="pointer-events-none absolute inset-x-0 top-1/2 border-b border-dashed border-b-tertiary"></div>
+                      <div className="absolute inset-x-0 top-[48px] h-[48px] transition-colors hover:bg-bg-primary-hover" />
+                    </div>
+                  );
+                })}
 
                 <RenderGroupedEvents
                   groupedEvents={groupedEvents}

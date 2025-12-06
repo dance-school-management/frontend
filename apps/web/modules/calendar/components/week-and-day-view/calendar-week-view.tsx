@@ -66,24 +66,34 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
           <div className="flex">
             {/* Hours column */}
             <motion.div className="relative w-18" variants={staggerContainer}>
-              {hours.map((hour, index) => (
-                <motion.div
-                  key={hour}
-                  className="relative"
-                  style={{ height: "96px" }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.02, ...transition }}
-                >
-                  <div className="absolute -top-3 right-2 flex h-6 items-center">
-                    {index !== 0 && (
-                      <span className="text-xs text-t-quaternary">
-                        {format(new Date().setHours(hour, 0, 0, 0), "HH:00")}
-                      </span>
+              {hours.map((hour, index) => {
+                const isLast = index === hours.length - 1;
+                return (
+                  <motion.div
+                    key={hour}
+                    className="relative"
+                    style={{ height: "96px" }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.02, ...transition }}
+                  >
+                    <div className="absolute -top-3 right-2 flex h-6 items-center">
+                      {index !== 0 && (
+                        <span className="text-xs text-t-quaternary">
+                          {format(new Date().setHours(hour, 0, 0, 0), "HH:00")}
+                        </span>
+                      )}
+                    </div>
+                    {isLast && (
+                      <div className="absolute -bottom-3 right-2 flex h-6 items-center">
+                        <span className="text-xs text-t-quaternary">
+                          {format(new Date().setHours(hour + 1, 0, 0, 0), "HH:00")}
+                        </span>
+                      </div>
                     )}
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </motion.div>
 
             {/* Week grid */}
@@ -105,21 +115,27 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
                       animate={{ opacity: 1 }}
                       transition={{ delay: dayIndex * 0.1, ...transition }}
                     >
-                      {hours.map((hour, index) => (
-                        <motion.div
-                          key={hour}
-                          className="relative"
-                          style={{ height: "96px" }}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: index * 0.01, ...transition }}
-                        >
-                          {index !== 0 && <div className="pointer-events-none absolute inset-x-0 top-0 border-b"></div>}
-                          <div className="absolute inset-x-0 top-0 h-[48px] transition-colors hover:bg-bg-primary-hover" />
-                          <div className="pointer-events-none absolute inset-x-0 top-1/2 border-b border-dashed border-b-tertiary"></div>
-                          <div className="absolute inset-x-0 top-[48px] h-[48px] transition-colors hover:bg-bg-primary-hover" />
-                        </motion.div>
-                      ))}
+                      {hours.map((hour, index) => {
+                        const isLast = index === hours.length - 1;
+                        return (
+                          <motion.div
+                            key={hour}
+                            className="relative"
+                            style={{ height: "96px" }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: index * 0.01, ...transition }}
+                          >
+                            {index !== 0 && (
+                              <div className="pointer-events-none absolute inset-x-0 top-0 border-b"></div>
+                            )}
+                            {isLast && <div className="pointer-events-none absolute inset-x-0 bottom-0 border-b"></div>}
+                            <div className="absolute inset-x-0 top-0 h-[48px] transition-colors hover:bg-bg-primary-hover" />
+                            <div className="pointer-events-none absolute inset-x-0 top-1/2 border-b border-dashed border-b-tertiary"></div>
+                            <div className="absolute inset-x-0 top-[48px] h-[48px] transition-colors hover:bg-bg-primary-hover" />
+                          </motion.div>
+                        );
+                      })}
 
                       <RenderGroupedEvents
                         groupedEvents={groupedEvents}

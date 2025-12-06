@@ -35,7 +35,7 @@ export function ClientContainer() {
   });
 
   return (
-    <div className="w-full rounded-xl border">
+    <div className="w-full border-b">
       <CalendarHeader events={filteredEvents} />
       {isAgendaMode ?
         <div key="agenda">

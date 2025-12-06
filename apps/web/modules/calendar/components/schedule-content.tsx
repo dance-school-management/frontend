@@ -69,7 +69,7 @@ export function ScheduleContent() {
 
   if (error) {
     return (
-      <div className="flex max-w-screen-2xl flex-col gap-4 m-2">
+      <div className="flex flex-col">
         <div className="flex items-center justify-center h-64">
           <div className="text-lg text-red-600">Error loading schedule: {error.message}</div>
         </div>
@@ -78,7 +78,7 @@ export function ScheduleContent() {
   }
 
   return (
-    <div className="flex max-w-screen-2xl flex-col gap-4 m-2">
+    <div className="flex flex-col">
       <CalendarProvider
         events={filteredEvents}
         initialSelectedDate={selectedDate}
