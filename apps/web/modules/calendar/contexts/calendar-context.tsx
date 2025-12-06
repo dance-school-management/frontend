@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-import type { IEvent } from "@/modules/calendar/types";
+import type { IEvent, IScheduleFilters } from "@/modules/calendar/types";
 import { TCalendarView } from "@/modules/calendar/types";
 
 interface ICalendarContext {
@@ -15,6 +15,9 @@ interface ICalendarContext {
   badgeVariant: "dot" | "colored";
   events: IEvent[];
   setEvents: (events: IEvent[]) => void;
+  filters: IScheduleFilters;
+  setFilters: (filters: IScheduleFilters) => void;
+  priceRange: { min: number; max: number };
 }
 
 const CalendarContext = createContext({} as ICalendarContext);
@@ -26,8 +29,10 @@ interface CalendarProviderProps {
   badge?: "dot" | "colored";
   initialSelectedDate?: Date;
   initialView?: TCalendarView;
+  initialFilters?: IScheduleFilters;
   onDateChange?: (date: Date) => void;
   onViewChange?: (view: TCalendarView) => void;
+  onFiltersChange?: (filters: IScheduleFilters) => void;
 }
 
 export function CalendarProvider({
@@ -37,15 +42,17 @@ export function CalendarProvider({
   view = "day",
   initialSelectedDate,
   initialView,
+  initialFilters = {},
   onDateChange,
   onViewChange,
+  onFiltersChange,
 }: CalendarProviderProps) {
   const [selectedDate, setSelectedDate] = useState(initialSelectedDate || new Date());
   const [currentView, setCurrentView] = useState(initialView || view);
   const [isAgendaMode, setAgendaMode] = useState(false);
   const [currentEvents, setCurrentEvents] = useState(events);
+  const [currentFilters, setCurrentFilters] = useState<IScheduleFilters>(initialFilters);
 
-  // Sync internal state with parent state changes
   useEffect(() => {
     if (initialSelectedDate) {
       setSelectedDate(initialSelectedDate);
@@ -58,7 +65,10 @@ export function CalendarProvider({
     }
   }, [initialView]);
 
-  // Update events when props change
+  useEffect(() => {
+    setCurrentFilters(initialFilters);
+  }, [initialFilters]);
+
   useEffect(() => {
     setCurrentEvents(events);
   }, [events]);
@@ -79,6 +89,11 @@ export function CalendarProvider({
     onViewChange?.(view);
   };
 
+  const handleFiltersChange = (filters: IScheduleFilters) => {
+    setCurrentFilters(filters);
+    onFiltersChange?.(filters);
+  };
+
   const value = {
     selectedDate,
     setSelectedDate: handleSelectDate,
@@ -89,6 +104,9 @@ export function CalendarProvider({
     setView,
     isAgendaMode,
     toggleAgendaMode,
+    filters: currentFilters,
+    setFilters: handleFiltersChange,
+    priceRange: { min: 0, max: 300 },
   };
 
   return <CalendarContext.Provider value={value}>{children}</CalendarContext.Provider>;

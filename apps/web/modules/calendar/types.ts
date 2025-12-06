@@ -92,3 +92,11 @@ export interface IApiScheduleItem {
 }
 
 export type IApiScheduleResponse = IApiScheduleItem[];
+
+export interface IScheduleFilters {
+  danceCategory?: string;
+  advancementLevel?: string;
+  instructorId?: string;
+  priceMin?: number;
+  priceMax?: number;
+}
