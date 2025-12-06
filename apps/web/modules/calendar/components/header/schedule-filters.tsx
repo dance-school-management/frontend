@@ -71,13 +71,15 @@ export function ScheduleFilters() {
       <div className="flex flex-col gap-4">
         {/* Dance Category Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-muted-foreground">Dance Category</label>
+          <label htmlFor="danceCategory" className="text-xs font-medium text-muted-foreground">
+            Dance Category
+          </label>
           <Select
             value={filters.danceCategory ?? "all"}
             onValueChange={(value) => handleFilterChange("danceCategory", value)}
             disabled={isLoadingCategories}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger id="danceCategory" className="w-full">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -93,13 +95,15 @@ export function ScheduleFilters() {
 
         {/* Advancement Level Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-muted-foreground">Advancement Level</label>
+          <label htmlFor="advancementLevel" className="text-xs font-medium text-muted-foreground">
+            Advancement Level
+          </label>
           <Select
             value={filters.advancementLevel ?? "all"}
             onValueChange={(value) => handleFilterChange("advancementLevel", value)}
             disabled={isLoadingAdvancementLevels}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger id="advancementLevel" className="w-full">
               <SelectValue placeholder="All Levels" />
             </SelectTrigger>
             <SelectContent>
@@ -115,13 +119,15 @@ export function ScheduleFilters() {
 
         {/* Instructor Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-muted-foreground">Instructor</label>
+          <label htmlFor="instructor" className="text-xs font-medium text-muted-foreground">
+            Instructor
+          </label>
           <Select
             value={filters.instructorId ?? "all"}
             onValueChange={(value) => handleFilterChange("instructorId", value)}
             disabled={isLoadingInstructors}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger id="instructor" className="w-full">
               <SelectValue placeholder="All Instructors" />
             </SelectTrigger>
             <SelectContent>

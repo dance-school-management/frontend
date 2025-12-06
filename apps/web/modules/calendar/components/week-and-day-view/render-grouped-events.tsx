@@ -7,12 +7,14 @@ import { IEvent } from "@/modules/calendar/types";
 interface RenderGroupedEventsProps {
   groupedEvents: IEvent[][];
   day: Date;
+  startHour?: number;
+  endHour?: number;
 }
 
-export function RenderGroupedEvents({ groupedEvents, day }: RenderGroupedEventsProps) {
+export function RenderGroupedEvents({ groupedEvents, day, startHour = 0, endHour = 24 }: RenderGroupedEventsProps) {
   return groupedEvents.map((group, groupIndex) =>
     group.map((event) => {
-      let style = getEventBlockStyle(event, day, groupIndex, groupedEvents.length);
+      let style = getEventBlockStyle(event, day, groupIndex, groupedEvents.length, startHour, endHour);
       const hasOverlap = groupedEvents.some(
         (otherGroup, otherIndex) =>
           otherIndex !== groupIndex &&

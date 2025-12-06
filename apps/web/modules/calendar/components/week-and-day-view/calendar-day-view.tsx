@@ -6,7 +6,7 @@ import { CalendarTimeline } from "@/modules/calendar/components/week-and-day-vie
 import { DayViewMultiDayEventsRow } from "@/modules/calendar/components/week-and-day-view/day-view-multi-day-events-row";
 import { RenderGroupedEvents } from "@/modules/calendar/components/week-and-day-view/render-grouped-events";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-import { groupEvents } from "@/modules/calendar/helpers";
+import { groupEvents, isEventInHourRange } from "@/modules/calendar/helpers";
 import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
@@ -15,15 +15,16 @@ interface IProps {
 }
 
 export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
-  const { selectedDate, setSelectedDate } = useCalendar();
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const { selectedDate, setSelectedDate, startHour, endHour } = useCalendar();
+  const hours = Array.from({ length: endHour - startHour }, (_, i) => startHour + i);
 
   const dayEvents = singleDayEvents.filter((event) => {
     const eventDate = parseISO(event.startDate);
     return (
       eventDate.getDate() === selectedDate.getDate() &&
       eventDate.getMonth() === selectedDate.getMonth() &&
-      eventDate.getFullYear() === selectedDate.getFullYear()
+      eventDate.getFullYear() === selectedDate.getFullYear() &&
+      isEventInHourRange(event, selectedDate, startHour, endHour)
     );
   });
 
@@ -74,7 +75,12 @@ export function CalendarDayView({ singleDayEvents, multiDayEvents }: IProps) {
                   </div>
                 ))}
 
-                <RenderGroupedEvents groupedEvents={groupedEvents} day={selectedDate} />
+                <RenderGroupedEvents
+                  groupedEvents={groupedEvents}
+                  day={selectedDate}
+                  startHour={startHour}
+                  endHour={endHour}
+                />
               </div>
 
               <CalendarTimeline />

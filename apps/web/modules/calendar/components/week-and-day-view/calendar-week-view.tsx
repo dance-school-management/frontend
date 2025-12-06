@@ -7,7 +7,7 @@ import { CalendarTimeline } from "@/modules/calendar/components/week-and-day-vie
 import { RenderGroupedEvents } from "@/modules/calendar/components/week-and-day-view/render-grouped-events";
 import { WeekViewMultiDayEventsRow } from "@/modules/calendar/components/week-and-day-view/week-view-multi-day-events-row";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-import { groupEvents } from "@/modules/calendar/helpers";
+import { groupEvents, isEventInHourRange } from "@/modules/calendar/helpers";
 import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
@@ -16,11 +16,11 @@ interface IProps {
 }
 
 export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
-  const { selectedDate } = useCalendar();
+  const { selectedDate, startHour, endHour } = useCalendar();
 
   const weekStart = startOfWeek(selectedDate);
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const hours = Array.from({ length: endHour - startHour }, (_, i) => startHour + i);
 
   return (
     <motion.div initial="initial" animate="animate" exit="exit" variants={fadeIn} transition={transition}>
@@ -91,7 +91,9 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
               <div className="grid grid-cols-7 divide-x">
                 {weekDays.map((day, dayIndex) => {
                   const dayEvents = singleDayEvents.filter(
-                    (event) => isSameDay(parseISO(event.startDate), day) || isSameDay(parseISO(event.endDate), day),
+                    (event) =>
+                      (isSameDay(parseISO(event.startDate), day) || isSameDay(parseISO(event.endDate), day)) &&
+                      isEventInHourRange(event, day, startHour, endHour),
                   );
                   const groupedEvents = groupEvents(dayEvents);
 
@@ -119,7 +121,12 @@ export function CalendarWeekView({ singleDayEvents, multiDayEvents }: IProps) {
                         </motion.div>
                       ))}
 
-                      <RenderGroupedEvents groupedEvents={groupedEvents} day={day} />
+                      <RenderGroupedEvents
+                        groupedEvents={groupedEvents}
+                        day={day}
+                        startHour={startHour}
+                        endHour={endHour}
+                      />
                     </motion.div>
                   );
                 })}

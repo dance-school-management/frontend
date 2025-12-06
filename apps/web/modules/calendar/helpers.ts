@@ -95,13 +95,39 @@ export function groupEvents(dayEvents: IEvent[]) {
   return groups;
 }
 
-export function getEventBlockStyle(event: IEvent, day: Date, groupIndex: number, groupSize: number) {
+export function isEventInHourRange(event: IEvent, day: Date, startHour: number, endHour: number): boolean {
   const startDate = parseISO(event.startDate);
-  const dayStart = new Date(day.setHours(0, 0, 0, 0));
+  const endDate = parseISO(event.endDate);
+  const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, 0, 0, 0);
+
+  const eventStartMinutes = differenceInMinutes(startDate, dayStart);
+  const eventEndMinutes = differenceInMinutes(endDate, dayStart);
+
+  const rangeStartMinutes = startHour * 60;
+  const rangeEndMinutes = endHour * 60;
+
+  return eventEndMinutes > rangeStartMinutes && eventStartMinutes < rangeEndMinutes;
+}
+
+export function getEventBlockStyle(
+  event: IEvent,
+  day: Date,
+  groupIndex: number,
+  groupSize: number,
+  startHour: number = 0,
+  endHour: number = 24,
+) {
+  const startDate = parseISO(event.startDate);
+  const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, 0, 0, 0);
   const eventStart = startDate < dayStart ? dayStart : startDate;
   const startMinutes = differenceInMinutes(eventStart, dayStart);
 
-  const top = (startMinutes / 1440) * 100;
+  // Calculate position relative to custom hour range
+  const rangeStartMinutes = startHour * 60;
+  const rangeEndMinutes = endHour * 60;
+  const rangeTotalMinutes = rangeEndMinutes - rangeStartMinutes;
+
+  const top = ((startMinutes - rangeStartMinutes) / rangeTotalMinutes) * 100;
   const width = 100 / groupSize;
   const left = groupIndex * width;
 

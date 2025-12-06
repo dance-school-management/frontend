@@ -18,6 +18,9 @@ interface ICalendarContext {
   filters: IScheduleFilters;
   setFilters: (filters: IScheduleFilters) => void;
   priceRange: { min: number; max: number };
+  startHour: number;
+  endHour: number;
+  setHourRange: (startHour: number, endHour: number) => void;
 }
 
 const CalendarContext = createContext({} as ICalendarContext);
@@ -52,6 +55,8 @@ export function CalendarProvider({
   const [isAgendaMode, setAgendaMode] = useState(false);
   const [currentEvents, setCurrentEvents] = useState(events);
   const [currentFilters, setCurrentFilters] = useState<IScheduleFilters>(initialFilters);
+  const [startHour, setStartHour] = useState(12);
+  const [endHour, setEndHour] = useState(22);
 
   useEffect(() => {
     if (initialSelectedDate) {
@@ -94,6 +99,11 @@ export function CalendarProvider({
     onFiltersChange?.(filters);
   };
 
+  const handleHourRangeChange = (start: number, end: number) => {
+    setStartHour(start);
+    setEndHour(end);
+  };
+
   const value = {
     selectedDate,
     setSelectedDate: handleSelectDate,
@@ -107,6 +117,9 @@ export function CalendarProvider({
     filters: currentFilters,
     setFilters: handleFiltersChange,
     priceRange: { min: 0, max: 300 },
+    startHour,
+    endHour,
+    setHourRange: handleHourRangeChange,
   };
 
   return <CalendarContext.Provider value={value}>{children}</CalendarContext.Provider>;
