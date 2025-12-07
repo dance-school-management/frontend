@@ -3,32 +3,31 @@ import {
   addMonths,
   addWeeks,
   addYears,
+  compareAsc,
+  differenceInDays,
+  differenceInMinutes,
+  eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
+  format,
+  isSameDay,
+  isSameMonth,
+  isSameWeek,
+  isSameYear,
+  isValid,
+  parseISO,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
   subDays,
   subMonths,
   subWeeks,
   subYears,
-  isSameWeek,
-  isSameDay,
-  isSameMonth,
-  isSameYear,
-  startOfWeek,
-  startOfMonth,
-  endOfMonth,
-  endOfWeek,
-  format,
-  parseISO,
-  differenceInMinutes,
-  eachDayOfInterval,
-  startOfDay,
-  differenceInDays,
-  isValid,
 } from "date-fns";
 
-import { TCalendarView, TEventColor } from "@/modules/calendar/types";
-import type { ICalendarCell, IEvent, IApiScheduleResponse, IApiScheduleItem } from "@/modules/calendar/types";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-
-
+import type { IApiScheduleItem, IApiScheduleResponse, ICalendarCell, IEvent } from "@/modules/calendar/types";
+import { TCalendarView, TEventColor } from "@/modules/calendar/types";
 
 export function rangeText(view: TCalendarView, date: Date) {
   const formatString = "d MMM yyyy";
@@ -72,7 +71,7 @@ export function getEventsCount(events: IEvent[], date: Date, view: TCalendarView
 }
 
 export function groupEvents(dayEvents: IEvent[]) {
-  const sortedEvents = dayEvents.sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime());
+  const sortedEvents = dayEvents.sort((a, b) => compareAsc(a.startDate, b.startDate));
   const groups: IEvent[][] = [];
 
   for (const event of sortedEvents) {
@@ -96,13 +95,39 @@ export function groupEvents(dayEvents: IEvent[]) {
   return groups;
 }
 
-export function getEventBlockStyle(event: IEvent, day: Date, groupIndex: number, groupSize: number) {
+export function isEventInHourRange(event: IEvent, day: Date, startHour: number, endHour: number): boolean {
   const startDate = parseISO(event.startDate);
-  const dayStart = new Date(day.setHours(0, 0, 0, 0));
+  const endDate = parseISO(event.endDate);
+  const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, 0, 0, 0);
+
+  const eventStartMinutes = differenceInMinutes(startDate, dayStart);
+  const eventEndMinutes = differenceInMinutes(endDate, dayStart);
+
+  const rangeStartMinutes = startHour * 60;
+  const rangeEndMinutes = endHour * 60;
+
+  return eventEndMinutes > rangeStartMinutes && eventStartMinutes < rangeEndMinutes;
+}
+
+export function getEventBlockStyle(
+  event: IEvent,
+  day: Date,
+  groupIndex: number,
+  groupSize: number,
+  startHour: number = 0,
+  endHour: number = 24,
+) {
+  const startDate = parseISO(event.startDate);
+  const dayStart = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0, 0, 0, 0);
   const eventStart = startDate < dayStart ? dayStart : startDate;
   const startMinutes = differenceInMinutes(eventStart, dayStart);
 
-  const top = (startMinutes / 1440) * 100;
+  // Calculate position relative to custom hour range
+  const rangeStartMinutes = startHour * 60;
+  const rangeEndMinutes = endHour * 60;
+  const rangeTotalMinutes = rangeEndMinutes - rangeStartMinutes;
+
+  const top = ((startMinutes - rangeStartMinutes) / rangeTotalMinutes) * 100;
   const width = 100 / groupSize;
   const left = groupIndex * width;
 
@@ -159,9 +184,9 @@ export function calculateMonthEventPositions(multiDayEvents: IEvent[], singleDay
     ...multiDayEvents.sort((a, b) => {
       const aDuration = differenceInDays(parseISO(a.endDate), parseISO(a.startDate));
       const bDuration = differenceInDays(parseISO(b.endDate), parseISO(b.startDate));
-      return bDuration - aDuration || parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime();
+      return bDuration - aDuration || compareAsc(a.startDate, b.startDate);
     }),
-    ...singleDayEvents.sort((a, b) => parseISO(a.startDate).getTime() - parseISO(b.startDate).getTime()),
+    ...singleDayEvents.sort((a, b) => compareAsc(a.startDate, b.startDate)),
   ];
 
   sortedEvents.forEach(event => {
@@ -339,46 +364,23 @@ export const useGetEventsByMode = (events: IEvent[]) => {
 
 // ================ API Data Transformation ================ //
 
-/**
- * Converts hex color to TEventColor
- */
-function hexToEventColor(hexColor: string): TEventColor {
-  // Remove # if present
-  const hex = hexColor.replace('#', '');
-
-  // Convert to RGB
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-
-  // Determine color based on dominant RGB values
-  if (r > g && r > b) {
-    // Red dominant
-    if (g > 100 && b < 100) return 'orange';
-    return 'red';
-  } else if (g > r && g > b) {
-    // Green dominant
-    if (r > 100 && b < 100) return 'yellow';
-    return 'green';
-  } else if (b > r && b > g) {
-    // Blue dominant
-    if (r > 100 && g > 100) return 'purple';
-    return 'blue';
-  } else if (r > 150 && g > 150 && b < 100) {
-    return 'yellow';
-  } else if (r > 150 && g > 100 && b < 100) {
-    return 'orange';
-  } else if (r > 100 && g < 100 && b > 100) {
+function advancementLevelToColor(advancementLevel: string, owned: boolean): TEventColor {
+  if (owned) {
     return 'purple';
   }
 
-  // Default fallback
-  return 'blue';
+  switch (advancementLevel) {
+    case 'Beginner':
+      return 'green';
+    case 'Intermediate':
+      return 'yellow';
+    case 'Advanced':
+      return 'red';
+    default:
+      return 'blue';
+  }
 }
 
-/**
- * Transforms API schedule data to calendar event format
- */
 export function transformScheduleToEvents(apiData: IApiScheduleResponse): IEvent[] {
   return apiData.map((item: IApiScheduleItem): IEvent | null => {
     try {
@@ -387,12 +389,12 @@ export function transformScheduleToEvents(apiData: IApiScheduleResponse): IEvent
         startDate: item.startDate,
         endDate: item.endDate,
         name: item.classTemplate.name,
-        color: hexToEventColor(item.classTemplate.scheduleTileColor),
+        color: advancementLevelToColor(item.classTemplate.advancementLevel.name, item.owned),
         description: item.classTemplate.description,
         danceCategory: item.classTemplate.danceCategory.name,
         advancementLevel: item.classTemplate.advancementLevel.name,
-        // TODO: Replace with actual classroom name when available from backend
-        classroom: `Room ${item.classRoomId}`,
+        classRoomId: item.classRoom.id,
+        classroom: item.classRoom.name,
         price: parseFloat(item.classTemplate.price),
         currency: item.classTemplate.currency,
         courseId: item.classTemplate.courseId,

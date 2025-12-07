@@ -1,14 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
-import { headers } from 'next/headers';
+import { headers } from "next/headers";
 
 import { NonCourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
 // import { fetchClassTemplate } from "@/mocks/product";
 import { fetchClassTemplate } from "@/lib/api/product";
 
-export default async function Page({ params }: { params: Promise<{ id: string; }>; }) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const cookie = (await headers()).get('cookie') ?? "";
+  const cookie = (await headers()).get("cookie") ?? "";
 
   const courseId = parseInt(id, 10);
   if (isNaN(courseId)) {
@@ -41,12 +41,12 @@ export default async function Page({ params }: { params: Promise<{ id: string; }
             <CardDescription>Edit the class template information</CardDescription>
           </CardHeader>
           <CardContent>
-            <NonCourseClassTemplateForm
-              template={data}
-            />
+            <NonCourseClassTemplateForm template={data} />
           </CardContent>
         </Card>
-        <ClassesList classTemplate={data} />
+        <Card className="p-6">
+          <ClassesList classTemplate={data} />
+        </Card>
       </div>
     </div>
   );

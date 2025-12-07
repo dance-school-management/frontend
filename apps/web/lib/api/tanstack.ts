@@ -1,12 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { compareAsc, compareDesc, format } from 'date-fns';
 import { useEffect, useRef } from 'react';
 
 import { fetchNewNotifications, getNotificationsStatus, NotificationsStatusResponse } from '@/lib/api/notification';
-import { fetchAdditionalProductData, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
+import { fetchAdditionalProductData, fetchAdvancementLevels, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
 import { fetchInstructors, fetchUserProfile, searchUsers } from '@/lib/api/profile';
 import { Paginated } from '@/lib/model';
 import { Notification } from '@/lib/model/notification';
-import { AdditionalProductData, DanceCategory } from '@/lib/model/product';
+import { AdditionalProductData, AdvancementLevel, DanceCategory } from '@/lib/model/product';
 import { GetProfileResponse, InstructorsResponse, ProfileData } from '@/lib/model/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
 import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
@@ -48,6 +49,17 @@ export function useDanceCategories() {
   });
 }
 
+export function useAdvancementLevels() {
+  return useQuery<AdvancementLevel[], ApiError>({
+    queryKey: ['advancementLevels'],
+    queryFn: async () => {
+      const result = await fetchAdvancementLevels();
+      if (result.error) throw result.error;
+      return result.data!;
+    },
+  });
+}
+
 export function useUsersSearch(query: string, enabled = true) {
   return useQuery<ProfileData[], ApiError>({
     queryKey: ['users:search', query],
@@ -78,13 +90,15 @@ export function useScheduleEvents(selectedDate: Date) {
   dateFrom.setDate(selectedDate.getDate() - 14);
   dateTo.setDate(selectedDate.getDate() + 14);
 
-  const dateFromStr = dateFrom.toISOString().split('T')[0]!;
-  const dateToStr = dateTo.toISOString().split('T')[0]!;
+  const dateFromStr = format(dateFrom, 'yyyy-MM-dd');
+  const dateToStr = format(dateTo, 'yyyy-MM-dd');
+
+  const cookie = typeof document !== 'undefined' ? document.cookie : undefined;
 
   return useQuery<IEvent[], ApiError>({
     queryKey: ['schedule', dateFromStr, dateToStr],
     queryFn: async () => {
-      const result = await fetchSchedule(dateFromStr, dateToStr);
+      const result = await fetchSchedule(dateFromStr, dateToStr, cookie);
       if (result.error) throw result.error;
       if (!result.data) throw new Error('No data received from schedule API');
 
@@ -130,7 +144,7 @@ export function useNotificationsPolling(limit = 50) {
     const cached = queryClient.getQueryData<Notification[]>(['notifications:all']);
     if (!cached && pollQuery.data?.data?.length) {
       const sorted = [...pollQuery.data.data].sort(
-        (a, b) => new Date(b.sendDate).getTime() - new Date(a.sendDate).getTime()
+        (a, b) => compareDesc(a.sendDate, b.sendDate)
       );
       queryClient.setQueryData(['notifications:all'], sorted);
     }
@@ -141,7 +155,7 @@ export function useNotificationsPolling(limit = 50) {
     if (!resp?.data?.length) return;
 
     const newest = resp.data.reduce((a, b) =>
-      new Date(a.sendDate).getTime() > new Date(b.sendDate).getTime() ? a : b
+      compareAsc(a.sendDate, b.sendDate) ? a : b
     ).sendDate;
 
     lastSeenRef.current = newest;
@@ -152,7 +166,7 @@ export function useNotificationsPolling(limit = 50) {
     resp.data.forEach((n) => mergedMap.set(n.id, n));
 
     const mergedArr = Array.from(mergedMap.values()).sort(
-      (a, b) => new Date(b.sendDate).getTime() - new Date(a.sendDate).getTime()
+      (a, b) => compareDesc(a.sendDate, b.sendDate)
     );
 
     queryClient.setQueryData(['notifications:all'], mergedArr);

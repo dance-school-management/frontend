@@ -1,19 +1,13 @@
 "use client";
 
 import { Button } from "@repo/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { Separator } from "@repo/ui/separator";
 import { useState } from "react";
 
 import { getPaymentLink } from "@/lib/api/enroll";
 import { Ticket } from "@/lib/model/enroll";
-import { fmtTime } from "@/lib/utils/time";
+import { fmtDate, fmtTime } from "@/lib/utils/time";
 
 interface ClassPaymentCardProps {
   ticket: Ticket;
@@ -25,13 +19,13 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
 
   const startTime = fmtTime(ticket.startDate);
   const endTime = fmtTime(ticket.endDate);
-  const startDate = ticket.startDate.split("T")[0]!;
+  const startDate = fmtDate(ticket.startDate);
 
   const date = `${startDate} (${startTime} - ${endTime})`;
 
   const handlePaymentClick = async () => {
     if (paymentLink) {
-      window.open(paymentLink, '_blank');
+      window.open(paymentLink, "_blank");
       return;
     }
 
@@ -40,12 +34,12 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
       const result = await getPaymentLink(ticket.classId, undefined, document.cookie);
       if (result.data) {
         setPaymentLink(result.data.url);
-        window.open(result.data.url, '_blank');
+        window.open(result.data.url, "_blank");
       } else {
-        console.error('Failed to fetch payment link:', result.error);
+        console.error("Failed to fetch payment link:", result.error);
       }
     } catch (error) {
-      console.error('Error fetching payment link:', error);
+      console.error("Error fetching payment link:", error);
     }
     setIsLoadingPayment(false);
   };

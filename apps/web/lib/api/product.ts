@@ -1,8 +1,8 @@
 import { ApiResult, fetcher } from "@/lib/api/axios";
 import {
   AdditionalProductData,
+  AdvancementLevel,
   Class,
-  ClassStatus,
   ClassTemplate,
   Course,
   CoursesClassesResponse,
@@ -19,10 +19,8 @@ type CreateCoursePayload = {
 type UpdateCoursePayload = {
   id: number;
   name: string;
-  description: string | null;
-  courseStatus: string;
-  customPrice: number | null;
-  currency: string | null;
+  description: string;
+  price: number | null;
   danceCategoryId: number | null;
   advancementLevelId: number | null;
 };
@@ -36,7 +34,6 @@ type CreateClassPayload = {
   startDate: string;
   endDate: string;
   isConfirmation: boolean;
-  classStatus: string;
 };
 
 interface UpdateClassTemplatePayload {
@@ -44,17 +41,9 @@ interface UpdateClassTemplatePayload {
   name: string;
   description: string;
   price: number;
-  currency: string;
   classType: string;
-  scheduleTileColor: string;
   danceCategoryId: number | null;
   advancementLevelId: number | null;
-};
-
-type UpdateClassStatusPayload = {
-  classId: number;
-  newStatus: ClassStatus;
-  isConfirmation: boolean;
 };
 
 interface CreateClassTemplatePayload extends UpdateClassTemplatePayload {
@@ -65,12 +54,16 @@ export async function createCourse(payload: CreateCoursePayload) {
   return await fetcher<{ id: number; }>("/product/cms/course/new", "POST", payload);
 }
 
+export async function publishCourse(courseId: number, cookie?: string) {
+  return await fetcher<{ message: string; }>(`/product/cms/course/${courseId}/publish`, "PATCH", { isConfirmation: true }, { cookie });
+}
+
 export async function createClass(payload: CreateClassPayload) {
   return await fetcher<Class>("/product/cms/class", "POST", payload);
 }
 
-export async function updateClassStatus(payload: UpdateClassStatusPayload, cookie?: string) {
-  return await fetcher<Class>("/product/cms/class/status/edit", "PUT", payload, { cookie });
+export async function updateClassStatus(payload: { classId: number; }, cookie?: string) {
+  return await fetcher<Class>("/product/cms/class/publish", "PATCH", payload, { cookie });
 }
 
 export async function updateCourse(payload: UpdateCoursePayload) {
@@ -89,8 +82,8 @@ export async function createClassTemplate(payload: CreateClassTemplatePayload) {
   return await fetcher<ClassTemplate>("/product/cms/class_template", "POST", payload);
 }
 
-export async function fetchCourse(id: number, cookie?: string): Promise<ApiResult<Course>> {
-  return await fetcher<Course>(`/product/cms/course/${id}`, undefined, undefined, { cookie });
+export async function fetchCourse(id: number, cookie?: string) {
+  return await fetcher<Course & { allClassesPrice: number; }>(`/product/cms/course/${id}`, undefined, undefined, { cookie });
 }
 
 export async function fetchCourses(cookie?: string): Promise<ApiResult<Course[]>> {
@@ -121,10 +114,14 @@ export async function fetchCoursesClasses(courseIds: number[]): Promise<ApiResul
   return await fetcher<CoursesClassesResponse>(`/product/public/schedule/courses/classes?${searchParams.toString()}`);
 }
 
-export async function fetchSchedule(dateFrom: string, dateTo: string): Promise<ApiResult<IApiScheduleResponse>> {
-  return await fetcher<IApiScheduleResponse>(`/product/public/schedule?dateFrom=${dateFrom}&dateTo=${dateTo}`);
+export async function fetchSchedule(dateFrom: string, dateTo: string, cookie?: string) {
+  return await fetcher<IApiScheduleResponse>(`/product/public/schedule?dateFrom=${dateFrom}&dateTo=${dateTo}`, undefined, undefined, { cookie });
 }
 
 export async function fetchDanceCategories(): Promise<ApiResult<DanceCategory[]>> {
   return await fetcher<DanceCategory[]>("/product/public/cms/dance_category");
+}
+
+export async function fetchAdvancementLevels(): Promise<ApiResult<AdvancementLevel[]>> {
+  return await fetcher<AdvancementLevel[]>("/product/public/cms/advancement_level");
 }

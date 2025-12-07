@@ -1,37 +1,24 @@
 "use client";
 
 import { isSameDay, parseISO } from "date-fns";
-import { AnimatePresence, motion } from "framer-motion";
-
-import { fadeIn, transition } from "@/modules/calendar/animations";
-import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
 import { AgendaEvents } from "@/modules/calendar/components/agenda-view/agenda-events";
 import { CalendarHeader } from "@/modules/calendar/components/header/calendar-header";
 import { CalendarDayView } from "@/modules/calendar/components/week-and-day-view/calendar-day-view";
 import { CalendarWeekView } from "@/modules/calendar/components/week-and-day-view/calendar-week-view";
+import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 
 export function ClientContainer() {
-  const { selectedDate, view, isAgendaMode, events } =
-    useCalendar();
+  const { selectedDate, view, isAgendaMode, events } = useCalendar();
 
   const filteredEvents = events.filter((event) => {
     const itemStartDate = new Date(event.startDate);
     const itemEndDate = new Date(event.endDate);
 
-    const monthStart = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      1
-    );
-    const monthEnd = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth() + 1,
-      0
-    );
+    const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    const monthEnd = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
 
-    const isInSelectedMonth =
-      itemStartDate <= monthEnd && itemEndDate >= monthStart;
+    const isInSelectedMonth = itemStartDate <= monthEnd && itemEndDate >= monthStart;
     return isInSelectedMonth;
   });
 
@@ -48,51 +35,17 @@ export function ClientContainer() {
   });
 
   return (
-    <motion.div
-      className="w-full rounded-xl border"
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      variants={fadeIn}
-      transition={transition}
-    >
+    <div className="w-full h-[calc(100dvh-64px)] border-b flex flex-col">
       <CalendarHeader events={filteredEvents} />
-      <AnimatePresence mode="wait">
-        {isAgendaMode ? (
-          <motion.div
-            key="agenda"
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={fadeIn}
-            transition={transition}
-          >
-            <AgendaEvents />
-          </motion.div>
-        ) : (
-          <motion.div
-            key={view}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={fadeIn}
-            transition={transition}
-          >
-            {view === "week" && (
-              <CalendarWeekView
-                singleDayEvents={singleDayEvents}
-                multiDayEvents={multiDayEvents}
-              />
-            )}
-            {view === "day" && (
-              <CalendarDayView
-                singleDayEvents={singleDayEvents}
-                multiDayEvents={multiDayEvents}
-              />
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      {isAgendaMode ?
+        <div key="agenda" className="flex flex-col flex-1 min-h-0">
+          <AgendaEvents />
+        </div>
+      : <div key={view} className="flex flex-col flex-1 min-h-0">
+          {view === "week" && <CalendarWeekView singleDayEvents={singleDayEvents} multiDayEvents={multiDayEvents} />}
+          {view === "day" && <CalendarDayView singleDayEvents={singleDayEvents} multiDayEvents={multiDayEvents} />}
+        </div>
+      }
+    </div>
   );
 }

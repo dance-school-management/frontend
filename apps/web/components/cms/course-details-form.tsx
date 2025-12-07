@@ -2,21 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
 import { SaveIcon } from "lucide-react";
@@ -25,15 +12,14 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { MoneyInput } from "@/components/forms/input";
-import { AdvancementLevelSelect, /*CurrencySelect,*/ DanceCategorySelect } from "@/components/forms/select";
+import { AdvancementLevelSelect, DanceCategorySelect } from "@/components/forms/select";
 import { updateCourse } from "@/lib/api/product";
 import { Course } from "@/lib/model/product";
 
 const courseFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
-  customPrice: z.number().optional(),
-  currency: z.string().optional(),
+  description: z.string().min(1, "Description is required"),
+  price: z.number().optional(),
   danceCategoryId: z.number().optional(),
   advancementLevelId: z.number().optional(),
 });
@@ -51,8 +37,7 @@ export function CourseDetailsForm({ course }: CourseDetailsFormProps) {
     defaultValues: {
       name: course.name,
       description: course.description,
-      customPrice: course.customPrice ? Number(course.customPrice) : undefined,
-      currency: course.currency,
+      price: Number(course.price),
       danceCategoryId: course.danceCategoryId,
       advancementLevelId: course.advancementLevelId,
     },
@@ -63,9 +48,8 @@ export function CourseDetailsForm({ course }: CourseDetailsFormProps) {
       ...values,
       id: course.id,
       courseStatus: "HIDDEN",
-      description: values.description ?? null,
-      customPrice: values.customPrice ?? null,
-      currency: values.currency ?? null,
+      description: values.description,
+      price: values.price ?? null,
       danceCategoryId: values.danceCategoryId ?? null,
       advancementLevelId: values.advancementLevelId ?? null,
     };
@@ -114,17 +98,7 @@ export function CourseDetailsForm({ course }: CourseDetailsFormProps) {
                 </FormItem>
               )}
             />
-            {/* <CurrencySelect
-              form={form}
-              name="currency"
-              label="Currency"
-            /> */}
-            <MoneyInput
-              form={form}
-              name="customPrice"
-              label="Course Price"
-              currency={form.watch("currency")}
-            />
+            <MoneyInput form={form} name="price" label="Course Price" currency="PLN" />
             <DanceCategorySelect
               form={form}
               name="danceCategoryId"
@@ -148,4 +122,4 @@ export function CourseDetailsForm({ course }: CourseDetailsFormProps) {
       </CardContent>
     </Card>
   );
-} 
+}

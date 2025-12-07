@@ -9,5 +9,3 @@ export function useDisclosure({ defaultIsOpen = false }: { defaultIsOpen?: boole
 
   return { onOpen, onClose, isOpen, onToggle };
 }
-
-

@@ -1,11 +1,10 @@
-import { headers } from 'next/headers';
+import { headers } from "next/headers";
 
 import { ClassTemplatePreview, NewClassTemplateDialog } from "@/components/cms/misc";
 import { fetchClassTemplates } from "@/lib/api/product";
-// import { fetchClassTemplates } from "@/mocks/product";
 
 export default async function Page() {
-  const cookie = (await headers()).get('cookie') ?? "";
+  const cookie = (await headers()).get("cookie") ?? "";
   const classes = await fetchClassTemplates(cookie);
 
   if (classes.error) {
@@ -17,7 +16,7 @@ export default async function Page() {
   }
   const { data } = classes;
 
-  const privateClasses = data.filter((classTemplate) => classTemplate.classType === "PRIVATE_CLASS");
+  const groupClasses = data.filter((classTemplate) => classTemplate.classType === "GROUP_CLASS");
   const eventClasses = data.filter((classTemplate) => classTemplate.classType === "THEME_PARTY");
 
   return (
@@ -25,29 +24,37 @@ export default async function Page() {
       <h1 className="text-4xl font-bold">Class Templates</h1>
       <NewClassTemplateDialog />
 
-      <h3 className="text-lg font-semibold">Private classes</h3>
-      <div className="grid grid-cols-2 gap-2">
-        {privateClasses.map((classTemplate) => (
-          <ClassTemplatePreview
-            key={classTemplate.id}
-            id={classTemplate.id}
-            name={classTemplate.name}
-            description={classTemplate.description}
-          />
-        ))}
-      </div>
+      {groupClasses.length > 0 && (
+        <>
+          <h3 className="text-lg font-semibold">Group classes</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {groupClasses.map((classTemplate) => (
+              <ClassTemplatePreview
+                key={classTemplate.id}
+                id={classTemplate.id}
+                name={classTemplate.name}
+                description={classTemplate.description}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
-      <h3 className="text-lg font-semibold">Event classes</h3>
-      <div className="grid grid-cols-2 gap-2">
-        {eventClasses.map((classTemplate) => (
-          <ClassTemplatePreview
-            key={classTemplate.id}
-            id={classTemplate.id}
-            name={classTemplate.name}
-            description={classTemplate.description}
-          />
-        ))}
-      </div>
+      {eventClasses.length > 0 && (
+        <>
+          <h3 className="text-lg font-semibold">Events</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {eventClasses.map((classTemplate) => (
+              <ClassTemplatePreview
+                key={classTemplate.id}
+                id={classTemplate.id}
+                name={classTemplate.name}
+                description={classTemplate.description}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

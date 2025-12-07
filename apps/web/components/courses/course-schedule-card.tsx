@@ -1,12 +1,5 @@
 import { Button } from "@repo/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -18,8 +11,9 @@ import {
 } from "@repo/ui/dialog";
 import { ScrollArea } from "@repo/ui/scroll-area";
 import { Separator } from "@repo/ui/separator";
+import { compareAsc } from "date-fns";
 
-import { CourseClassItem } from "@/components/courses/course-class-item";
+import { MinimalCourseClassItem } from "@/components/courses/course-class-item";
 import { ExpandableDescription } from "@/components/utility/expandable";
 import { ClassWithTemplate, CourseSummary } from "@/lib/model/product";
 import { truncateAtWordBoundary } from "@/lib/utils/text";
@@ -49,7 +43,7 @@ export function CourseScheduleCard({ course, classes }: CourseScheduleCardProps)
             </div>
             <Separator className="mx-auto" orientation="vertical" />
             {/* TODO: Discuss if currency should be returned from the API*/}
-            <h2 className="text-xl font-bold">{course.coursePrice.toFixed(2)} PLN</h2>
+            <h2 className="text-xl font-bold">{Number(course.price).toFixed(2)} PLN</h2>
           </CardFooter>
         </Card>
       </DialogTrigger>
@@ -83,9 +77,9 @@ function CourseDetailsDialogContent({ course, classes }: CourseDetailsDialogCont
                   <p className="font-semibold text-foreground">Classes in this course:</p>
                   <div className="space-y-4">
                     {classes
-                      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+                      .sort((a, b) => compareAsc(a.startDate, b.startDate))
                       .map((cls) => (
-                        <CourseClassItem key={cls.id} classData={cls} />
+                        <MinimalCourseClassItem key={cls.id} classData={cls} />
                       ))}
                   </div>
                 </div>
@@ -95,16 +89,13 @@ function CourseDetailsDialogContent({ course, classes }: CourseDetailsDialogCont
         </ScrollArea>
       </DialogHeader>
       <DialogFooter className="flex-row items-center justify-end border-t px-6 py-4">
-        <Button className="w-full bg-green-500 hover:bg-green-600">
-          Buy ({course.coursePrice} PLN)
-        </Button>
+        <Button className="w-full bg-green-500 hover:bg-green-600">Buy ({Number(course.price).toFixed(2)} PLN)</Button>
       </DialogFooter>
     </DialogContent>
   );
 }
 
-
-function Info({ caption, value }: { caption: string; value: string; }) {
+function Info({ caption, value }: { caption: string; value: string }) {
   return (
     <p className="text-foreground text-base">
       <span className="font-semibold">{caption}</span>

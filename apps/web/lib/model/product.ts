@@ -4,7 +4,7 @@ export type CourseSummary = {
   description: string;
   danceCategoryId: number;
   advancementLevelId: number;
-  coursePrice: number;
+  price: number;
   danceCategory: DanceCategory;
   advancementLevel: AdvancementLevel;
   courseStatus: CourseStatus;
@@ -19,8 +19,8 @@ export type Course = {
   advancementLevelId?: number;
   advancementLevel?: AdvancementLevel;
   courseStatus: CourseStatus;
-  currency: string;
-  customPrice?: number;
+  price?: number;
+  allClassesPrice?: number;
   classTemplate: ClassTemplate[];
 };
 
@@ -63,13 +63,11 @@ export type ClassTemplate = {
   name: string;
   description: string;
   price: number;
-  currency: string;
   danceCategoryId?: number;
   danceCategory?: DanceCategory;
   advancementLevelId?: number;
   advancementLevel?: AdvancementLevel;
   classType: ClassType;
-  scheduleTileColor?: string;
   class: Class[];
 };
 
@@ -82,8 +80,7 @@ export type ClassStatus =
   | 'HIDDEN'
   | 'NORMAL'
   | 'CANCELLED'
-  | 'POSTPONED'
-  | 'MAKE_UP';
+  | 'POSTPONED';
 
 export type CourseStatus =
   | 'HIDDEN'

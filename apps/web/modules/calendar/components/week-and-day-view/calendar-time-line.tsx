@@ -1,8 +1,11 @@
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 
+import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
+
 export function CalendarTimeline() {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { startHour, endHour } = useCalendar();
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60 * 1000);
@@ -11,12 +14,27 @@ export function CalendarTimeline() {
 
   const getCurrentTimePosition = () => {
     const minutes = currentTime.getHours() * 60 + currentTime.getMinutes();
-    return (minutes / 1440) * 100;
+    const startMinutes = startHour * 60;
+    const totalMinutes = (endHour - startHour) * 60;
+    return ((minutes - startMinutes) / totalMinutes) * 100;
   };
 
   const formatCurrentTime = () => {
     return format(currentTime, "HH:mm");
   };
+
+  const isWithinRange = () => {
+    const currentHour = currentTime.getHours();
+    const currentMinutes = currentTime.getMinutes();
+    const currentTotalMinutes = currentHour * 60 + currentMinutes;
+    const startMinutes = startHour * 60;
+    const endMinutes = endHour * 60;
+    return currentTotalMinutes >= startMinutes && currentTotalMinutes < endMinutes;
+  };
+
+  if (!isWithinRange()) {
+    return null;
+  }
 
   return (
     <div

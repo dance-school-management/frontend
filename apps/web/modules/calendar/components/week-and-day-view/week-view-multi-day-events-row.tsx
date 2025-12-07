@@ -1,8 +1,7 @@
+import { addDays, differenceInDays, endOfWeek, isAfter, isBefore, parseISO, startOfDay, startOfWeek } from "date-fns";
 import { useMemo } from "react";
-import { parseISO, startOfDay, startOfWeek, endOfWeek, addDays, differenceInDays, isBefore, isAfter } from "date-fns";
 
 import { MonthEventBadge } from "@/modules/calendar/components/month-view/month-event-badge";
-
 import type { IEvent } from "@/modules/calendar/types";
 
 interface IProps {
@@ -17,7 +16,7 @@ export function WeekViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IPro
 
   const processedEvents = useMemo(() => {
     return multiDayEvents
-      .map(event => {
+      .map((event) => {
         const start = parseISO(event.startDate);
         const end = parseISO(event.endDate);
         const adjustedStart = isBefore(start, weekStart) ? weekStart : start;
@@ -43,8 +42,10 @@ export function WeekViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IPro
   const eventRows = useMemo(() => {
     const rows: (typeof processedEvents)[] = [];
 
-    processedEvents.forEach(event => {
-      let rowIndex = rows.findIndex(row => row.every(e => e.endIndex < event.startIndex || e.startIndex > event.endIndex));
+    processedEvents.forEach((event) => {
+      let rowIndex = rows.findIndex((row) =>
+        row.every((e) => e.endIndex < event.startIndex || e.startIndex > event.endIndex),
+      );
 
       if (rowIndex === -1) {
         rowIndex = rows.length;
@@ -59,7 +60,7 @@ export function WeekViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IPro
   }, [processedEvents]);
 
   const hasEventsInWeek = useMemo(() => {
-    return multiDayEvents.some(event => {
+    return multiDayEvents.some((event) => {
       const start = parseISO(event.startDate);
       const end = parseISO(event.endDate);
 
@@ -85,7 +86,7 @@ export function WeekViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IPro
         {weekDays.map((day, dayIndex) => (
           <div key={day.toISOString()} className="flex h-full flex-col gap-1 py-1">
             {eventRows.map((row, rowIndex) => {
-              const event = row.find(e => e.startIndex <= dayIndex && e.endIndex >= dayIndex);
+              const event = row.find((e) => e.startIndex <= dayIndex && e.endIndex >= dayIndex);
 
               if (!event) {
                 return <div key={`${rowIndex}-${dayIndex}`} className="h-6.5" />;
@@ -103,7 +104,14 @@ export function WeekViewMultiDayEventsRow({ selectedDate, multiDayEvents }: IPro
                 position = "middle";
               }
 
-              return <MonthEventBadge key={`${event.id}-${dayIndex}`} event={event} cellDate={startOfDay(day)} position={position} />;
+              return (
+                <MonthEventBadge
+                  key={`${event.id}-${dayIndex}`}
+                  event={event}
+                  cellDate={startOfDay(day)}
+                  position={position}
+                />
+              );
             })}
           </div>
         ))}
