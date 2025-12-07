@@ -1,26 +1,20 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
+import { headers } from "next/headers";
 
 import { CourseCard } from "@/components/dashboard/course-card";
 import { CoursesSummary } from "@/components/dashboard/courses-summary";
+import { getBestPerfomingCourses } from "@/lib/api/finance";
 
-const data = {
-  period: { start: "2025-10-01", end: "2025-10-31" },
-  totalCourses: 125,
-  items: [
-    {
-      courseId: 123,
-      name: "Bachata",
-      revenue: 5000.0,
-    },
-    {
-      courseId: 456,
-      name: "Salsa",
-      revenue: 3000.0,
-    },
-  ],
-};
+export default async function CoursesPage({ searchParams }: { searchParams: { start: string; end: string } }) {
+  const { start, end } = await searchParams;
 
-export default function CoursesPage() {
+  const cookie = (await headers()).get("cookie") ?? "";
+  const { data, error } = await getBestPerfomingCourses(start, end, 10, cookie);
+
+  if (error || !data) {
+    return <div>Error: {error?.message}</div>;
+  }
+
   const totalRevenue = data.items.reduce((acc, item) => acc + item.revenue, 0);
   const averageRevenue = totalRevenue / data.items.length;
   const highestRevenue = Math.max(...data.items.map((item) => item.revenue));
