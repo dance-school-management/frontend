@@ -8,7 +8,11 @@ import { getRevenue } from "@/lib/api/finance";
 const dailyRevDescription = "Daily revenue breakdown showing income earned per day";
 const cumulativeRevDescription = "Running total of revenue over time, showing cumulative growth";
 
-export default async function Page({ searchParams }: { searchParams: { start: string; end: string } }) {
+interface RevenuePageProps {
+  searchParams: Promise<{ start?: string; end?: string }>;
+}
+
+export default async function Page({ searchParams }: RevenuePageProps) {
   const { start, end } = await searchParams;
 
   const cookie = (await headers()).get("cookie") ?? "";

@@ -5,7 +5,11 @@ import { CourseCard } from "@/components/dashboard/course-card";
 import { CoursesSummary } from "@/components/dashboard/courses-summary";
 import { getBestPerfomingCourses } from "@/lib/api/finance";
 
-export default async function CoursesPage({ searchParams }: { searchParams: { start: string; end: string } }) {
+interface CoursesPageProps {
+  searchParams: Promise<{ start?: string; end?: string }>;
+}
+
+export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const { start, end } = await searchParams;
 
   const cookie = (await headers()).get("cookie") ?? "";
