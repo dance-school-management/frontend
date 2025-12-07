@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 
 import { CourseCard } from "@/components/dashboard/course-card";
 import { CoursesSummary } from "@/components/dashboard/courses-summary";
-import { getBestPerfomingCourses } from "@/lib/api/finance";
+import { getBestPerformingCourses } from "@/lib/api/finance";
 
 interface CoursesPageProps {
   searchParams: Promise<{ start?: string; end?: string }>;
@@ -13,7 +13,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const { start, end } = await searchParams;
 
   const cookie = (await headers()).get("cookie") ?? "";
-  const { data, error } = await getBestPerfomingCourses(start, end, 10, cookie);
+  const { data, error } = await getBestPerformingCourses(start, end, 10, cookie);
 
   if (error || !data) {
     return <div>Error: {error?.message}</div>;

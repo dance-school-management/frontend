@@ -9,7 +9,7 @@ export async function getRevenue(start?: string, end?: string, period?: Aggregat
   return await fetcher<RevenueData>(`/enroll/admin/metrics/revenue?${params.toString()}`, "GET", undefined, { cookie });
 }
 
-export async function getBestPerfomingCourses(start?: string, end?: string, limit?: number, cookie?: string): Promise<ApiResult<CourseData>> {
+export async function getBestPerformingCourses(start?: string, end?: string, limit?: number, cookie?: string): Promise<ApiResult<CourseData>> {
   const params = new URLSearchParams();
   if (start) params.set("startDate", start);
   if (end) params.set("endDate", end);
