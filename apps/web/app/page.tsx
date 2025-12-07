@@ -1,5 +1,5 @@
 import { Separator } from "@repo/ui/separator";
-import { compareAsc, format } from "date-fns";
+import { addDays, compareAsc, format, isSameDay } from "date-fns";
 
 import { TodaysClassesSection } from "@/components/home-sections/classes";
 import { CallToActionSection } from "@/components/home-sections/cta";
@@ -16,14 +16,18 @@ import { transformScheduleToEvents } from "@/modules/calendar/helpers";
 import { IEvent } from "@/modules/calendar/types";
 
 export default async function Page() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const [scheduleResult, instructorsResult, newsResult, categoriesResult] = await Promise.all([
-    fetchTodaySchedule(),
+    fetchScheduleForDate(today),
     fetchInstructors(),
     getPublishedPosts({ limit: 3 }),
     fetchDanceCategories(),
   ]);
 
-  const todayClasses = scheduleResult.data ? getTodayClasses(transformScheduleToEvents(scheduleResult.data)) : [];
+  const todayClasses =
+    scheduleResult.data ? getClassesForDate(today, transformScheduleToEvents(scheduleResult.data)) : [];
 
   const categories = categoriesResult.data?.slice(0, 4) ?? [];
   const instructors = instructorsResult.data?.instructors.slice(0, 4) ?? [];
@@ -45,7 +49,7 @@ export default async function Page() {
       <Separator />
       {todayClasses.length > 0 && (
         <>
-          <TodaysClassesSection classes={todayClasses} />
+          <TodaysClassesSection classes={todayClasses} hrefDate={format(today, "yyyy-MM-dd")} />
           <Separator />
         </>
       )}
@@ -66,24 +70,18 @@ export default async function Page() {
   );
 }
 
-async function fetchTodaySchedule() {
-  const today = new Date();
-  const dateFrom = format(today, "yyyy-MM-dd");
-  const dateTo = format(today, "yyyy-MM-dd");
+async function fetchScheduleForDate(date: Date) {
+  const dateFrom = format(date, "yyyy-MM-dd");
+  const dateTo = format(addDays(date, 1), "yyyy-MM-dd");
 
   return await fetchSchedule(dateFrom, dateTo);
 }
 
-function getTodayClasses(events: IEvent[]): IEvent[] {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
+function getClassesForDate(date: Date, events: IEvent[]): IEvent[] {
   return events
     .filter((event) => {
       const eventDate = new Date(event.startDate);
-      return eventDate >= today && eventDate < tomorrow;
+      return isSameDay(eventDate, date);
     })
     .sort((a, b) => {
       return compareAsc(a.startDate, b.startDate);
