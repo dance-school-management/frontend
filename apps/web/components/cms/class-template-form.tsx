@@ -2,22 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
 import { Textarea } from "@repo/ui/textarea";
 import { SaveIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -26,7 +13,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { MoneyInput } from "@/components/forms/input";
-import { AdvancementLevelSelect, CurrencySelect, DanceCategorySelect } from "@/components/forms/select";
+import { AdvancementLevelSelect, DanceCategorySelect } from "@/components/forms/select";
 import { createClassTemplate, updateClassTemplate } from "@/lib/api/product";
 import { ClassTemplate } from "@/lib/model/product";
 
@@ -36,7 +23,6 @@ const classTemplateFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string(),
   price: z.number().min(0, "Price must be positive"),
-  currency: z.string().min(1, "Currency is required"),
   danceCategoryId: z.number().min(1, "Dance category is required"),
   advancementLevelId: z.number().min(1, "Advancement level is required"),
 });
@@ -65,7 +51,6 @@ export function CourseClassTemplateForm({ template, courseId }: ClassTemplateFor
       name: template?.name ?? "",
       description: template?.description ?? "",
       price: Number(template?.price ?? 0),
-      currency: template?.currency ?? "PLN",
       danceCategoryId: template?.danceCategoryId,
       advancementLevelId: template?.advancementLevelId,
     },
@@ -77,7 +62,6 @@ export function CourseClassTemplateForm({ template, courseId }: ClassTemplateFor
       name: values.name,
       description: values.description,
       price: values.price,
-      currency: values.currency,
       classType: "GROUP_CLASS",
       scheduleTileColor: "blue",
       danceCategoryId: values.danceCategoryId,
@@ -122,17 +106,7 @@ export function CourseClassTemplateForm({ template, courseId }: ClassTemplateFor
             </FormItem>
           )}
         />
-        <CurrencySelect
-          form={form}
-          name="currency"
-          label="Currency"
-        />
-        <MoneyInput
-          form={form}
-          name="price"
-          label="Price"
-          currency={form.watch("currency")}
-        />
+        <MoneyInput form={form} name="price" label="Price" currency="PLN" />
         <DanceCategorySelect
           form={form}
           name="danceCategoryId"
@@ -163,9 +137,9 @@ export function NonCourseClassTemplateForm({ template }: Omit<ClassTemplateFormP
       name: template?.name ?? "",
       description: template?.description,
       price: Number(template?.price),
-      currency: template?.currency ?? "PLN",
-      classType: (template?.classType === "PRIVATE_CLASS" || template?.classType === "THEME_PARTY")
-        ? template.classType
+      classType:
+        template?.classType === "PRIVATE_CLASS" || template?.classType === "THEME_PARTY" ?
+          template.classType
         : "PRIVATE_CLASS",
       danceCategoryId: template?.danceCategoryId,
       advancementLevelId: template?.advancementLevelId,
@@ -178,7 +152,6 @@ export function NonCourseClassTemplateForm({ template }: Omit<ClassTemplateFormP
       name: data.name,
       description: data.description,
       price: data.price,
-      currency: data.currency,
       classType: data.classType,
       scheduleTileColor: "blue",
       danceCategoryId: data.danceCategoryId,
@@ -244,17 +217,7 @@ export function NonCourseClassTemplateForm({ template }: Omit<ClassTemplateFormP
             </FormItem>
           )}
         />
-        <CurrencySelect
-          form={form}
-          name="currency"
-          label="Currency"
-        />
-        <MoneyInput
-          form={form}
-          name="price"
-          label="Price"
-          currency={form.watch("currency")}
-        />
+        <MoneyInput form={form} name="price" label="Price" currency="PLN" />
         <DanceCategorySelect
           form={form}
           name="danceCategoryId"
@@ -286,7 +249,6 @@ export function NewClassTemplateForm() {
       name: "",
       description: "",
       price: 0,
-      currency: "PLN",
       classType: "PRIVATE_CLASS",
       danceCategoryId: undefined,
       advancementLevelId: undefined,
@@ -300,9 +262,7 @@ export function NewClassTemplateForm() {
       name: values.name,
       description: values.description,
       price: values.price,
-      currency: values.currency,
       classType: values.classType,
-      scheduleTileColor: "blue",
       danceCategoryId: values.danceCategoryId,
       advancementLevelId: values.advancementLevelId,
       isConfirmation: values.isConfirmation ?? false,
@@ -371,17 +331,7 @@ export function NewClassTemplateForm() {
             </FormItem>
           )}
         />
-        <CurrencySelect
-          form={form}
-          name="currency"
-          label="Currency"
-        />
-        <MoneyInput
-          form={form}
-          name="price"
-          label="Price"
-          currency={form.watch("currency")}
-        />
+        <MoneyInput form={form} name="price" label="Price" currency="PLN" />
         <DanceCategorySelect
           form={form}
           name="danceCategoryId"
@@ -403,4 +353,4 @@ export function NewClassTemplateForm() {
       </form>
     </Form>
   );
-} 
+}

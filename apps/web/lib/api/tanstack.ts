@@ -93,10 +93,12 @@ export function useScheduleEvents(selectedDate: Date) {
   const dateFromStr = format(dateFrom, 'yyyy-MM-dd');
   const dateToStr = format(dateTo, 'yyyy-MM-dd');
 
+  const cookie = typeof document !== 'undefined' ? document.cookie : undefined;
+
   return useQuery<IEvent[], ApiError>({
     queryKey: ['schedule', dateFromStr, dateToStr],
     queryFn: async () => {
-      const result = await fetchSchedule(dateFromStr, dateToStr);
+      const result = await fetchSchedule(dateFromStr, dateToStr, cookie);
       if (result.error) throw result.error;
       if (!result.data) throw new Error('No data received from schedule API');
 

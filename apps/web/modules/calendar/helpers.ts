@@ -364,46 +364,23 @@ export const useGetEventsByMode = (events: IEvent[]) => {
 
 // ================ API Data Transformation ================ //
 
-/**
- * Converts hex color to TEventColor
- */
-function hexToEventColor(hexColor: string): TEventColor {
-  // Remove # if present
-  const hex = hexColor.replace('#', '');
-
-  // Convert to RGB
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-
-  // Determine color based on dominant RGB values
-  if (r > g && r > b) {
-    // Red dominant
-    if (g > 100 && b < 100) return 'orange';
-    return 'red';
-  } else if (g > r && g > b) {
-    // Green dominant
-    if (r > 100 && b < 100) return 'yellow';
-    return 'green';
-  } else if (b > r && b > g) {
-    // Blue dominant
-    if (r > 100 && g > 100) return 'purple';
-    return 'blue';
-  } else if (r > 150 && g > 150 && b < 100) {
-    return 'yellow';
-  } else if (r > 150 && g > 100 && b < 100) {
-    return 'orange';
-  } else if (r > 100 && g < 100 && b > 100) {
+function advancementLevelToColor(advancementLevel: string, owned: boolean): TEventColor {
+  if (owned) {
     return 'purple';
   }
 
-  // Default fallback
-  return 'blue';
+  switch (advancementLevel) {
+    case 'Beginner':
+      return 'green';
+    case 'Intermediate':
+      return 'yellow';
+    case 'Advanced':
+      return 'red';
+    default:
+      return 'blue';
+  }
 }
 
-/**
- * Transforms API schedule data to calendar event format
- */
 export function transformScheduleToEvents(apiData: IApiScheduleResponse): IEvent[] {
   return apiData.map((item: IApiScheduleItem): IEvent | null => {
     try {
@@ -412,12 +389,12 @@ export function transformScheduleToEvents(apiData: IApiScheduleResponse): IEvent
         startDate: item.startDate,
         endDate: item.endDate,
         name: item.classTemplate.name,
-        color: hexToEventColor(item.classTemplate.scheduleTileColor),
+        color: advancementLevelToColor(item.classTemplate.advancementLevel.name, item.owned),
         description: item.classTemplate.description,
         danceCategory: item.classTemplate.danceCategory.name,
         advancementLevel: item.classTemplate.advancementLevel.name,
-        // TODO: Replace with actual classroom name when available from backend
-        classroom: `Room ${item.classRoomId}`,
+        classRoomId: item.classRoom.id,
+        classroom: item.classRoom.name,
         price: parseFloat(item.classTemplate.price),
         currency: item.classTemplate.currency,
         courseId: item.classTemplate.courseId,

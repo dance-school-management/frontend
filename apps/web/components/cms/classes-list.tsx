@@ -15,8 +15,9 @@ import {
 import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@repo/ui/drawer";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/tooltip";
 import { compareAsc, format } from "date-fns";
-import { EyeIcon, EyeOffIcon, PlusIcon } from "lucide-react";
+import { EyeIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -35,7 +36,7 @@ export function ClassesList({ classTemplate }: ClassesListProps) {
   const classes = classTemplate.class.sort((a, b) => compareAsc(a.startDate, b.startDate));
 
   return (
-    <Card className="gap-2 border-none p-0">
+    <Card className="gap-2 border-none shadow-none p-0">
       <CardHeader className="px-0">
         <CardTitle>Classes</CardTitle>
         <CardDescription>List of all classes in this course</CardDescription>
@@ -63,7 +64,7 @@ export function ClassesList({ classTemplate }: ClassesListProps) {
         <div className="space-y-4">
           {classes.length === 0 && <EmptyState />}
           {classes.map((classItem) => (
-            <ClassListing key={classItem.id} classItem={classItem} />
+            <ClassListing key={classItem.id} classItem={classItem} canPublish={classTemplate.courseId === null} />
           ))}
         </div>
       </CardContent>
@@ -73,27 +74,23 @@ export function ClassesList({ classTemplate }: ClassesListProps) {
 
 interface ClassListingProps {
   classItem: Class;
+  canPublish: boolean;
 }
 
-function ClassListing({ classItem }: ClassListingProps) {
+function ClassListing({ classItem, canPublish }: ClassListingProps) {
   const [status, setStatus] = useState<ClassStatus>(classItem.classStatus);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const isHidden = status === "HIDDEN";
 
-  const handleUpdateClassStatus = async () => {
-    const payload = {
-      classId: classItem.id,
-      newStatus: isHidden ? ("NORMAL" as ClassStatus) : ("HIDDEN" as ClassStatus),
-      isConfirmation: true,
-    };
-    const { error } = await updateClassStatus(payload);
+  const publishClass = async () => {
+    const { error } = await updateClassStatus({ classId: classItem.id });
     if (error) {
       toast.error(error.message || "Failed to update class status");
       return;
     }
-    toast.success("Class status updated successfully");
-    setStatus(isHidden ? "NORMAL" : "HIDDEN"); // triggers a rerender!
-    setIsConfirmationOpen(false); // Close the dialog
+    toast.success("Class published successfully");
+    setStatus(isHidden ? "NORMAL" : "HIDDEN");
+    setIsConfirmationOpen(false);
   };
 
   return (
@@ -105,26 +102,33 @@ function ClassListing({ classItem }: ClassListingProps) {
         <p className="text-sm">Status: {status}</p>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <AlertDialogWithConfirmation
-          isConfirmationOpen={isConfirmationOpen}
-          setIsConfirmationOpen={setIsConfirmationOpen}
-          title={isHidden ? "Publish Class?" : "Hide Class?"}
-          description={
-            isHidden ?
-              "Are you sure you want to publish this class? It will be visible to students and they can enroll."
-            : "Are you sure you want to hide this class? Students won't be able to see or enroll in it."
-          }
-          onConfirm={handleUpdateClassStatus}
-          cancelText="Cancel"
-          confirmText={isHidden ? "Publish" : "Hide"}
-        >
-          <Button variant="outline" className="w-fit cursor-pointer">
-            {isHidden ?
-              <EyeIcon />
-            : <EyeOffIcon />}
-            {isHidden ? "Publish" : "Hide"}
-          </Button>
-        </AlertDialogWithConfirmation>
+        {canPublish && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <AlertDialogWithConfirmation
+                  isConfirmationOpen={isConfirmationOpen}
+                  setIsConfirmationOpen={setIsConfirmationOpen}
+                  title="Publish Class?"
+                  description="Are you sure you want to publish this class? It will be visible to students and they can enroll."
+                  onConfirm={publishClass}
+                  cancelText="Cancel"
+                  confirmText="Publish"
+                >
+                  <Button variant="outline" disabled={!isHidden} className="w-fit cursor-pointer">
+                    <EyeIcon />
+                    Publish
+                  </Button>
+                </AlertDialogWithConfirmation>
+              </span>
+            </TooltipTrigger>
+            {!isHidden && (
+              <TooltipContent>
+                <p>Class is already published</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        )}
       </div>
     </div>
   );

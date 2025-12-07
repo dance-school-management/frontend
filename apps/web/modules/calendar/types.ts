@@ -16,6 +16,7 @@ export interface IEvent {
   danceCategory: string;
   advancementLevel: string;
   classroom: string;
+  classRoomId: number;
   price: number;
   currency: string;
   courseId?: number;
@@ -76,6 +77,11 @@ export interface IApiClassTemplate {
   course: IApiCourse;
 }
 
+export interface IApiClassRoomName {
+  id: number;
+  name: string;
+}
+
 export interface IApiScheduleItem {
   instructors: IApiInstructor[];
   owned: boolean;
@@ -87,6 +93,7 @@ export interface IApiScheduleItem {
   endDate: string;
   peopleLimit: number;
   classRoomId: number;
+  classRoom: IApiClassRoomName;
   classStatus: string;
   classTemplate: IApiClassTemplate;
 }

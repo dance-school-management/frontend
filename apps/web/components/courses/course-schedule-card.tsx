@@ -43,7 +43,7 @@ export function CourseScheduleCard({ course, classes }: CourseScheduleCardProps)
             </div>
             <Separator className="mx-auto" orientation="vertical" />
             {/* TODO: Discuss if currency should be returned from the API*/}
-            <h2 className="text-xl font-bold">{course.coursePrice.toFixed(2)} PLN</h2>
+            <h2 className="text-xl font-bold">{Number(course.price).toFixed(2)} PLN</h2>
           </CardFooter>
         </Card>
       </DialogTrigger>
@@ -89,7 +89,7 @@ function CourseDetailsDialogContent({ course, classes }: CourseDetailsDialogCont
         </ScrollArea>
       </DialogHeader>
       <DialogFooter className="flex-row items-center justify-end border-t px-6 py-4">
-        <Button className="w-full bg-green-500 hover:bg-green-600">Buy ({course.coursePrice} PLN)</Button>
+        <Button className="w-full bg-green-500 hover:bg-green-600">Buy ({Number(course.price).toFixed(2)} PLN)</Button>
       </DialogFooter>
     </DialogContent>
   );
