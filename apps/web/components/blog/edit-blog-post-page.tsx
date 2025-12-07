@@ -30,7 +30,6 @@ export function EditBlogPostPage({ post }: EditBlogPostPageProps) {
   const handleSubmit = async (values: UpdatePostRequest) => {
     try {
       setIsSubmitting(true);
-      console.log("values", values);
       const { error } = await updatePost(post.id.toString(), values);
 
       if (error) {
@@ -53,17 +52,23 @@ export function EditBlogPostPage({ post }: EditBlogPostPageProps) {
   }, []);
 
   // Merge form data with original post for preview
-  const previewPost: BlogPost = useMemo(() => ({
-    ...post,
-    ...formData,
-  }), [post, formData]);
+  const previewPost: BlogPost = useMemo(
+    () => ({
+      ...post,
+      ...formData,
+    }),
+    [post, formData],
+  );
 
   // Merge form data with original post for form initialization
   // This ensures form state is restored if component remounts
-  const formInitialValues: Partial<BlogPost> = useMemo(() => ({
-    ...post,
-    ...formData,
-  }), [post, formData]);
+  const formInitialValues: Partial<BlogPost> = useMemo(
+    () => ({
+      ...post,
+      ...formData,
+    }),
+    [post, formData],
+  );
 
   return (
     <div className="flex h-full flex-col p-4">
