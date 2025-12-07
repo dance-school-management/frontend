@@ -29,6 +29,8 @@ export function EventDetailsDialog({ event, children }: IProps) {
   const names = event.instructors.map((instructor) => instructor.name).join(", ");
   const formattedDate = `${format(startDate, " MMMM dd")}, ${formatTime(event.startDate)} - ${formatTime(event.endDate)}`;
 
+  const canBePurchased = !event.owned && new Date(event.startDate) > new Date();
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -64,11 +66,13 @@ export function EventDetailsDialog({ event, children }: IProps) {
               <Section title="Advancement Level" text={event.advancementLevel} />
             </div>
 
-            <div className="w-full flex md:justify-end">
-              <Button className="w-full md:w-50 mt-4 bg-green-500 hover:bg-green-600">
-                Buy ({event.price.toFixed(2)} {event.currency})
-              </Button>
-            </div>
+            {canBePurchased && (
+              <div className="w-full flex md:justify-end">
+                <Button className="w-full md:w-50 mt-4 bg-green-500 hover:bg-green-600">
+                  Buy ({event.price.toFixed(2)} {event.currency})
+                </Button>
+              </div>
+            )}
           </div>
         </ScrollArea>
         <DialogClose />
