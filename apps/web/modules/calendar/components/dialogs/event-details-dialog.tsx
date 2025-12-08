@@ -13,6 +13,7 @@ import {
 import { ScrollArea } from "@repo/ui/scroll-area";
 import { format, parseISO } from "date-fns";
 import { Building, Calendar, ChevronsUp, SquareChartGantt, User } from "lucide-react";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 import type { IEvent } from "@/modules/calendar/types";
@@ -67,9 +68,11 @@ export function EventDetailsDialog({ event, children }: IProps) {
             </div>
 
             {canBePurchased && (
-              <Button className="w-full mt-4 bg-green-500 hover:bg-green-600">
-                Buy ({event.price.toFixed(2)} PLN)
-              </Button>
+              <Link href={`/payment/details?classId=${event.id}`}>
+                <Button className="w-full mt-4 bg-green-500 hover:bg-green-600">
+                  Buy ({event.price.toFixed(2)} PLN)
+                </Button>
+              </Link>
             )}
           </div>
         </ScrollArea>

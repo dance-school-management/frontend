@@ -12,6 +12,7 @@ import {
 import { ScrollArea } from "@repo/ui/scroll-area";
 import { Separator } from "@repo/ui/separator";
 import { compareAsc } from "date-fns";
+import Link from "next/link";
 
 import { MinimalCourseClassItem } from "@/components/courses/course-class-item";
 import { ExpandableDescription } from "@/components/utility/expandable";
@@ -89,7 +90,11 @@ function CourseDetailsDialogContent({ course, classes }: CourseDetailsDialogCont
         </ScrollArea>
       </DialogHeader>
       <DialogFooter className="flex-row items-center justify-end border-t px-6 py-4">
-        <Button className="w-full bg-green-500 hover:bg-green-600">Buy ({Number(course.price).toFixed(2)} PLN)</Button>
+        <Link className="w-full" href={`/payment/details?courseId=${course.id}`}>
+          <Button className="w-full bg-green-500 hover:bg-green-600">
+            Buy ({Number(course.price).toFixed(2)} PLN)
+          </Button>
+        </Link>
       </DialogFooter>
     </DialogContent>
   );
