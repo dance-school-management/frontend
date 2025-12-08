@@ -33,7 +33,7 @@ export function RegisterForm() {
   const searchParams = useSearchParams();
   const redirectParam = searchParams.get("redirect");
   const redirectRoute = redirectParam ? decodeURIComponent(redirectParam) : undefined;
-  const loginTarget = redirectRoute ? `/login?redirect=${encodeURIComponent(redirectRoute)}` : "/login";
+  const loginTarget = redirectRoute ? `/login?${searchParams}` : "/login";
 
   const form = useForm({
     resolver: zodResolver(formSchema),

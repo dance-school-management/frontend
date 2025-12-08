@@ -24,8 +24,10 @@ type FormValues = z.infer<typeof formSchema>;
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const redirectParam = searchParams.get("redirect");
   const redirectRoute = redirectParam ? decodeURIComponent(redirectParam) : undefined;
+  const registerTarget = redirectRoute ? `/register?${searchParams}` : "/register";
 
   const { setUser } = useUserStore();
 
@@ -133,7 +135,7 @@ export function LoginForm() {
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link href="/register" className="underline underline-offset-4">
+                <Link href={registerTarget} className="underline underline-offset-4">
                   Sign up
                 </Link>
               </div>
