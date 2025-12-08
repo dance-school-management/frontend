@@ -42,7 +42,7 @@ function ProtectedContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (hydrated && !user) {
+  if (!user) {
     return (
       <div className="flex items-center justify-center h-full">
         <Loader />
