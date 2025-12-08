@@ -69,3 +69,7 @@ export type CourseAttendanceRateResponse = {
 export type PaymentLinkResponse = {
   url: string;
 };
+
+export type OrderResponse = {
+  sessionUrl: string;
+};

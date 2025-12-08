@@ -1,7 +1,7 @@
 import { RevenueTrend } from "@/lib/model/finance";
 
 export function formatCurrency(value: number, currencyCode = "PLN") {
-  const formatted = new Intl.NumberFormat("pl-PL", {
+  const formatted = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(value);
@@ -45,4 +45,11 @@ export function cumulativeFromSeries(series: { start: string; end: string; reven
     running += d.revenue;
     return { ...d, cumulative: running };
   });
+}
+
+export function moneyLabel(value?: number | null) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) {
+    return "—";
+  }
+  return formatCurrency(Number(value));
 }

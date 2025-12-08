@@ -3,7 +3,7 @@ import {
   DanceCategoryStatsResponse,
   InstructorStatsResponse,
   MasteredDanceCategoriesResponse,
-  PaymentLinkResponse,
+  OrderResponse,
   TicketResponse
 } from "@/lib/model/enroll";
 
@@ -37,14 +37,10 @@ export async function markTicketAsUsed(qrCodeUUID: string, cookie?: string): Pro
   return await fetcher(`/enroll/ticket/scan`, "PUT", { qrCodeUUID }, { cookie });
 }
 
-export async function getPaymentLink(classId?: number, courseId?: number, cookie?: string): Promise<ApiResult<PaymentLinkResponse>> {
-  const params = new URLSearchParams();
-  if (classId) {
-    params.append("classId", classId.toString());
-  }
-  if (courseId) {
-    params.append("courseId", courseId.toString());
-  }
+export async function createCourseOrder(courseId: number, cookie?: string) {
+  return await fetcher<OrderResponse>(`/enroll/order/course`, "POST", { courseId }, { cookie });
+}
 
-  return await fetcher(`/enroll/order/payment-link?${params.toString()}`, "GET", undefined, { cookie });
+export async function createClassOrder(classId: number, cookie?: string) {
+  return await fetcher<OrderResponse>(`/enroll/order/class`, "POST", { classId }, { cookie });
 }
