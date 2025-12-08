@@ -88,7 +88,6 @@ export interface IApiScheduleItem {
   paymentStatus: string | null;
   id: number;
   classTemplateId: number;
-  groupNumber: number;
   startDate: string;
   endDate: string;
   peopleLimit: number;

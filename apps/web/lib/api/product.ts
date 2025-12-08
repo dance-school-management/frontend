@@ -28,7 +28,6 @@ type UpdateCoursePayload = {
 
 type CreateClassPayload = {
   classTemplateId: number;
-  groupNumber: number;
   peopleLimit: number;
   classRoomId: number;
   instructorIds: string[];

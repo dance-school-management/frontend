@@ -110,7 +110,6 @@ export function ClassDetails({ classData }: ClassDetailsProps) {
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
             <div className="space-y-1">
               <p className="text-lg font-semibold">{classData.classTemplate.name}</p>
-              <p className="text-sm text-muted-foreground">Group #{classData.groupNumber}</p>
               <p className="text-sm text-muted-foreground">{schedule}</p>
             </div>
             <div className="text-right">

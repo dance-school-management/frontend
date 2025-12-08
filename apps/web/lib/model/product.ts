@@ -40,7 +40,6 @@ export type AdvancementLevel = {
 export type Class = {
   id: number;
   classTemplateId: number;
-  groupNumber: number;
   startDate: string;
   endDate: string;
   peopleLimit: number;

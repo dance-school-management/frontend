@@ -96,7 +96,6 @@ function ClassListing({ classItem, canPublish }: ClassListingProps) {
   return (
     <div className="flex items-center justify-between p-4 border rounded-lg">
       <div>
-        <h3 className="font-semibold">Group {classItem.groupNumber}</h3>
         <p className="text-sm text-muted-foreground">{formatDates(classItem.startDate, classItem.endDate)}</p>
         <p className="text-sm">People limit: {classItem.peopleLimit}</p>
         <p className="text-sm">Status: {status}</p>
