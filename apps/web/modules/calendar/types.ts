@@ -1,5 +1,6 @@
 export type TCalendarView = "day" | "week";
 export type TEventColor = "blue" | "green" | "red" | "yellow" | "purple" | "orange";
+export type TScheduleType = "personal" | "full";
 
 export interface IInstructor {
   url: string;

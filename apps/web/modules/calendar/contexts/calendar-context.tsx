@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-import type { IEvent, IScheduleFilters } from "@/modules/calendar/types";
+import type { IEvent, IScheduleFilters, TScheduleType } from "@/modules/calendar/types";
 import { TCalendarView } from "@/modules/calendar/types";
 
 interface ICalendarContext {
@@ -17,6 +17,9 @@ interface ICalendarContext {
   setEvents: (events: IEvent[]) => void;
   filters: IScheduleFilters;
   setFilters: (filters: IScheduleFilters) => void;
+  scheduleType: TScheduleType;
+  setScheduleType: (type: TScheduleType) => void;
+  toggleScheduleType: () => void;
   priceRange: { min: number; max: number };
   startHour: number;
   endHour: number;
@@ -33,9 +36,11 @@ interface CalendarProviderProps {
   initialSelectedDate?: Date;
   initialView?: TCalendarView;
   initialFilters?: IScheduleFilters;
+  initialScheduleType?: TScheduleType;
   onDateChange?: (date: Date) => void;
   onViewChange?: (view: TCalendarView) => void;
   onFiltersChange?: (filters: IScheduleFilters) => void;
+  onScheduleTypeChange?: (type: TScheduleType) => void;
 }
 
 export function CalendarProvider({
@@ -46,9 +51,11 @@ export function CalendarProvider({
   initialSelectedDate,
   initialView,
   initialFilters = {},
+  initialScheduleType,
   onDateChange,
   onViewChange,
   onFiltersChange,
+  onScheduleTypeChange,
 }: CalendarProviderProps) {
   const [selectedDate, setSelectedDate] = useState(initialSelectedDate || new Date());
   const [currentView, setCurrentView] = useState(initialView || view);
@@ -57,6 +64,7 @@ export function CalendarProvider({
   const [currentFilters, setCurrentFilters] = useState<IScheduleFilters>(initialFilters);
   const [startHour, setStartHour] = useState(12);
   const [endHour, setEndHour] = useState(22);
+  const [scheduleType, setScheduleType] = useState<TScheduleType>(initialScheduleType ?? "full");
 
   useEffect(() => {
     if (initialSelectedDate) {
@@ -73,6 +81,12 @@ export function CalendarProvider({
   useEffect(() => {
     setCurrentFilters(initialFilters);
   }, [initialFilters]);
+
+  useEffect(() => {
+    if (initialScheduleType) {
+      setScheduleType(initialScheduleType);
+    }
+  }, [initialScheduleType]);
 
   useEffect(() => {
     setCurrentEvents(events);
@@ -99,6 +113,16 @@ export function CalendarProvider({
     onFiltersChange?.(filters);
   };
 
+  const handleScheduleTypeChange = (type: TScheduleType) => {
+    setScheduleType(type);
+    onScheduleTypeChange?.(type);
+  };
+
+  const handleToggleScheduleType = () => {
+    setScheduleType(scheduleType === "full" ? "personal" : "full");
+    onScheduleTypeChange?.(scheduleType === "full" ? "personal" : "full");
+  };
+
   const handleHourRangeChange = (start: number, end: number) => {
     setStartHour(start);
     setEndHour(end);
@@ -116,6 +140,9 @@ export function CalendarProvider({
     toggleAgendaMode,
     filters: currentFilters,
     setFilters: handleFiltersChange,
+    scheduleType,
+    setScheduleType: handleScheduleTypeChange,
+    toggleScheduleType: handleToggleScheduleType,
     priceRange: { min: 0, max: 300 },
     startHour,
     endHour,
