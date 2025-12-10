@@ -110,6 +110,8 @@ export function useScheduleEvents(selectedDate: Date) {
 }
 
 export function useNotificationsStatus() {
+  const { user } = useUserStore();
+
   return useQuery<NotificationsStatusResponse, ApiError>({
     queryKey: ['notifications:status'],
     queryFn: async () => {
@@ -117,6 +119,7 @@ export function useNotificationsStatus() {
       if (result.error) throw result.error;
       return result.data!;
     },
+    enabled: user !== null,
   });
 }
 
