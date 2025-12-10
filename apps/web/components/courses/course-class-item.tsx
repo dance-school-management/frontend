@@ -24,9 +24,6 @@ export function CourseClassItem({ classData }: CourseClassItemProps) {
         <div className="flex justify-between gap-2 w-full">
           <div className="flex-1">
             <ItemTitle className="font-bold text-foreground">{classTemplate.name}</ItemTitle>
-            {classData.groupNumber > 0 && (
-              <p className="text-sm text-muted-foreground mt-1">Group {classData.groupNumber}</p>
-            )}
           </div>
           <div className="flex flex-col items-end gap-1">
             <Badge variant="outline" className="text-xs">

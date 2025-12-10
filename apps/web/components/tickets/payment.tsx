@@ -4,9 +4,11 @@ import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { Separator } from "@repo/ui/separator";
 import { useState } from "react";
+import { toast } from "sonner";
 
-import { getPaymentLink } from "@/lib/api/enroll";
+import { createClassOrder } from "@/lib/api/enroll";
 import { Ticket } from "@/lib/model/enroll";
+import { moneyLabel } from "@/lib/utils/finance";
 import { fmtDate, fmtTime } from "@/lib/utils/time";
 
 interface ClassPaymentCardProps {
@@ -14,9 +16,7 @@ interface ClassPaymentCardProps {
 }
 
 export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
-  const [paymentLink, setPaymentLink] = useState<string | null>(null);
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
-
   const startTime = fmtTime(ticket.startDate);
   const endTime = fmtTime(ticket.endDate);
   const startDate = fmtDate(ticket.startDate);
@@ -24,22 +24,20 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
   const date = `${startDate} (${startTime} - ${endTime})`;
 
   const handlePaymentClick = async () => {
-    if (paymentLink) {
-      window.open(paymentLink, "_blank");
-      return;
-    }
-
     setIsLoadingPayment(true);
     try {
-      const result = await getPaymentLink(ticket.classId, undefined, document.cookie);
-      if (result.data) {
-        setPaymentLink(result.data.url);
-        window.open(result.data.url, "_blank");
-      } else {
-        console.error("Failed to fetch payment link:", result.error);
+      const result = await createClassOrder(ticket.classId);
+      if (result.error) {
+        toast.error(result.error.message ?? "Failed to create class order");
+        return;
       }
-    } catch (error) {
-      console.error("Error fetching payment link:", error);
+      if (result.data && !result.data.sessionUrl) {
+        toast.error("Failed to create class order");
+        return;
+      }
+      window.open(result.data.sessionUrl, "_self");
+    } catch {
+      toast.error("Failed to create class order");
     }
     setIsLoadingPayment(false);
   };
@@ -55,7 +53,7 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
           <Separator className="my-2" />
           <p>Date: {date}</p>
           <p>Room: {ticket.classRoomName}</p>
-          <p>Price: {ticket.price.toFixed(2)} PLN</p>
+          <p>Price: {moneyLabel(ticket.price)}</p>
           <p>Category: {ticket.danceCategoryName}</p>
           <p>Level: {ticket.advancementLevelName}</p>
         </CardDescription>

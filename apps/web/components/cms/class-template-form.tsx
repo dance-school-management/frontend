@@ -28,7 +28,7 @@ const classTemplateFormSchema = z.object({
 });
 
 const nonCourseClassTemplateFormSchema = classTemplateFormSchema.extend({
-  classType: z.enum(["PRIVATE_CLASS", "THEME_PARTY"]),
+  classType: z.enum(["PRIVATE_CLASS", "THEME_PARTY", "GROUP_CLASS"]),
 });
 
 const newClassTemplateFormSchema = nonCourseClassTemplateFormSchema.extend({
@@ -137,10 +137,7 @@ export function NonCourseClassTemplateForm({ template }: Omit<ClassTemplateFormP
       name: template?.name ?? "",
       description: template?.description,
       price: Number(template?.price),
-      classType:
-        template?.classType === "PRIVATE_CLASS" || template?.classType === "THEME_PARTY" ?
-          template.classType
-        : "PRIVATE_CLASS",
+      classType: template?.classType,
       danceCategoryId: template?.danceCategoryId,
       advancementLevelId: template?.advancementLevelId,
     },
@@ -209,7 +206,7 @@ export function NonCourseClassTemplateForm({ template }: Omit<ClassTemplateFormP
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="PRIVATE_CLASS">Private Class</SelectItem>
+                  <SelectItem value="GROUP_CLASS">Group Class</SelectItem>
                   <SelectItem value="THEME_PARTY">Theme Party</SelectItem>
                 </SelectContent>
               </Select>

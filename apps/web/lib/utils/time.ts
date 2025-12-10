@@ -1,5 +1,6 @@
 import {
   differenceInDays,
+  differenceInMinutes,
   endOfMonth,
   format,
   isEqual,
@@ -91,4 +92,38 @@ export function getPeriodFromDates(start: string | null, end: string | null): Pr
   if (diffDays >= 6 && diffDays <= 8) return "7d";
 
   return "30d";
+}
+
+export function formatDateTime(value?: string) {
+  if (!value) return undefined;
+  try {
+    return format(parseISO(value), "d MMM yyyy, HH:mm");
+  } catch {
+    return value;
+  }
+}
+
+export function formatDurationLabel(start?: string, end?: string) {
+  if (!start || !end) return undefined;
+  try {
+    const startDate = parseISO(start);
+    const endDate = parseISO(end);
+
+    const totalMinutes = differenceInMinutes(endDate, startDate);
+
+    if (totalMinutes <= 0) return undefined;
+
+    if (totalMinutes >= 24 * 60) {
+      const days = differenceInDays(endDate, startDate);
+      return `~${days} day${days === 1 ? "" : "s"}`;
+    }
+    if (totalMinutes >= 90) {
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      return minutes ? `${hours}h ${minutes}m` : `${hours}h`;
+    }
+    return `${totalMinutes}m`;
+  } catch {
+    return undefined;
+  }
 }

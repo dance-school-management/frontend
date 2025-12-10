@@ -4,6 +4,7 @@ import {
   AdvancementLevel,
   Class,
   ClassTemplate,
+  ClassWithTemplate,
   Course,
   CoursesClassesResponse,
   CourseSummary,
@@ -27,7 +28,6 @@ type UpdateCoursePayload = {
 
 type CreateClassPayload = {
   classTemplateId: number;
-  groupNumber: number;
   peopleLimit: number;
   classRoomId: number;
   instructorIds: string[];
@@ -124,4 +124,8 @@ export async function fetchDanceCategories(): Promise<ApiResult<DanceCategory[]>
 
 export async function fetchAdvancementLevels(): Promise<ApiResult<AdvancementLevel[]>> {
   return await fetcher<AdvancementLevel[]>("/product/public/cms/advancement_level");
+}
+
+export async function fetchPublicClass(id: number) {
+  return await fetcher<ClassWithTemplate>(`/product/public/schedule/class/${id}`);
 }
