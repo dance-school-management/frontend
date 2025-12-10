@@ -54,13 +54,14 @@ export function RegisterForm() {
       name: `${name} ${surname}`,
       fetchOptions: {
         onError: (ctx) => {
-          toast.error(ctx.error.message);
+          toast.error(ctx.error.message ?? "Failed to create account");
+        },
+        onSuccess: () => {
+          toast.info("Account created successfully. Redirecting to login...");
+          router.replace(loginTarget);
         },
       },
     });
-
-    toast.success("Account created successfully. Please log in.");
-    router.replace(loginTarget);
   };
 
   return (

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { createClassOrder } from "@/lib/api/enroll";
 import { Ticket } from "@/lib/model/enroll";
+import { moneyLabel } from "@/lib/utils/finance";
 import { fmtDate, fmtTime } from "@/lib/utils/time";
 
 interface ClassPaymentCardProps {
@@ -28,7 +29,6 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
       const result = await createClassOrder(ticket.classId);
       if (result.error) {
         toast.error(result.error.message ?? "Failed to create class order");
-        setIsLoadingPayment(false);
         return;
       }
       if (result.data && !result.data.sessionUrl) {
@@ -38,9 +38,8 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
       window.open(result.data.sessionUrl, "_self");
     } catch {
       toast.error("Failed to create class order");
-    } finally {
-      setIsLoadingPayment(false);
     }
+    setIsLoadingPayment(false);
   };
 
   return (
@@ -54,7 +53,7 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
           <Separator className="my-2" />
           <p>Date: {date}</p>
           <p>Room: {ticket.classRoomName}</p>
-          <p>Price: {ticket.price && Number(ticket.price).toFixed(2)} PLN</p>
+          <p>Price: {moneyLabel(ticket.price)}</p>
           <p>Category: {ticket.danceCategoryName}</p>
           <p>Level: {ticket.advancementLevelName}</p>
         </CardDescription>

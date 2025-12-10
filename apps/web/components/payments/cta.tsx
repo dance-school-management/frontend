@@ -25,35 +25,33 @@ export function PaymentCTA({ mode, priceLabel, courseId, classId }: PaymentCTAPr
     return null;
   }
 
-  function handleCoursePayment(courseId: number) {
-    createCourseOrder(courseId).then((result) => {
-      if (result.error) {
-        toast.error(result.error.message ?? "Failed to create course order");
-        return;
-      }
-      if (result.data) {
-        router.push(result.data.sessionUrl);
-      }
-    });
+  async function handleCoursePayment(courseId: number) {
+    const result = await createCourseOrder(courseId);
+    if (result.error || !result.data || !result.data.sessionUrl) {
+      toast.error(result?.error?.message ?? "Failed to create course order");
+      return;
+    }
+    if (result.data && result.data.sessionUrl) {
+      router.push(result.data.sessionUrl);
+    }
   }
 
-  function handleClassPayment(classId: number) {
-    createClassOrder(classId).then((result) => {
-      if (result.error) {
-        toast.error(result.error.message ?? "Failed to create class order");
-        return;
-      }
-      if (result.data) {
-        router.push(result.data.sessionUrl);
-      }
-    });
+  async function handleClassPayment(classId: number) {
+    const result = await createClassOrder(classId);
+    if (result.error || !result.data || !result.data.sessionUrl) {
+      toast.error(result?.error?.message ?? "Failed to create class order");
+      return;
+    }
+    if (result.data && result.data.sessionUrl) {
+      router.push(result.data.sessionUrl);
+    }
   }
 
   const handleClick = () => {
     if (mode === "course") {
-      handleCoursePayment(courseId ?? 0);
+      handleCoursePayment(courseId!);
     } else if (mode === "class") {
-      handleClassPayment(classId ?? 0);
+      handleClassPayment(classId!);
     } else {
       throw new Error(`Invalid mode: ${mode}`);
     }

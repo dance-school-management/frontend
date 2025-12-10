@@ -101,7 +101,7 @@ export function formatDateTime(value?: string) {
   } catch {
     return value;
   }
-};
+}
 
 export function formatDurationLabel(start?: string, end?: string) {
   if (!start || !end) return undefined;
@@ -126,4 +126,4 @@ export function formatDurationLabel(start?: string, end?: string) {
   } catch {
     return undefined;
   }
-};
+}
