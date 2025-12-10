@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 
-import { IEvent, IScheduleFilters } from "@/modules/calendar/types";
+import { IEvent, IScheduleFilters, TScheduleType } from "@/modules/calendar/types";
 
 export function applyFilters(
   events: IEvent[],
@@ -61,11 +61,13 @@ export function getPriceRange(events: IEvent[]): {
 export function buildScheduleURLParams(
   date: Date,
   view: "day" | "week",
-  filters: IScheduleFilters = {}
+  filters: IScheduleFilters = {},
+  scheduleType: TScheduleType = "full"
 ): string {
   const params = new URLSearchParams();
   params.set("date", format(date, "yyyy-MM-dd"));
   params.set("view", view);
+  params.set("type", scheduleType);
 
   if (filters.danceCategory) {
     params.set("category", filters.danceCategory);

@@ -5,6 +5,7 @@ import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -30,6 +31,7 @@ export function LoginForm() {
   const registerTarget = redirectRoute ? `/register?${searchParams}` : "/register";
 
   const { setUser } = useUserStore();
+  const queryClient = useQueryClient();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -61,6 +63,8 @@ export function LoginForm() {
     if (data) {
       toast.success("Logged in successfully");
       setUser(data.user);
+      await queryClient.cancelQueries();
+      queryClient.clear();
 
       if (redirectRoute) {
         router.replace(redirectRoute);

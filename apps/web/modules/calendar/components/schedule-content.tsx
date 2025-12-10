@@ -6,7 +6,7 @@ import { useScheduleEvents } from "@/lib/api/tanstack";
 import { ClientContainer } from "@/modules/calendar/components/client-container";
 import { CalendarProvider } from "@/modules/calendar/contexts/calendar-context";
 import { applyFilters, buildScheduleURLParams } from "@/modules/calendar/helpers/filters";
-import { IScheduleFilters } from "@/modules/calendar/types";
+import { IScheduleFilters, TScheduleType } from "@/modules/calendar/types";
 
 export function ScheduleContent() {
   const router = useRouter();
@@ -14,6 +14,8 @@ export function ScheduleContent() {
 
   const dateParam = searchParams.get("date");
   const viewParam = searchParams.get("view") as "day" | "week" | null;
+  const typeParam = searchParams.get("type");
+  const initialScheduleType: TScheduleType = typeParam === "personal" || typeParam === "full" ? typeParam : "full";
 
   const [selectedDate, setSelectedDate] = useState(() => {
     try {
@@ -24,6 +26,7 @@ export function ScheduleContent() {
   });
 
   const [view, setView] = useState<"day" | "week">(viewParam ?? "week");
+  const [scheduleType, setScheduleType] = useState<TScheduleType>(initialScheduleType);
 
   const [filters, setFilters] = useState<IScheduleFilters>(() => {
     const initialFilters: IScheduleFilters = {};
@@ -46,24 +49,32 @@ export function ScheduleContent() {
   const { data, error } = useScheduleEvents(selectedDate);
 
   const filteredEvents = useMemo(() => {
-    return applyFilters(data ?? [], filters);
-  }, [data, filters]);
+    const typedEvents = scheduleType === "personal" ? (data ?? []).filter((event) => event.owned) : (data ?? []);
+
+    return applyFilters(typedEvents, filters);
+  }, [data, filters, scheduleType]);
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    const params = buildScheduleURLParams(date, view, filters);
+    const params = buildScheduleURLParams(date, view, filters, scheduleType);
     router.replace(`/schedule?${params}`, { scroll: false });
   };
 
   const handleViewChange = (newView: "day" | "week") => {
     setView(newView);
-    const params = buildScheduleURLParams(selectedDate, newView, filters);
+    const params = buildScheduleURLParams(selectedDate, newView, filters, scheduleType);
     router.replace(`/schedule?${params}`, { scroll: false });
   };
 
   const handleFiltersChange = (newFilters: IScheduleFilters) => {
     setFilters(newFilters);
-    const params = buildScheduleURLParams(selectedDate, view, newFilters);
+    const params = buildScheduleURLParams(selectedDate, view, newFilters, scheduleType);
+    router.replace(`/schedule?${params}`, { scroll: false });
+  };
+
+  const handleScheduleTypeChange = (newType: TScheduleType) => {
+    setScheduleType(newType);
+    const params = buildScheduleURLParams(selectedDate, view, filters, newType);
     router.replace(`/schedule?${params}`, { scroll: false });
   };
 
@@ -84,9 +95,11 @@ export function ScheduleContent() {
         initialSelectedDate={selectedDate}
         initialView={view}
         initialFilters={filters}
+        initialScheduleType={scheduleType}
         onDateChange={handleDateChange}
         onViewChange={handleViewChange}
         onFiltersChange={handleFiltersChange}
+        onScheduleTypeChange={handleScheduleTypeChange}
       >
         <ClientContainer />
       </CalendarProvider>
