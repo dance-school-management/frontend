@@ -120,7 +120,9 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
                 {scheduleType === "full" ?
                   <UsersRound className="h-4 w-4" />
                 : <UserRound className="h-4 w-4" />}
-                <span className="sr-only">Toggle Schedule Type</span>
+                <span className="sr-only">
+                  {scheduleType === "full" ? "Switch to Personal Schedule" : "Switch to Full Schedule"}
+                </span>
               </Button>
             )}
             <Select value={currentAgendaMode} onValueChange={(value) => toggleAgendaMode(value === "agenda")}>
@@ -139,7 +141,11 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
               {currentAgendaMode === "calendar" ?
                 <Calendar className="size-4" />
               : <List className="size-4" />}
-              <span className="sr-only">Toggle Agenda Mode</span>
+              <span className="sr-only">
+                {currentAgendaMode === "calendar"
+                  ? "Switch to Agenda View"
+                  : "Switch to Calendar View"}
+              </span>
             </Button>
             <Select value={view} onValueChange={(value) => setView(value as "day" | "week")}>
               <SelectTrigger className="rounded-none rounded-r-md border-l-0 h-9 px-3">

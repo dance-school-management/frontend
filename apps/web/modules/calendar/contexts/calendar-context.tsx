@@ -119,8 +119,9 @@ export function CalendarProvider({
   };
 
   const handleToggleScheduleType = () => {
-    setScheduleType(scheduleType === "full" ? "personal" : "full");
-    onScheduleTypeChange?.(scheduleType === "full" ? "personal" : "full");
+    const newType = scheduleType === "full" ? "personal" : "full";
+    setScheduleType(newType);
+    onScheduleTypeChange?.(newType);
   };
 
   const handleHourRangeChange = (start: number, end: number) => {
