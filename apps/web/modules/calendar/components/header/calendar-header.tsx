@@ -70,7 +70,7 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="relative rounded-none rounded-l-md">
-                  <Filter className="h-4 w-4" />
+                  <Filter className="size-4" />
                   <span className="sr-only">Filters</span>
                   {activeFilterCount > 0 && (
                     <Badge className="absolute -top-1.5 -right-1.5 size-4 px-1 tabular-nums z-10">
@@ -86,7 +86,7 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="relative rounded-none">
-                  <Clock className="h-4 w-4" />
+                  <Clock className="size-4" />
                   <span className="sr-only">Display Hours</span>
                 </Button>
               </PopoverTrigger>
@@ -118,8 +118,8 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
             {user && (
               <Button variant="outline" className="rounded-none" onClick={toggleScheduleType}>
                 {scheduleType === "full" ?
-                  <UsersRound className="h-4 w-4" />
-                : <UserRound className="h-4 w-4" />}
+                  <UsersRound className="size-4" />
+                : <UserRound className="size-4" />}
                 <span className="sr-only">
                   {scheduleType === "full" ? "Switch to Personal Schedule" : "Switch to Full Schedule"}
                 </span>
@@ -142,9 +142,7 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
                 <Calendar className="size-4" />
               : <List className="size-4" />}
               <span className="sr-only">
-                {currentAgendaMode === "calendar"
-                  ? "Switch to Agenda View"
-                  : "Switch to Calendar View"}
+                {currentAgendaMode === "calendar" ? "Switch to Agenda View" : "Switch to Calendar View"}
               </span>
             </Button>
             <Select value={view} onValueChange={(value) => setView(value as "day" | "week")}>
