@@ -4,9 +4,10 @@ import { cn } from "@repo/ui/lib/utils";
 import { format } from "date-fns";
 import { Repeat } from "lucide-react";
 
+import { getBgColor, getColorClass } from "@/modules/calendar/colors";
 import { EventDetailsDialog } from "@/modules/calendar/components/dialogs/event-details-dialog";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
-import { getBgColor, getColorClass, useGetEventsByMode } from "@/modules/calendar/helpers";
+import { useGetEventsByMode } from "@/modules/calendar/helpers";
 import { getFirstLetters } from "@/modules/calendar/helpers";
 
 export const AgendaEvents = () => {

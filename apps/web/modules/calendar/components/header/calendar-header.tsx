@@ -3,10 +3,11 @@ import { Button } from "@repo/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
 import { motion } from "framer-motion";
-import { Calendar, Clock, Filter, List, UserRound, UsersRound } from "lucide-react";
+import { Calendar, Clock, Filter, Info, List, UserRound, UsersRound } from "lucide-react";
 
 import { useUserStore } from "@/lib/store";
 import { slideFromLeft, slideFromRight, transition } from "@/modules/calendar/animations";
+import { colorLegend, colorSwatchClasses } from "@/modules/calendar/colors";
 import { DateNavigator } from "@/modules/calendar/components/header/date-navigator";
 import { HourRangeSelector } from "@/modules/calendar/components/header/hour-range-selector";
 import { ScheduleFilters } from "@/modules/calendar/components/header/schedule-filters";
@@ -91,6 +92,27 @@ export function CalendarHeader({ events }: CalendarHeaderProps) {
               </PopoverTrigger>
               <PopoverContent className="w-80 p-4 mx-2" align="center">
                 <HourRangeSelector />
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="relative rounded-none">
+                  <Info className="size-4" />
+                  <span className="sr-only">Color legend</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-4 mx-2" align="center">
+                <div className="space-y-3">
+                  <p className="font-medium">Schedule colors</p>
+                  <div className="space-y-2">
+                    {colorLegend.map((item) => (
+                      <div key={item.color} className="flex items-center gap-2">
+                        <span className={`size-3 rounded-full border ${colorSwatchClasses[item.color] ?? ""}`} />
+                        <span className="text-sm">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </PopoverContent>
             </Popover>
             {user && (

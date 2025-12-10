@@ -25,9 +25,10 @@ import {
   subYears,
 } from "date-fns";
 
+import { advancementLevelToColor } from "@/modules/calendar/colors";
 import { useCalendar } from "@/modules/calendar/contexts/calendar-context";
 import type { IApiScheduleItem, IApiScheduleResponse, ICalendarCell, IEvent } from "@/modules/calendar/types";
-import { TCalendarView, TEventColor } from "@/modules/calendar/types";
+import { TCalendarView } from "@/modules/calendar/types";
 
 export function rangeText(view: TCalendarView, date: Date) {
   const formatString = "d MMM yyyy";
@@ -321,31 +322,6 @@ export const getEventsForWeek = (events: IEvent[], date: Date): IEvent[] => {
   });
 };
 
-
-export const getColorClass = (color: string): string => {
-  const colorClasses: Record<TEventColor, string> = {
-    red: 'border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300',
-    yellow: 'border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300',
-    green: 'border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300',
-    blue: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300',
-    orange: 'border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300',
-    purple: 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300',
-  };
-  return colorClasses[color as TEventColor] || '';
-};
-
-export const getBgColor = (color: string): string => {
-  const colorClasses: Record<TEventColor, string> = {
-    red: 'bg-red-400 dark:bg-red-600',
-    yellow: 'bg-yellow-400 dark:bg-yellow-600',
-    green: 'bg-green-400 dark:bg-green-600',
-    blue: 'bg-blue-400 dark:bg-blue-600',
-    orange: 'bg-orange-400 dark:bg-orange-600',
-    purple: 'bg-purple-400 dark:bg-purple-600',
-  };
-  return colorClasses[color as TEventColor] || '';
-};
-
 export const useGetEventsByMode = (events: IEvent[]) => {
   const { view, selectedDate } = useCalendar();
 
@@ -363,23 +339,6 @@ export const useGetEventsByMode = (events: IEvent[]) => {
 };
 
 // ================ API Data Transformation ================ //
-
-function advancementLevelToColor(advancementLevel: string, owned: boolean): TEventColor {
-  if (owned) {
-    return 'purple';
-  }
-
-  switch (advancementLevel) {
-    case 'Beginner':
-      return 'green';
-    case 'Intermediate':
-      return 'yellow';
-    case 'Advanced':
-      return 'red';
-    default:
-      return 'blue';
-  }
-}
 
 export function transformScheduleToEvents(apiData: IApiScheduleResponse): IEvent[] {
   return apiData.map((item: IApiScheduleItem): IEvent | null => {
