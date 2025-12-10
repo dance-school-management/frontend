@@ -122,10 +122,11 @@ export function useNotificationsStatus() {
 
 export function useNotificationsPolling(limit = 50) {
   const { user } = useUserStore();
+  const { data: status } = useNotificationsStatus();
   const queryClient = useQueryClient();
   const lastSeenRef = useRef<string | undefined>(undefined);
 
-  const enabled = user !== null;
+  const notificationsEnabled = (status?.isRegistered ?? false) && (status?.hasEnabledNotifications ?? false);
 
   const pollQuery = useQuery<Paginated<Notification>, ApiError>({
     queryKey: ['notifications:poll'],
@@ -137,7 +138,7 @@ export function useNotificationsPolling(limit = 50) {
     },
     refetchInterval: 60 * 1000, // 1 minute
     refetchIntervalInBackground: true,
-    enabled: enabled,
+    enabled: user !== null && notificationsEnabled,
   });
 
   useEffect(() => {
