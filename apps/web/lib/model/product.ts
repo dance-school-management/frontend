@@ -95,7 +95,3 @@ export type AdditionalProductData = {
 
 export type ClassWithTemplate = Omit<Class, 'instructorIds'> & { classTemplate: Omit<ClassTemplate, 'class'>; };
 
-export type CoursesClassesResponse = {
-  courseData: CourseSummary;
-  classes: ClassWithTemplate[];
-}[];
