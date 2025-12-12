@@ -63,7 +63,7 @@ const data = {
       title: "Courses",
       url: "/courses",
       icon: BookOpen,
-    }
+    },
   ],
   bottom: [
     {
@@ -104,7 +104,7 @@ const data = {
       title: "Blog Posts",
       url: "/coordinator/blog",
       icon: FileText,
-    }
+    },
   ],
   user: [
     {
@@ -118,10 +118,10 @@ const data = {
       icon: Tickets,
     },
   ],
-  trainer: [
+  instructor: [
     {
-      title: "My Classes",
-      url: "/trainer/classes",
+      title: "Private Classes",
+      url: "/instructor/classes",
       icon: NotebookText,
     },
   ],
@@ -131,24 +131,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useUserStore();
 
   return (
-    <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
-      {...props}
-    >
+    <Sidebar className="top-(--header-height) h-[calc(100svh-var(--header-height))]!" {...props}>
       <SidebarContent>
         <NavSection title="General" items={data.general} />
-        {user?.role === "STUDENT" && (
-          <NavSection title="User" items={data.user} />
-        )}
-        {user?.role === "INSTRUCTOR" && (
-          <NavSection title="Instructor" items={data.trainer} />
-        )}
-        {(user?.role === "COORDINATOR") && (
-          <NavSection title="Coordinator" items={data.coordinator} />
-        )}
-        {(user?.role === "ADMINISTRATOR") && (
-          <NavSection title="Admin" items={data.admin} />
-        )}
+        {user?.role === "STUDENT" && <NavSection title="User" items={data.user} />}
+        {user?.role === "INSTRUCTOR" && <NavSection title="Instructor" items={data.instructor} />}
+        {user?.role === "COORDINATOR" && <NavSection title="Coordinator" items={data.coordinator} />}
+        {user?.role === "ADMINISTRATOR" && <NavSection title="Admin" items={data.admin} />}
 
         <NavSecondary items={data.bottom} className="mt-auto" />
       </SidebarContent>

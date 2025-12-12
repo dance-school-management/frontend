@@ -79,7 +79,7 @@ export function LoginForm() {
           router.replace("/admin/dashboard");
           break;
         case "INSTRUCTOR":
-          router.replace("/trainer/classes");
+          router.replace("/instructor/classes");
           break;
         default:
           router.replace("/user/tickets");
