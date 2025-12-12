@@ -60,7 +60,7 @@ export function CourseActions({ course }: CourseActionsProps) {
             <TrashIcon />
             Delete
           </Button>
-          {course.courseStatus === "HIDDEN" && totalClasses > 0 && (
+          {totalClasses > 0 && (
             <Button variant="default" className="w-fit cursor-pointer" onClick={handlePublish}>
               <CloudUploadIcon />
               Publish
