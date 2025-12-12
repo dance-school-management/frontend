@@ -246,7 +246,7 @@ export function NewClassTemplateForm() {
       name: "",
       description: "",
       price: 0,
-      classType: "PRIVATE_CLASS",
+      classType: "GROUP_CLASS",
       danceCategoryId: undefined,
       advancementLevelId: undefined,
       isConfirmation: false,
@@ -320,7 +320,7 @@ export function NewClassTemplateForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="PRIVATE_CLASS">Private Class</SelectItem>
+                  <SelectItem value="GROUP_CLASS">Group Class</SelectItem>
                   <SelectItem value="THEME_PARTY">Theme Party</SelectItem>
                 </SelectContent>
               </Select>

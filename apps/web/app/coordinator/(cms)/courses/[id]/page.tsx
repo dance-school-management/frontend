@@ -37,7 +37,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <div className="flex h-full p-4 flex-col space-y-4">
       <h1 className="text-4xl font-bold">{name} details</h1>
-      {result.data.courseStatus === "HIDDEN" && <CourseActions {...result.data} />}
+      <CourseActions course={result.data} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CourseDetailsForm course={result.data} />
         {classTemplate.length > 0 &&

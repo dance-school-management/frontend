@@ -11,12 +11,21 @@ import { toast } from "sonner";
 
 import { NewClassTemplateForm } from "@/components/cms/class-template-form";
 import { NewCourseForm } from "@/components/cms/new-course-form";
-import { deleteCourse, publishCourse } from "@/lib/api/product";
-import { Course } from "@/lib/model/product";
+import { deleteClassTemplate, deleteCourse, publishCourse } from "@/lib/api/product";
+import { ClassTemplate, Course } from "@/lib/model/product";
 import { truncateAtWordBoundary } from "@/lib/utils/text";
 
-export function CourseActions(course: Course) {
+type CourseActionsProps = {
+  course: Course;
+};
+export function CourseActions({ course }: CourseActionsProps) {
   const router = useRouter();
+
+  if (course.courseStatus !== "HIDDEN") {
+    return null;
+  }
+
+  const totalClasses = course.classTemplate.reduce((len, classTemplate) => classTemplate.class.length + len, 0);
 
   const handleDelete = async () => {
     const { error } = await deleteCourse(course.id);
@@ -51,7 +60,7 @@ export function CourseActions(course: Course) {
             <TrashIcon />
             Delete
           </Button>
-          {course.courseStatus === "HIDDEN" && (
+          {course.courseStatus === "HIDDEN" && totalClasses > 0 && (
             <Button variant="default" className="w-fit cursor-pointer" onClick={handlePublish}>
               <CloudUploadIcon />
               Publish
@@ -129,5 +138,46 @@ export function ClassTemplatePreview({ id, name, description }: PreviewProps) {
         </AlertDescription>
       </Alert>
     </Link>
+  );
+}
+
+type ClassTemplateActionsProps = {
+  classTemplate: ClassTemplate;
+};
+export function ClassTemplateActions({ classTemplate }: ClassTemplateActionsProps) {
+  const router = useRouter();
+
+  const hasPublishedClasses = classTemplate.class.some((c) => c.classStatus !== "HIDDEN");
+
+  if (hasPublishedClasses) {
+    return null;
+  }
+
+  const handleDelete = async () => {
+    const { error } = await deleteClassTemplate(classTemplate.id);
+    if (error) {
+      toast.error(error.message ?? "Failed to delete class template");
+      return;
+    } else {
+      toast.success("Class template deleted successfully");
+      router.replace("/coordinator/classes");
+    }
+  };
+
+  return (
+    <Card className="gap-2">
+      <CardHeader>
+        <h3 className="text-lg font-semibold">Actions</h3>
+        <p className="text-sm text-muted-foreground">You can perform additional actions here.</p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-x-2">
+          <Button variant="destructive" className="w-fit cursor-pointer" onClick={handleDelete}>
+            <TrashIcon />
+            Delete
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -126,6 +126,10 @@ export async function fetchAdvancementLevels(): Promise<ApiResult<AdvancementLev
   return await fetcher<AdvancementLevel[]>("/product/public/cms/advancement_level");
 }
 
+export async function deleteClassTemplate(id: number, cookie?: string) {
+  return await fetcher<null>(`/product/cms/class_template/${id}`, "DELETE", undefined, { cookie });
+}
+
 export async function fetchPublicClass(id: number) {
   return await fetcher<ClassWithTemplate>(`/product/public/schedule/class/${id}`);
 }

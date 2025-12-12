@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 
 import { NonCourseClassTemplateForm } from "@/components/cms/class-template-form";
 import { ClassesList } from "@/components/cms/classes-list";
-// import { fetchClassTemplate } from "@/mocks/product";
+import { ClassTemplateActions } from "@/components/cms/misc";
 import { fetchClassTemplate } from "@/lib/api/product";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -34,6 +34,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <div className="flex h-full p-4 flex-col space-y-4">
       <h1 className="text-4xl font-bold">Class Template</h1>
+      <ClassTemplateActions classTemplate={data} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="gap-2">
           <CardHeader>
