@@ -3,11 +3,11 @@ import { compareAsc, compareDesc, format } from 'date-fns';
 import { useEffect, useRef } from 'react';
 
 import { fetchNewNotifications, getNotificationsStatus, NotificationsStatusResponse } from '@/lib/api/notification';
-import { fetchAdditionalProductData, fetchAdvancementLevels, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
+import { fetchAdditionalProductData, fetchAdvancementLevels, fetchClassRooms, fetchDanceCategories, fetchSchedule } from '@/lib/api/product';
 import { fetchInstructors, fetchUserProfile, searchUsers } from '@/lib/api/profile';
 import { Paginated } from '@/lib/model';
 import { Notification } from '@/lib/model/notification';
-import { AdditionalProductData, AdvancementLevel, DanceCategory } from '@/lib/model/product';
+import { AdditionalProductData, AdvancementLevel, ClassRoom, DanceCategory } from '@/lib/model/product';
 import { GetProfileResponse, InstructorsResponse, ProfileData } from '@/lib/model/profile';
 import { transformScheduleToEvents } from '@/modules/calendar/helpers';
 import { IApiScheduleResponse, IEvent } from '@/modules/calendar/types';
@@ -60,6 +60,16 @@ export function useAdvancementLevels() {
   });
 }
 
+export function useClassRooms() {
+  return useQuery<ClassRoom[], ApiError>({
+    queryKey: ['classRooms'],
+    queryFn: async () => {
+      const result = await fetchClassRooms();
+      if (result.error) throw result.error;
+      return result.data!;
+    },
+  });
+}
 export function useUsersSearch(query: string, enabled = true) {
   return useQuery<ProfileData[], ApiError>({
     queryKey: ['users:search', query],
