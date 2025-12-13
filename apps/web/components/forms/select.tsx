@@ -8,7 +8,13 @@ import { X } from "lucide-react";
 import { useState } from "react";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
-import { useAdditionalProductData, useDanceCategories, useInstructors, useUsersSearch } from "@/lib/api/tanstack";
+import {
+  useAdvancementLevels,
+  useClassRooms,
+  useDanceCategories,
+  useInstructors,
+  useUsersSearch,
+} from "@/lib/api/tanstack";
 import { useDebounce } from "@/lib/hooks/use-debounce";
 import { useIdCache } from "@/lib/hooks/use-id-cache";
 import { ProfileData } from "@/lib/model/profile";
@@ -59,7 +65,7 @@ export function AdvancementLevelSelect<T extends FieldValues>({
   label = "Advancement Level",
   placeholder = "Select advancement level",
 }: AdvancementLevelSelectProps<T>) {
-  const { data } = useAdditionalProductData();
+  const { data } = useAdvancementLevels();
 
   return (
     <FormField
@@ -75,7 +81,7 @@ export function AdvancementLevelSelect<T extends FieldValues>({
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {data?.advancementLevels.map((level) => (
+              {data?.map((level) => (
                 <SelectItem key={level.id} value={String(level.id)}>
                   {level.name}
                 </SelectItem>
@@ -102,7 +108,7 @@ export function DanceCategorySelect<T extends FieldValues>({
   label = "Dance Category",
   placeholder = "Select dance category",
 }: DanceCategorySelectProps<T>) {
-  const { data } = useAdditionalProductData();
+  const { data } = useDanceCategories();
 
   return (
     <FormField
@@ -118,7 +124,7 @@ export function DanceCategorySelect<T extends FieldValues>({
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {data?.danceCategories.map((category) => (
+              {data?.map((category) => (
                 <SelectItem key={category.id} value={String(category.id)}>
                   {category.name}
                 </SelectItem>
@@ -144,7 +150,7 @@ export function ClassRoomSelect<T extends FieldValues>({
   label = "Classroom",
   placeholder = "Select classroom",
 }: ClassRoomSelectProps<T>) {
-  const { data } = useAdditionalProductData();
+  const { data } = useClassRooms();
 
   return (
     <FormField
@@ -160,7 +166,7 @@ export function ClassRoomSelect<T extends FieldValues>({
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {data?.classRooms.map((room) => (
+              {data?.map((room) => (
                 <SelectItem key={room.id} value={String(room.id)}>
                   {room.name} (Limit: {room.peopleLimit})
                 </SelectItem>
