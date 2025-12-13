@@ -3,6 +3,7 @@ import {
   AdditionalProductData,
   AdvancementLevel,
   Class,
+  ClassRoom,
   ClassTemplate,
   ClassWithTemplate,
   Course,
@@ -139,7 +140,73 @@ export async function fetchAdvancementLevels(): Promise<ApiResult<AdvancementLev
   return await fetcher<AdvancementLevel[]>("/product/public/cms/advancement_level");
 }
 
+export async function fetchClassRooms(): Promise<ApiResult<ClassRoom[]>> {
+  return await fetcher<ClassRoom[]>("/product/public/cms/class_room");
+}
 
 export async function fetchPublicClass(id: number) {
   return await fetcher<ClassWithTemplate>(`/product/public/schedule/class/${id}`);
+}
+
+// Private classes API
+type PrivateClassTemplatePayload = {
+  name: string;
+  description: string;
+  price: number;
+  danceCategoryId: number;
+  advancementLevelId: number;
+};
+
+type PrivateClassTemplateResponse = {
+  message: string;
+  classTemplateData: ClassTemplate;
+};
+
+type PrivateClassPayload = {
+  classTemplateId: number;
+  classRoomId: number;
+  startDate: string;
+  endDate: string;
+  peopleLimit: number;
+};
+
+type PrivateClassResponse = {
+  message: string;
+  class: Class;
+};
+
+export async function createPrivateClassTemplate(payload: { classTemplateData: PrivateClassTemplatePayload; }, cookie?: string) {
+  return await fetcher<PrivateClassTemplateResponse>("/product/private-class/class-template", "POST", payload, { cookie });
+}
+
+export async function updatePrivateClassTemplate(payload: { classTemplateData: PrivateClassTemplatePayload & { id: number; }; }, cookie?: string) {
+  return await fetcher<PrivateClassTemplateResponse>("/product/private-class/class-template", "PUT", payload, { cookie });
+}
+
+export async function deletePrivateClassTemplate(id: number, cookie?: string) {
+  return await fetcher<null>(`/product/private-class/class-template/${id}`, "DELETE", undefined, { cookie });
+}
+
+export async function fetchPrivateClassTemplates(cookie?: string) {
+  return await fetcher<Omit<ClassTemplate, 'class'>[]>(`/product/private-class/class-template`, undefined, undefined, { cookie });
+}
+
+export async function fetchPrivateClassTemplate(id: number, cookie?: string) {
+  return await fetcher<ClassTemplate>(`/product/private-class/class-template/${id}`, undefined, undefined, { cookie });
+}
+
+export async function createPrivateClass(payload: { classData: PrivateClassPayload, studentIds: string[]; }, cookie?: string) {
+  return await fetcher<PrivateClassResponse>("/product/private-class/class", "POST", payload, { cookie });
+}
+
+export async function updatePrivateClass(payload: { classData: Omit<PrivateClassPayload, "peopleLimit"> & { id: number; }; }, cookie?: string) {
+  return await fetcher<Class>("/product/private-class/class", "PUT", payload, { cookie });
+}
+
+export async function fetchPrivateClasses(cookie?: string) {
+  return await fetcher<ClassWithTemplate[]>(`/product/private-class/class`, undefined, undefined, { cookie });
+}
+
+export async function fetchPrivateClass(id: number, cookie?: string) {
+  return await fetcher<ClassWithTemplate>(`/product/private-class/class/${id}`, undefined, undefined, { cookie });
 }
