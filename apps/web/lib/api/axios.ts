@@ -5,9 +5,15 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+export type ApiErrorField = {
+  field: string;
+  message: string;
+};
+
 export type ApiError = {
   status: number;
   message: string;
+  errors?: ApiErrorField[];
 };
 
 export type ApiResult<T> =
