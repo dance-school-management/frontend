@@ -21,17 +21,18 @@ import { EyeIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { NewClassForm } from "@/components/cms/new-class-form";
+import { NewPrivateClassForm } from "@/components/private-classes/new";
 import { updateClassStatus } from "@/lib/api/product";
 import { Class, ClassStatus, ClassTemplate } from "@/lib/model/product";
 
-import { NewClassForm } from "./new-class-form";
-
 interface ClassesListProps {
   classTemplate: ClassTemplate;
+  classType: "private" | "rest";
 }
 
-export function ClassesList({ classTemplate }: ClassesListProps) {
-  const [isNewClassSheetOpen, setIsNewClassSheetOpen] = useState(false);
+export function ClassesList({ classTemplate, classType }: ClassesListProps) {
+  // const [isNewClassSheetOpen, setIsNewClassSheetOpen] = useState(false);
 
   const classes = classTemplate.class.sort((a, b) => compareAsc(a.startDate, b.startDate));
 
@@ -39,10 +40,10 @@ export function ClassesList({ classTemplate }: ClassesListProps) {
     <Card className="gap-2 border-none shadow-none p-0">
       <CardHeader className="px-0">
         <CardTitle>Classes</CardTitle>
-        <CardDescription>List of all classes in this course</CardDescription>
+        <CardDescription>List of all classes in this template</CardDescription>
       </CardHeader>
       <CardContent className="px-0">
-        <Drawer open={isNewClassSheetOpen} onOpenChange={setIsNewClassSheetOpen} direction="right">
+        <Drawer direction="right">
           <DrawerTrigger asChild>
             <Button variant="outline" className="w-fit cursor-pointer mb-2">
               <PlusIcon />
@@ -56,7 +57,8 @@ export function ClassesList({ classTemplate }: ClassesListProps) {
                 <DrawerDescription>Create a new class for {classTemplate.name}</DrawerDescription>
               </DrawerHeader>
               <div className="flex-1 overflow-y-auto">
-                <NewClassForm classTemplate={classTemplate} onSuccess={() => setIsNewClassSheetOpen(false)} />
+                {classType === "rest" && <NewClassForm classTemplate={classTemplate} />}
+                {classType === "private" && <NewPrivateClassForm classTemplate={classTemplate} />}
               </div>
             </div>
           </DrawerContent>
@@ -64,7 +66,11 @@ export function ClassesList({ classTemplate }: ClassesListProps) {
         <div className="space-y-4">
           {classes.length === 0 && <EmptyState />}
           {classes.map((classItem) => (
-            <ClassListing key={classItem.id} classItem={classItem} canPublish={classTemplate.courseId === null} />
+            <ClassListing
+              key={classItem.id}
+              classItem={classItem}
+              canPublish={classTemplate.courseId === null && classType === "rest"}
+            />
           ))}
         </div>
       </CardContent>
@@ -77,7 +83,7 @@ interface ClassListingProps {
   canPublish: boolean;
 }
 
-function ClassListing({ classItem, canPublish }: ClassListingProps) {
+export function ClassListing({ classItem, canPublish }: ClassListingProps) {
   const [status, setStatus] = useState<ClassStatus>(classItem.classStatus);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const isHidden = status === "HIDDEN";

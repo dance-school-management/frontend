@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </CardContent>
         </Card>
         <Card className="p-6">
-          <ClassesList classTemplate={data} />
+          <ClassesList classTemplate={data} classType="rest" />
         </Card>
       </div>
     </div>
