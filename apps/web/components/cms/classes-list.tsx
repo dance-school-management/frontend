@@ -32,7 +32,6 @@ interface ClassesListProps {
 }
 
 export function ClassesList({ classTemplate, classType }: ClassesListProps) {
-  // const [isNewClassSheetOpen, setIsNewClassSheetOpen] = useState(false);
 
   const classes = classTemplate.class.sort((a, b) => compareAsc(a.startDate, b.startDate));
 
