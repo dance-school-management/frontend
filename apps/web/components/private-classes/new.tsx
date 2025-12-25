@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/button";
 import { Calendar } from "@repo/ui/calendar";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
-import { Input } from "@repo/ui/input";
 import { cn } from "@repo/ui/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/select";
@@ -30,7 +29,6 @@ function getTime(time: string) {
 const newPrivateClassFormSchema = z.object({
   date: z.date({ required_error: "Start date is required" }),
   timeRange: z.string().min(1, "Time range is required"),
-  peopleLimit: z.coerce.number().min(1, "People limit is required"),
   classRoomId: z.number().min(1, "Class room is required"),
   studentIds: z.array(z.string()).min(1, "At least one student is required"),
 });
@@ -46,7 +44,6 @@ export function NewPrivateClassForm({ classTemplate }: NewPrivateClassFormProps)
   const form = useForm<NewPrivateClassFormValues>({
     resolver: zodResolver(newPrivateClassFormSchema),
     defaultValues: {
-      peopleLimit: 1,
       classRoomId: undefined,
       date: new Date(),
       timeRange: "16:00-17:00",
@@ -68,7 +65,6 @@ export function NewPrivateClassForm({ classTemplate }: NewPrivateClassFormProps)
       classRoomId: data.classRoomId,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      peopleLimit: data.peopleLimit,
     };
 
     const { error } = await createPrivateClass({ classData: payload, studentIds: data.studentIds });
@@ -157,34 +153,6 @@ export function NewPrivateClassForm({ classTemplate }: NewPrivateClassFormProps)
             }}
           />
           <ClassRoomSelect form={form} name="classRoomId" label="Classroom" placeholder="Select classroom" />
-          <FormField
-            control={form.control}
-            name="peopleLimit"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>People Limit</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                    placeholder="Enter people limit"
-                    min={1}
-                    value={field.value ?? undefined}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* <PeopleLimitConfirmation
-            classRoomId={form.watch("classRoomId")}
-            peopleLimit={form.watch("peopleLimit")}
-            form={form}
-            name="isConfirmation"
-            label="Confirmation needed"
-            message="People limit is greater than the classroom capacity"
-          /> */}
           <UserMultiSelect
             form={form}
             name="studentIds"
