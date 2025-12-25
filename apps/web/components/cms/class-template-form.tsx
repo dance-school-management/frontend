@@ -357,12 +357,12 @@ export function NewClassTemplateForm() {
   );
 }
 
-interface PrivateClassTemplateFormProps {
-  mode: "create" | "edit";
-  template?: ClassTemplate;
-}
+type PrivateClassTemplateFormProps =
+  | { mode: "create" }
+  | { mode: "edit"; template: ClassTemplate };
 
 export function PrivateClassTemplateForm({ mode, template }: PrivateClassTemplateFormProps) {
+  const router = useRouter();
   const router = useRouter();
 
   const form = useForm<ClassTemplateFormValues>({

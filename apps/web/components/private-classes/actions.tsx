@@ -21,10 +21,9 @@ export function PrivateClassTemplateActions({ classTemplate }: PrivateClassTempl
     if (error) {
       toast.error(error.message ?? "Failed to delete class template");
       return;
-    } else {
-      toast.success("Private class template deleted successfully");
-      router.replace("/instructor/classes");
     }
+    toast.success("Private class template deleted successfully");
+    router.replace("/instructor/classes");
   };
 
   return (

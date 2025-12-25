@@ -198,7 +198,7 @@ export async function createPrivateClass(payload: { classData: PrivateClassPaylo
   return await fetcher<PrivateClassResponse>("/product/private-class/class", "POST", payload, { cookie });
 }
 
-export async function updatePrivateClass(payload: { classData: Omit<PrivateClassPayload, "peopleLimit"> & { id: number; }; }, cookie?: string) {
+export async function updatePrivateClass(payload: { classData: PrivateClassPayload & { id: number; }; }, cookie?: string) {
   return await fetcher<Class>("/product/private-class/class", "PUT", payload, { cookie });
 }
 
