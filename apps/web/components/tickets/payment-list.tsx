@@ -6,17 +6,14 @@ interface PaymentListProps {
 }
 
 export function PaymentList({ tickets }: PaymentListProps) {
-
   if (tickets.length === 0) {
-    return (
-      <EmptyState />
-    );
+    return <EmptyState />;
   }
 
   return (
     <div className="flex flex-col items-center gap-4 grid-flow-row h-full p-4">
-      {tickets.map((ticket) => (
-        <ClassPaymentCard key={ticket.qrCodeUUID} ticket={ticket} />
+      {tickets.map((ticket, id) => (
+        <ClassPaymentCard key={id} ticket={ticket} />
       ))}
     </div>
   );

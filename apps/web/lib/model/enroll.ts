@@ -1,3 +1,5 @@
+import { ClassType } from "@/lib/model/product";
+
 export type AttendanceStatus = "PRESENT" | "ABSENT";
 
 export type PaymentStatus = "PENDING" | "PAID" | "REFUNDED" | "PART_OF_COURSE";
@@ -16,6 +18,7 @@ export type Ticket = {
   price: number;
   qrCodeUUID: string;
   startDate: string;
+  classType: ClassType;
 };
 
 export type TicketResponse = {

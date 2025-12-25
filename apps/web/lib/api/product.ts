@@ -167,7 +167,6 @@ type PrivateClassPayload = {
   classRoomId: number;
   startDate: string;
   endDate: string;
-  peopleLimit: number;
 };
 
 type PrivateClassResponse = {
