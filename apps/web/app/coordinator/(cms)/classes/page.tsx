@@ -22,7 +22,7 @@ export default async function Page() {
   return (
     <div className="flex h-full p-4 flex-col space-y-4">
       <h1 className="text-4xl font-bold">Class Templates</h1>
-      <NewClassTemplateDialog />
+      <NewClassTemplateDialog classType="rest" />
 
       {groupClasses.length > 0 && (
         <>
@@ -30,8 +30,8 @@ export default async function Page() {
           <div className="grid grid-cols-2 gap-2">
             {groupClasses.map((classTemplate) => (
               <ClassTemplatePreview
+                href={`/coordinator/classes/${classTemplate.id}`}
                 key={classTemplate.id}
-                id={classTemplate.id}
                 name={classTemplate.name}
                 description={classTemplate.description}
               />
@@ -47,7 +47,7 @@ export default async function Page() {
             {eventClasses.map((classTemplate) => (
               <ClassTemplatePreview
                 key={classTemplate.id}
-                id={classTemplate.id}
+                href={`/coordinator/classes/${classTemplate.id}`}
                 name={classTemplate.name}
                 description={classTemplate.description}
               />

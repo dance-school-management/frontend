@@ -2,7 +2,7 @@ import { Checkbox } from "@repo/ui/checkbox";
 import { FormField, FormItem, FormLabel } from "@repo/ui/form";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
-import { useAdditionalProductData } from "@/lib/api/tanstack";
+import { useClassRooms } from "@/lib/api/tanstack";
 
 interface PeopleLimitConfirmationProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -13,10 +13,17 @@ interface PeopleLimitConfirmationProps<T extends FieldValues> {
   message?: string;
 }
 
-export function PeopleLimitConfirmation<T extends FieldValues>({ classRoomId, peopleLimit, form, name, label = "Confirmation", message = "People limit is greater than the classroom capacity" }: PeopleLimitConfirmationProps<T>) {
-  const { data } = useAdditionalProductData();
+export function PeopleLimitConfirmation<T extends FieldValues>({
+  classRoomId,
+  peopleLimit,
+  form,
+  name,
+  label = "Confirmation",
+  message = "People limit is greater than the classroom capacity",
+}: PeopleLimitConfirmationProps<T>) {
+  const { data } = useClassRooms();
 
-  const classRoom = data?.classRooms.find((classRoom) => classRoom.id === classRoomId);
+  const classRoom = data?.find((classRoom) => classRoom.id === classRoomId);
 
   if (!classRoom) {
     return null;
@@ -34,18 +41,21 @@ export function PeopleLimitConfirmation<T extends FieldValues>({ classRoomId, pe
         <FormItem>
           <FormLabel className="text-destructive">{label}</FormLabel>
           <div className="items-top flex space-x-2">
-            <Checkbox id="isConfirmation" name="isConfirmation" checked={field.value} onCheckedChange={field.onChange} />
+            <Checkbox
+              id="isConfirmation"
+              name="isConfirmation"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
             <div className="leading-none">
-              <p className="text-sm text-muted-foreground">
-                {message}
-              </p>
+              <p className="text-sm text-muted-foreground">{message}</p>
             </div>
           </div>
-        </ FormItem>
+        </FormItem>
       )}
     />
   );
-};
+}
 
 interface IsConfirmationCheckboxProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -54,7 +64,12 @@ interface IsConfirmationCheckboxProps<T extends FieldValues> {
   message?: string;
 }
 
-export function IsConfirmationCheckbox<T extends FieldValues>({ form, name, label = "Ignore conflicting names", message = "If a class template with the same name already exists, it will not cause an error." }: IsConfirmationCheckboxProps<T>) {
+export function IsConfirmationCheckbox<T extends FieldValues>({
+  form,
+  name,
+  label = "Ignore conflicting names",
+  message = "If a class template with the same name already exists, it will not cause an error.",
+}: IsConfirmationCheckboxProps<T>) {
   return (
     <FormField
       control={form.control}
@@ -63,11 +78,14 @@ export function IsConfirmationCheckbox<T extends FieldValues>({ form, name, labe
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <div className="items-top flex space-x-2">
-            <Checkbox id="isConfirmation" name="isConfirmation" checked={field.value} onCheckedChange={field.onChange} />
+            <Checkbox
+              id="isConfirmation"
+              name="isConfirmation"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
             <div className="leading-none">
-              <p className="text-sm text-muted-foreground">
-                {message}
-              </p>
+              <p className="text-sm text-muted-foreground">{message}</p>
             </div>
           </div>
         </FormItem>

@@ -1,11 +1,11 @@
-import { headers } from 'next/headers';
+import { headers } from "next/headers";
 
 import { CoursePreview, NewCourseDialog } from "@/components/cms/misc";
 import { fetchCourses } from "@/lib/api/product";
 // import { fetchCourses } from "@/mocks/product";
 
 export default async function Page() {
-  const cookie = (await headers()).get('cookie') ?? "";
+  const cookie = (await headers()).get("cookie") ?? "";
   const courses = await fetchCourses(cookie);
 
   if (courses.error) {
@@ -18,9 +18,7 @@ export default async function Page() {
   const { data } = courses;
 
   const hiddenCourses = data.filter((course) => course.courseStatus === "HIDDEN");
-  const publishedCourses = data.filter(
-    (course) => course.courseStatus !== "HIDDEN"
-  );
+  const publishedCourses = data.filter((course) => course.courseStatus !== "HIDDEN");
 
   return (
     <div className="flex h-full p-4 flex-col space-y-4">
@@ -33,7 +31,7 @@ export default async function Page() {
         {hiddenCourses.map((course) => (
           <CoursePreview
             key={course.id}
-            id={course.id}
+            href={`/coordinator/courses/${course.id}`}
             name={course.name}
             description={course.description}
           />
@@ -45,7 +43,7 @@ export default async function Page() {
         {publishedCourses.map((course) => (
           <CoursePreview
             key={course.id}
-            id={course.id}
+            href={`/coordinator/courses/${course.id}`}
             name={course.name}
             description={course.description}
           />

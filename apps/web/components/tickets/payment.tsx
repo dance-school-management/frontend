@@ -6,7 +6,7 @@ import { Separator } from "@repo/ui/separator";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { createClassOrder } from "@/lib/api/enroll";
+import { createClassOrder, performPrivateClassPayment } from "@/lib/api/enroll";
 import { Ticket } from "@/lib/model/enroll";
 import { moneyLabel } from "@/lib/utils/finance";
 import { fmtDate, fmtTime } from "@/lib/utils/time";
@@ -26,13 +26,16 @@ export function ClassPaymentCard({ ticket }: ClassPaymentCardProps) {
   const handlePaymentClick = async () => {
     setIsLoadingPayment(true);
     try {
-      const result = await createClassOrder(ticket.classId);
+      const paymentFunc = ticket.classType === "PRIVATE_CLASS" ? performPrivateClassPayment : createClassOrder;
+      const result = await paymentFunc(ticket.classId);
       if (result.error) {
         toast.error(result.error.message ?? "Failed to create class order");
+        setIsLoadingPayment(false);
         return;
       }
       if (result.data && !result.data.sessionUrl) {
         toast.error("Failed to create class order");
+        setIsLoadingPayment(false);
         return;
       }
       window.open(result.data.sessionUrl, "_self");

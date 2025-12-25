@@ -34,13 +34,17 @@ export async function checkTicketValidity(qrCodeUUID: string, cookie?: string): 
 }
 
 export async function markTicketAsUsed(qrCodeUUID: string, cookie?: string): Promise<ApiResult<unknown>> {
-  return await fetcher(`/enroll/ticket/scan`, "PUT", { qrCodeUUID }, { cookie });
+  return await fetcher("/enroll/ticket/scan", "PUT", { qrCodeUUID }, { cookie });
 }
 
 export async function createCourseOrder(courseId: number, cookie?: string) {
-  return await fetcher<OrderResponse>(`/enroll/order/course`, "POST", { courseId }, { cookie });
+  return await fetcher<OrderResponse>("/enroll/order/course", "POST", { courseId }, { cookie });
 }
 
 export async function createClassOrder(classId: number, cookie?: string) {
-  return await fetcher<OrderResponse>(`/enroll/order/class`, "POST", { classId }, { cookie });
+  return await fetcher<OrderResponse>("/enroll/order/class", "POST", { classId }, { cookie });
+}
+
+export async function performPrivateClassPayment(classId: number, cookie?: string) {
+  return await fetcher<OrderResponse>("/enroll/order/class/private/pay", "POST", { classId }, { cookie });
 }

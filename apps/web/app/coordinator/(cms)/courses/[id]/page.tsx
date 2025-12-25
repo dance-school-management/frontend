@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               <CardContent>
                 <CourseClassTemplateForm template={template} courseId={courseId} />
                 <Separator className="my-6 h-[2px]!" />
-                <ClassesList classTemplate={template} />
+                <ClassesList classTemplate={template} classType="rest" />
               </CardContent>
             </Card>
           ))}

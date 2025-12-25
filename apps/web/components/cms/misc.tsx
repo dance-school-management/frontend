@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { NewClassTemplateForm } from "@/components/cms/class-template-form";
+import { NewClassTemplateForm, PrivateClassTemplateForm } from "@/components/cms/class-template-form";
 import { NewCourseForm } from "@/components/cms/new-course-form";
 import { deleteClassTemplate, deleteCourse, publishCourse } from "@/lib/api/product";
 import { ClassTemplate, Course } from "@/lib/model/product";
@@ -87,7 +87,10 @@ export function NewCourseDialog() {
   );
 }
 
-export function NewClassTemplateDialog() {
+interface NewClassTemplateDialogProps {
+  classType: "private" | "rest";
+}
+export function NewClassTemplateDialog({ classType }: NewClassTemplateDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -103,21 +106,22 @@ export function NewClassTemplateDialog() {
             details page, so you can add classes to it.
           </DialogDescription>
         </DialogHeader>
-        <NewClassTemplateForm />
+        {classType === "private" && <PrivateClassTemplateForm mode="create" />}
+        {classType === "rest" && <NewClassTemplateForm />}
       </DialogContent>
     </Dialog>
   );
 }
 
 type PreviewProps = {
-  id: number;
+  href: string;
   name: string;
   description: string;
 };
 
-export function CoursePreview({ id, name, description }: PreviewProps) {
+export function CoursePreview({ href, name, description }: PreviewProps) {
   return (
-    <Link href={`/coordinator/courses/${id}`}>
+    <Link href={href}>
       <Alert variant="default" className="w-full">
         <AlertTitle className="text-lg font-semibold">{name}</AlertTitle>
         <AlertDescription className="text-sm text-muted-foreground">
@@ -128,9 +132,9 @@ export function CoursePreview({ id, name, description }: PreviewProps) {
   );
 }
 
-export function ClassTemplatePreview({ id, name, description }: PreviewProps) {
+export function ClassTemplatePreview({ href, name, description }: PreviewProps) {
   return (
-    <Link href={`/coordinator/classes/${id}`}>
+    <Link href={href}>
       <Alert variant="default" className="w-full">
         <AlertTitle className="text-lg font-semibold">{name}</AlertTitle>
         <AlertDescription className="text-sm text-muted-foreground">

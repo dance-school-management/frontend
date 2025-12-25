@@ -14,7 +14,12 @@ import { z } from "zod";
 
 import { MoneyInput } from "@/components/forms/input";
 import { AdvancementLevelSelect, DanceCategorySelect } from "@/components/forms/select";
-import { createClassTemplate, updateClassTemplate } from "@/lib/api/product";
+import {
+  createClassTemplate,
+  createPrivateClassTemplate,
+  updateClassTemplate,
+  updatePrivateClassTemplate,
+} from "@/lib/api/product";
 import { ClassTemplate } from "@/lib/model/product";
 
 import { IsConfirmationCheckbox } from "../forms/checkbox";
@@ -345,6 +350,120 @@ export function NewClassTemplateForm() {
           <Button type="submit" className="cursor-pointer">
             <SaveIcon />
             Create
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
+type PrivateClassTemplateFormProps = { mode: "create"; template?: never } | { mode: "edit"; template: ClassTemplate };
+
+export function PrivateClassTemplateForm({ mode, template }: PrivateClassTemplateFormProps) {
+  const router = useRouter();
+
+  const form = useForm<ClassTemplateFormValues>({
+    resolver: zodResolver(classTemplateFormSchema),
+    defaultValues: {
+      name: template?.name ?? "",
+      description: template?.description ?? "",
+      price: Number(template?.price ?? 0),
+      danceCategoryId: template?.danceCategoryId,
+      advancementLevelId: template?.advancementLevelId,
+    },
+  });
+
+  const onCreateSubmit = async (values: ClassTemplateFormValues) => {
+    const payload = {
+      classTemplateData: {
+        name: values.name,
+        description: values.description,
+        price: values.price,
+        danceCategoryId: values.danceCategoryId,
+        advancementLevelId: values.advancementLevelId,
+      },
+    };
+
+    const { data, error } = await createPrivateClassTemplate(payload);
+    if (error || !data) {
+      toast.error(error?.message ?? "Failed to create private class template");
+      return;
+    }
+
+    const { classTemplateData } = data;
+
+    toast.success("Private class template created successfully! Redirecting...");
+    router.push(`/instructor/classes/${classTemplateData.id}`);
+  };
+
+  const onEditSubmit = async (values: ClassTemplateFormValues) => {
+    const payload = {
+      classTemplateData: {
+        name: values.name,
+        description: values.description,
+        price: values.price,
+        danceCategoryId: values.danceCategoryId,
+        advancementLevelId: values.advancementLevelId,
+        id: template?.id ?? 0,
+      },
+    };
+
+    const { data, error } = await updatePrivateClassTemplate(payload);
+    if (error || !data) {
+      toast.error(error?.message ?? "Failed to update private class template");
+      return;
+    }
+
+    toast.success("Class template updated successfully");
+    router.refresh();
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(mode === "create" ? onCreateSubmit : onEditSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <MoneyInput form={form} name="price" label="Price" currency="PLN" />
+        <DanceCategorySelect
+          form={form}
+          name="danceCategoryId"
+          label="Dance Category"
+          placeholder="Select dance category"
+        />
+        <AdvancementLevelSelect
+          form={form}
+          name="advancementLevelId"
+          label="Advancement Level"
+          placeholder="Select advancement level"
+        />
+        <div className="w-full">
+          <Button type="submit" className="cursor-pointer" disabled={!form.formState.isDirty}>
+            <SaveIcon />
+            {mode === "create" ? "Create Template" : "Save Template"}
           </Button>
         </div>
       </form>
