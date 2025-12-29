@@ -22,6 +22,10 @@ export function fmtDate(date: string) {
   return format(parseISO(date), 'yyyy-MM-dd');
 }
 
+export function fmtDateTimes(startDate: Date, endDate: Date) {
+  return format(startDate, 'yyyy-MM-dd, HH:mm') + " - " + format(endDate, "HH:mm");
+}
+
 export function getDateRange(period: PredefinedTimePeriod): { start: string; end: string; } {
   const today = new Date();
   let start: Date;

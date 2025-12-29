@@ -100,12 +100,34 @@ type CreateClassPayload = {
   isConfirmation: boolean;
 };
 
+type CancelClassPayload = {
+  classId: number;
+  reason: string;
+  isConfirmation: boolean;
+};
+
+type PostponeClassPayload = {
+  classId: number;
+  newStartDate: string;
+  newEndDate: string;
+  reason: string;
+  isConfirmation: boolean;
+};
+
 export async function createClass(payload: CreateClassPayload) {
   return await fetcher<Class>("/product/cms/class", "POST", payload);
 }
 
 export async function updateClassStatus(payload: { classId: number; }, cookie?: string) {
   return await fetcher<Class>("/product/cms/class/publish", "PATCH", payload, { cookie });
+}
+
+export async function cancelClass(payload: CancelClassPayload, cookie?: string) {
+  return await fetcher<Class>("/product/cms/cancel/class", "POST", payload, { cookie });
+}
+
+export async function postponeClass(payload: PostponeClassPayload, cookie?: string) {
+  return await fetcher<Class>("/product/cms/postpone/class", "POST", payload, { cookie });
 }
 
 // Aggregations API
