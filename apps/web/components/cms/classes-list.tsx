@@ -9,8 +9,8 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { CancelClassDialog } from "@/components/cms/cancel-class-dialog";
 import { ClassActions } from "@/components/cms/class-actions";
-import { DestructiveActionDialog } from "@/components/cms/destructive-action-dialog";
 import { NewClassForm } from "@/components/cms/new-class-form";
 import { PostponeClassDialog } from "@/components/cms/postpone-class-dialog";
 import { NewPrivateClassForm } from "@/components/private-classes/new";
@@ -79,9 +79,12 @@ export function ClassListing({ classItem, canPublish }: ClassListingProps) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isPostponeDialogOpen, setIsPostponeDialogOpen] = useState(false);
   const isHidden = status === "HIDDEN";
-  const schedule = fmtDateTimes(new Date(classItem.startDate), new Date(classItem.endDate));
 
-  const originalDuration = new Date(classItem.endDate).getTime() - new Date(classItem.startDate).getTime();
+  const startDate = new Date(classItem.startDate);
+  const endDate = new Date(classItem.endDate);
+
+  const schedule = fmtDateTimes(startDate, endDate);
+  const originalDuration = endDate.getTime() - startDate.getTime();
 
   const publishClass = async () => {
     const { error } = await updateClassStatus({ classId: classItem.id });
@@ -94,8 +97,8 @@ export function ClassListing({ classItem, canPublish }: ClassListingProps) {
     setIsConfirmationOpen(false);
   };
 
-  const handleCancel = async () => {
-    const { error } = await cancelClass({ classId: classItem.id, reason: "Cancelled by admin", isConfirmation: false });
+  const handleCancel = async (reason: string) => {
+    const { error } = await cancelClass({ classId: classItem.id, reason, isConfirmation: false });
     if (error) {
       toast.error(error.message || "Failed to cancel class");
       return;
@@ -149,13 +152,7 @@ export function ClassListing({ classItem, canPublish }: ClassListingProps) {
         />
       </div>
 
-      <DestructiveActionDialog
-        open={isCancelDialogOpen}
-        onOpenChange={setIsCancelDialogOpen}
-        onConfirm={handleCancel}
-        title="Cancel Class?"
-        description="Are you sure you want to cancel this class? This action cannot be undone."
-      />
+      <CancelClassDialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen} onConfirm={handleCancel} />
 
       <PostponeClassDialog
         open={isPostponeDialogOpen}

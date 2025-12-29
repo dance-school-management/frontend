@@ -26,9 +26,9 @@ interface PostponeClassDialogProps {
 
 function createDateTime(date: Date, time: string): Date | null {
   if (!time) return null;
-  const parts = time.split(":");
-  const hours = Number(parts[0]);
-  const minutes = Number(parts[1] ?? 0);
+  const timeParts = time.split(":");
+  const hours = Number(timeParts[0]);
+  const minutes = Number(timeParts[1] ?? 0);
   if (isNaN(hours) || isNaN(minutes)) return null;
   return set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
 }

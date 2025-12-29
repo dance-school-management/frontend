@@ -23,7 +23,7 @@ export function fmtDate(date: string) {
 }
 
 export function fmtDateTimes(startDate: Date, endDate: Date) {
-  return format(startDate, 'yyyy-MM-dd, HH:mm') + " - " + format(endDate, "HH:mm");
+  return `${format(startDate, 'yyyy-MM-dd, HH:mm')} - ${format(endDate, "HH:mm")}`;
 }
 
 export function getDateRange(period: PredefinedTimePeriod): { start: string; end: string; } {
