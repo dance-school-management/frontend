@@ -1,30 +1,22 @@
 "use client";
 
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/alert";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@repo/ui/alert-dialog";
 import { Button } from "@repo/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/card";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@repo/ui/drawer";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/tooltip";
-import { compareAsc, format } from "date-fns";
-import { EyeIcon, PlusIcon } from "lucide-react";
+import { compareAsc } from "date-fns";
+import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { CancelClassDialog } from "@/components/cms/cancel-class-dialog";
+import { ClassActions } from "@/components/cms/class-actions";
 import { NewClassForm } from "@/components/cms/new-class-form";
+import { PostponeClassDialog } from "@/components/cms/postpone-class-dialog";
 import { NewPrivateClassForm } from "@/components/private-classes/new";
-import { updateClassStatus } from "@/lib/api/product";
+import { cancelClass, postponeClass, updateClassStatus } from "@/lib/api/product";
 import { Class, ClassStatus, ClassTemplate } from "@/lib/model/product";
+import { fmtDateTimes } from "@/lib/utils/time";
 
 interface ClassesListProps {
   classTemplate: ClassTemplate;
@@ -32,7 +24,6 @@ interface ClassesListProps {
 }
 
 export function ClassesList({ classTemplate, classType }: ClassesListProps) {
-
   const classes = classTemplate.class.sort((a, b) => compareAsc(a.startDate, b.startDate));
 
   return (
@@ -85,7 +76,15 @@ interface ClassListingProps {
 export function ClassListing({ classItem, canPublish }: ClassListingProps) {
   const [status, setStatus] = useState<ClassStatus>(classItem.classStatus);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isPostponeDialogOpen, setIsPostponeDialogOpen] = useState(false);
   const isHidden = status === "HIDDEN";
+
+  const startDate = new Date(classItem.startDate);
+  const endDate = new Date(classItem.endDate);
+
+  const schedule = fmtDateTimes(startDate, endDate);
+  const originalDuration = endDate.getTime() - startDate.getTime();
 
   const publishClass = async () => {
     const { error } = await updateClassStatus({ classId: classItem.id });
@@ -98,42 +97,70 @@ export function ClassListing({ classItem, canPublish }: ClassListingProps) {
     setIsConfirmationOpen(false);
   };
 
+  const handleCancel = async (reason: string) => {
+    const { error } = await cancelClass({ classId: classItem.id, reason, isConfirmation: false });
+    if (error) {
+      toast.error(error.message || "Failed to cancel class");
+      return;
+    }
+    toast.success("Class cancelled successfully");
+    setStatus("CANCELLED");
+    setIsCancelDialogOpen(false);
+  };
+
+  const handlePostponeConfirm = async (date: Date, time: string, reason: string) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    const newStartDate = new Date(date);
+    newStartDate.setHours(hours ?? 0, minutes ?? 0, 0, 0);
+
+    const newEndDate = new Date(newStartDate.getTime() + originalDuration);
+
+    const { error } = await postponeClass({
+      classId: classItem.id,
+      newStartDate: newStartDate.toISOString(),
+      newEndDate: newEndDate.toISOString(),
+      reason,
+      isConfirmation: false,
+    });
+
+    if (error) {
+      toast.error(error.message || "Failed to postpone class");
+      return;
+    }
+
+    toast.success("Class postponed successfully");
+    setStatus("POSTPONED");
+    setIsPostponeDialogOpen(false);
+  };
+
   return (
     <div className="flex items-center justify-between p-4 border rounded-lg">
       <div>
-        <p className="text-sm text-muted-foreground">{formatDates(classItem.startDate, classItem.endDate)}</p>
+        <p className="text-sm text-muted-foreground">{schedule}</p>
         <p className="text-sm">People limit: {classItem.peopleLimit}</p>
         <p className="text-sm">Status: {status}</p>
       </div>
       <div className="flex flex-col items-center gap-2">
-        {canPublish && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span>
-                <AlertDialogWithConfirmation
-                  isConfirmationOpen={isConfirmationOpen}
-                  setIsConfirmationOpen={setIsConfirmationOpen}
-                  title="Publish Class?"
-                  description="Are you sure you want to publish this class? It will be visible to students and they can enroll."
-                  onConfirm={publishClass}
-                  cancelText="Cancel"
-                  confirmText="Publish"
-                >
-                  <Button variant="outline" disabled={!isHidden} className="w-fit cursor-pointer">
-                    <EyeIcon />
-                    Publish
-                  </Button>
-                </AlertDialogWithConfirmation>
-              </span>
-            </TooltipTrigger>
-            {!isHidden && (
-              <TooltipContent>
-                <p>Class is already published</p>
-              </TooltipContent>
-            )}
-          </Tooltip>
-        )}
+        <ClassActions
+          status={status}
+          canPublish={canPublish}
+          isConfirmationOpen={isConfirmationOpen}
+          setIsConfirmationOpen={setIsConfirmationOpen}
+          onPublishClick={publishClass}
+          onCancelClick={() => setIsCancelDialogOpen(true)}
+          onPostponeClick={() => setIsPostponeDialogOpen(true)}
+        />
       </div>
+
+      <CancelClassDialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen} onConfirm={handleCancel} />
+
+      <PostponeClassDialog
+        open={isPostponeDialogOpen}
+        onOpenChange={setIsPostponeDialogOpen}
+        onConfirm={handlePostponeConfirm}
+        originalDuration={originalDuration}
+        currentSchedule={{ startDate: classItem.startDate, endDate: classItem.endDate }}
+      />
     </div>
   );
 }
@@ -144,45 +171,5 @@ function EmptyState() {
       <AlertTitle>No classes found</AlertTitle>
       <AlertDescription>No classes have been created for this course yet.</AlertDescription>
     </Alert>
-  );
-}
-
-function formatDates(startDate: string, endDate: string) {
-  return format(new Date(startDate), "yyyy-MM-dd, HH:mm") + " - " + format(new Date(endDate), "HH:mm");
-}
-
-function AlertDialogWithConfirmation({
-  children,
-  isConfirmationOpen,
-  setIsConfirmationOpen,
-  title,
-  description,
-  onConfirm,
-  cancelText = "Cancel",
-  confirmText = "Confirm",
-}: {
-  children: React.ReactNode;
-  isConfirmationOpen: boolean;
-  setIsConfirmationOpen: (open: boolean) => void;
-  title: string;
-  description: string;
-  onConfirm: () => void;
-  cancelText?: string;
-  confirmText?: string;
-}) {
-  return (
-    <AlertDialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>{cancelText}</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>{confirmText}</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
   );
 }
