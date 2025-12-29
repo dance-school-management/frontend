@@ -1,6 +1,5 @@
 "use client";
 
-import { AlertDialog, AlertDialogTrigger } from "@repo/ui/alert-dialog";
 import { Button } from "@repo/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@repo/ui/dropdown-menu";
 import { EyeIcon, MoreVerticalIcon } from "lucide-react";
@@ -34,13 +33,11 @@ export function ClassActions({
   return (
     <>
       {status === "HIDDEN" && (
-        <AlertDialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
-          <AlertDialogTrigger asChild>
-            <Button variant="outline" className="w-fit cursor-pointer">
-              <EyeIcon />
-              Publish
-            </Button>
-          </AlertDialogTrigger>
+        <>
+          <Button variant="outline" className="w-fit cursor-pointer" onClick={() => setIsConfirmationOpen(true)}>
+            <EyeIcon />
+            Publish
+          </Button>
           <DestructiveActionDialog
             open={isConfirmationOpen}
             onOpenChange={setIsConfirmationOpen}
@@ -48,13 +45,13 @@ export function ClassActions({
             title="Publish Class?"
             description="Are you sure you want to publish this class? It will be visible to students and they can enroll."
           />
-        </AlertDialog>
+        </>
       )}
       {status === "NORMAL" && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="size-8 cursor-pointer">
-              <MoreVerticalIcon />
+            <Button variant="ghost" className="size-8 cursor-pointer">
+              <MoreVerticalIcon className="size-4" />
               <span className="sr-only">More actions</span>
             </Button>
           </DropdownMenuTrigger>
