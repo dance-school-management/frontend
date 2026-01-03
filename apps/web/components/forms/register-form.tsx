@@ -51,7 +51,7 @@ export function RegisterForm() {
     await signUp.email({
       email,
       password,
-      // @ts-ignore
+      // @ts-expect-error - first_name and surname are not a valid fields for the signUp.email method
       first_name: name,
       surname: surname,
       name: `${name} ${surname}`,
