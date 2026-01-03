@@ -1,20 +1,24 @@
 import { inferAdditionalFields } from "better-auth/client/plugins";
+import { adminClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
 const host = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const authClient = createAuthClient({
   baseURL: `${host}/auth/api/auth`,
-  plugins: [inferAdditionalFields({
-    user: {
-      role: {
-        type: "string",
-        required: true,
-        defaultValue: "STUDENT",
-        input: true,
-      },
-    }
-  })],
+  plugins: [
+    inferAdditionalFields({
+      user: {
+        role: {
+          type: "string",
+          required: true,
+          defaultValue: "STUDENT",
+          input: true,
+        },
+      }
+    }),
+    adminClient(),
+  ],
 });
 
 export type AuthClient = typeof authClient.$Infer;

@@ -1,11 +1,6 @@
 import { Button, buttonVariants } from "@repo/ui/button";
 import { cn } from "@repo/ui/lib/utils";
-import {
-  Pagination as UIPagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-} from "@repo/ui/pagination";
+import { Pagination as UIPagination, PaginationContent, PaginationEllipsis, PaginationItem } from "@repo/ui/pagination";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -16,6 +11,7 @@ interface PaginationProps {
   showResultsCounter?: boolean;
   currentLimit?: number;
   total?: number;
+  className?: string;
 }
 
 export function PaginationControls({
@@ -25,6 +21,7 @@ export function PaginationControls({
   showResultsCounter = false,
   currentLimit,
   total,
+  className,
 }: PaginationProps) {
   if (totalPages <= 1) {
     return null;
@@ -44,13 +41,13 @@ export function PaginationControls({
       items.push(
         <PaginationItem key="1">
           <PaginationLink href={getPageUrl(1)}>1</PaginationLink>
-        </PaginationItem>
+        </PaginationItem>,
       );
       if (startPage > 2) {
         items.push(
           <PaginationItem key="ellipsis-start">
             <PaginationEllipsis />
-          </PaginationItem>
+          </PaginationItem>,
         );
       }
     }
@@ -61,7 +58,7 @@ export function PaginationControls({
           <PaginationLink href={getPageUrl(i)} isActive={i === currentPage}>
             {i}
           </PaginationLink>
-        </PaginationItem>
+        </PaginationItem>,
       );
     }
 
@@ -70,13 +67,13 @@ export function PaginationControls({
         items.push(
           <PaginationItem key="ellipsis-end">
             <PaginationEllipsis />
-          </PaginationItem>
+          </PaginationItem>,
         );
       }
       items.push(
         <PaginationItem key={totalPages}>
           <PaginationLink href={getPageUrl(totalPages)}>{totalPages}</PaginationLink>
-        </PaginationItem>
+        </PaginationItem>,
       );
     }
 
@@ -84,7 +81,7 @@ export function PaginationControls({
   };
 
   return (
-    <div className="mt-8">
+    <div className={cn("mt-8", className)}>
       <UIPagination>
         <PaginationContent>
           <PaginationItem>
@@ -106,26 +103,20 @@ export function PaginationControls({
       </UIPagination>
       {showResultsCounter && currentLimit && total && (
         <div className="text-center text-sm text-muted-foreground mt-4">
-          Showing {((currentPage - 1) * currentLimit) + 1} to{" "}
-          {Math.min(currentPage * currentLimit, total)} of {total} results
+          Showing {(currentPage - 1) * currentLimit + 1} to {Math.min(currentPage * currentLimit, total)} of {total}{" "}
+          results
         </div>
       )}
     </div>
   );
 }
 
-
 type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
   React.ComponentProps<typeof Link>;
 
-export function PaginationLink({
-  className,
-  isActive,
-  size = "icon",
-  ...props
-}: PaginationLinkProps) {
+export function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
   return (
     <Link
       aria-current={isActive ? "page" : undefined}
@@ -136,7 +127,7 @@ export function PaginationLink({
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        className
+        className,
       )}
       {...props}
     />
@@ -147,10 +138,7 @@ type PaginationPreviousProps = {
   className?: string;
 } & React.ComponentProps<typeof Link>;
 
-function PaginationPrevious({
-  className,
-  ...props
-}: PaginationPreviousProps) {
+function PaginationPrevious({ className, ...props }: PaginationPreviousProps) {
   return (
     <PaginationLink
       aria-label="Go to previous page"
@@ -168,10 +156,7 @@ type PaginationNextProps = {
   className?: string;
 } & React.ComponentProps<typeof Link>;
 
-function PaginationNext({
-  className,
-  ...props
-}: PaginationNextProps) {
+function PaginationNext({ className, ...props }: PaginationNextProps) {
   return (
     <PaginationLink
       aria-label="Go to next page"
