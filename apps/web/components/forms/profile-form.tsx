@@ -27,6 +27,7 @@ import { z } from "zod";
 import { ProfileData } from "@/lib/model/profile";
 
 import { DanceCategoriesMultiSelect } from "./select";
+import Image from "next/image";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address").nullable().optional().or(z.literal("")),
@@ -182,11 +183,20 @@ export function ProfileForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Photo</FormLabel>
-              {profileData?.photoPath && !photoFile && (
+              {profileData?.photoPath && !photoFile ?
                 <div className="mb-2 text-sm text-muted-foreground">
-                  Current photo: {profileData.photoPath}
+                  Current photo:
+                  <Image
+                    src={profileData.photoPath}
+                    alt={profileData.photoPath}
+                    width={128}
+                    height={128}
+                    className="object-cover"
+                    unoptimized
+                  />
+                  {/* Current photo: {profileData.photoPath} */}
                 </div>
-              )}
+              : null}
               <FormControl>
                 <FileUploader
                   value={photoFile ? [photoFile] : null}

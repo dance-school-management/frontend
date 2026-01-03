@@ -19,7 +19,13 @@ export function InstructorPreviewCard({ instructor }: InstructorPreviewCardProps
         <ItemMedia>
           <Avatar className="size-10">
             {/* TODO: Use real photo URL */}
-            <AvatarImage src={"https://api.dicebear.com/9.x/micah/svg?seed=" + instructor.id} />
+            <AvatarImage
+              src={
+                instructor.photoPath && /^.*amazonaws.com\/public.*$/.test(instructor.photoPath) ?
+                  instructor.photoPath
+                : "https://api.dicebear.com/9.x/micah/svg?seed=" + instructor.id
+              }
+            />
             <AvatarFallback>{getInitials(instructor.name, instructor.surname)}</AvatarFallback>
           </Avatar>
         </ItemMedia>

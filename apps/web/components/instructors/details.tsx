@@ -6,21 +6,33 @@ import { DanceCategoryBadge } from "@/components/instructors/badge";
 import { InstructorWithDetails } from "@/lib/model/profile";
 import { getInitials } from "@/lib/utils/text";
 
-export function InstructorDetailsHeader({ instructor }: { instructor: InstructorWithDetails; }) {
+export function InstructorDetailsHeader({ instructor }: { instructor: InstructorWithDetails }) {
   const name = `${instructor.name} ${instructor.surname}`;
   const initials = getInitials(instructor.name, instructor.surname);
 
   return (
     <>
       <Avatar className="size-48 mx-auto block lg:hidden">
-        <AvatarImage src={"https://api.dicebear.com/9.x/micah/svg?seed=" + instructor.id} />
+        <AvatarImage
+          src={
+            instructor.photoPath && /^.*amazonaws.com\/public.*$/.test(instructor.photoPath) ?
+              instructor.photoPath
+            : "https://api.dicebear.com/9.x/micah/svg?seed=" + instructor.id
+          }
+        />
         <AvatarFallback className="text-7xl">{initials}</AvatarFallback>
       </Avatar>
       <Item variant="default" className="w-full mt-4">
         <ItemMedia className="hidden lg:block">
           <Avatar className="size-48">
             {/* TODO: Use real photo URL */}
-            <AvatarImage src={"https://api.dicebear.com/9.x/micah/svg?seed=" + instructor.id} />
+            <AvatarImage
+              src={
+                instructor.photoPath && /^.*amazonaws.com\/public.*$/.test(instructor.photoPath) ?
+                  instructor.photoPath
+                : "https://api.dicebear.com/9.x/micah/svg?seed=" + instructor.id
+              }
+            />
             <AvatarFallback className="text-7xl">{initials}</AvatarFallback>
           </Avatar>
         </ItemMedia>
