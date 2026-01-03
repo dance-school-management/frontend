@@ -196,7 +196,7 @@ export function ProfileForm({
                   />
                   {/* Current photo: {profileData.photoPath} */}
                 </div>
-              : null}
+                : null}
               <FormControl>
                 <FileUploader
                   value={photoFile ? [photoFile] : null}
