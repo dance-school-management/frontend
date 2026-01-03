@@ -171,7 +171,7 @@ export function ProfileForm({ initialValues, onSubmit, profileData }: ProfileFor
                   Current photo:
                   <Image
                     src={profileData.photoPath}
-                    alt={profileData.photoPath}
+                    alt="Profile photo"
                     width={128}
                     height={128}
                     className="object-cover"
