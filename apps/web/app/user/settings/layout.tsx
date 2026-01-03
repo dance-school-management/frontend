@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Bell,
-  type LucideIcon,
-  Palette,
-  User,
-} from "lucide-react";
+import { Bell, type LucideIcon, Palette, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,16 +16,11 @@ interface NavigationItem {
 const navigationItems: NavigationItem[] = [
   { id: "profile", label: "Profile", icon: User, href: "/user/settings/profile" },
   // { id: "account", label: "Account", icon: Shield, href: "/user/settings/account" },
-  // { id: "payments", label: "Payments", icon: CreditCard, href: "/user/settings/payments" },
   { id: "appearance", label: "Appearance", icon: Palette, href: "/user/settings/appearance" },
   { id: "notifications", label: "Notifications", icon: Bell, href: "/user/settings/notifications" },
 ];
 
-export default function SettingsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
@@ -52,9 +42,10 @@ export default function SettingsLayout({
                   href={item.href}
                   className={`
                     w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors duration-250
-                    ${isActive
-                      ? "bg-muted text-foreground"
-                      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                    ${
+                      isActive ? "bg-muted text-foreground" : (
+                        "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+                      )
                     }
                   `}
                 >
@@ -66,11 +57,8 @@ export default function SettingsLayout({
           </nav>
         </aside>
 
-        <div className="flex-1 order-2 lg:order-2">
-          {children}
-        </div>
+        <div className="flex-1 order-2 lg:order-2">{children}</div>
       </div>
     </div>
   );
 }
-

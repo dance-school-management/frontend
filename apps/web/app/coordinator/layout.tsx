@@ -32,7 +32,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     );
   }
 
-  if (hydrated && user && user.role !== "COORDINATOR" && user.role !== "admin") {
+  if (user && user.role !== "COORDINATOR" && user.role !== "admin") {
     return (
       <div className="flex flex-col items-center justify-center h-full">
         <p className="text-2xl">You do not have permission to access this page.</p>
