@@ -2,32 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/button";
-import {
-  FileInput,
-  FileUploader,
-  FileUploaderContent,
-  FileUploaderItem,
-} from "@repo/ui/file-upload";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@repo/ui/form";
+import { FileInput, FileUploader, FileUploaderContent, FileUploaderItem } from "@repo/ui/file-upload";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/form";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
 import { CloudUpload, Paperclip } from "lucide-react";
+import Image from "next/image";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useHookFormMask } from "use-mask-input";
 import { z } from "zod";
 
+import { DanceCategoriesMultiSelect } from "@/components/forms/select";
 import { ProfileData } from "@/lib/model/profile";
-
-import { DanceCategoriesMultiSelect } from "./select";
-import Image from "next/image";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address").nullable().optional().or(z.literal("")),
@@ -62,11 +49,7 @@ const dropZoneConfig = {
   },
 };
 
-export function ProfileForm({
-  initialValues,
-  onSubmit,
-  profileData,
-}: ProfileFormProps) {
+export function ProfileForm({ initialValues, onSubmit, profileData }: ProfileFormProps) {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -104,11 +87,7 @@ export function ProfileForm({
         <div>
           <FormLabel>Name and Surname</FormLabel>
           <Input
-            value={
-              profileData
-                ? `${profileData?.name} ${profileData?.surname}`
-                : ""
-            }
+            value={profileData ? `${profileData?.name} ${profileData?.surname}` : ""}
             readOnly
             disabled
             className="bg-muted"
@@ -147,7 +126,11 @@ export function ProfileForm({
                 <Input
                   type="tel"
                   placeholder="+48 XXX XXX XXX"
-                  {...registerWithMask(field.name, "+48 999 999 999", { prefix: "+48", showMaskOnHover: false, placeholder: "_" })}
+                  {...registerWithMask(field.name, "+48 999 999 999", {
+                    prefix: "+48",
+                    showMaskOnHover: false,
+                    placeholder: "_",
+                  })}
                 />
               </FormControl>
               <FormMessage />
@@ -196,7 +179,7 @@ export function ProfileForm({
                   />
                   {/* Current photo: {profileData.photoPath} */}
                 </div>
-                : null}
+              : null}
               <FormControl>
                 <FileUploader
                   value={photoFile ? [photoFile] : null}
@@ -210,9 +193,7 @@ export function ProfileForm({
                       <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
                         <span className="font-semibold">Click to upload</span> or drag and drop
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        JPG, JPEG, PNG, WEBP up to 4MB
-                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">JPG, JPEG, PNG, WEBP up to 4MB</p>
                     </div>
                   </FileInput>
                   <FileUploaderContent>
@@ -252,4 +233,3 @@ export function ProfileForm({
     </Form>
   );
 }
-
