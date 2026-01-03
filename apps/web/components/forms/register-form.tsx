@@ -51,7 +51,11 @@ export function RegisterForm() {
     await signUp.email({
       email,
       password,
+      // @ts-ignore
+      first_name: name,
+      surname: surname,
       name: `${name} ${surname}`,
+      role: "STUDENT",
       fetchOptions: {
         onError: (ctx) => {
           toast.error(ctx.error.message ?? "Failed to create account");

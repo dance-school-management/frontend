@@ -11,7 +11,7 @@ export const authClient = createAuthClient({
         type: "string",
         required: true,
         defaultValue: "STUDENT",
-        input: false,
+        input: true,
       },
     }
   })],

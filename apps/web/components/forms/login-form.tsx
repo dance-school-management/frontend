@@ -75,7 +75,7 @@ export function LoginForm() {
         case "COORDINATOR":
           router.replace("/coordinator/classes");
           break;
-        case "ADMINISTRATOR":
+        case "admin":
           router.replace("/admin/dashboard");
           break;
         case "INSTRUCTOR":
