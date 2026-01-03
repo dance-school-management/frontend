@@ -137,7 +137,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {user?.role === "STUDENT" && <NavSection title="User" items={data.user} />}
         {user?.role === "INSTRUCTOR" && <NavSection title="Instructor" items={data.instructor} />}
         {user?.role === "COORDINATOR" && <NavSection title="Coordinator" items={data.coordinator} />}
-        {user?.role === "ADMINISTRATOR" && <NavSection title="Admin" items={data.admin} />}
+        {user?.role === "admin" && <NavSection title="Admin" items={data.admin} />}
 
         <NavSecondary items={data.bottom} className="mt-auto" />
       </SidebarContent>
