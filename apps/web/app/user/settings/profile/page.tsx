@@ -21,7 +21,12 @@ export default function ProfilePage() {
         formData.append("email", values.email);
       }
       if (values.phone !== null && values.phone !== undefined && values.phone !== "") {
-        formData.append("phone", values.phone.replaceAll(" ", ""));
+        // Remove all non-digit characters except the leading + sign
+        // This handles spaces, underscores, and any other formatting characters from the input mask
+        const hasLeadingPlus = values.phone.trim().startsWith("+");
+        const digitsOnly = values.phone.replace(/\D/g, "");
+        const cleanedPhone = hasLeadingPlus ? `+${digitsOnly}` : digitsOnly;
+        formData.append("phone", cleanedPhone);
       }
       if (values.description !== null && values.description !== undefined && values.description !== "") {
         formData.append("description", values.description);
